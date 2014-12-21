@@ -55,6 +55,10 @@ commands:
      description: Kill all mobs on the server.
    tpall:
      description: Teleport all players to you.
+   muteall:
+     description: Mute all players on the server.
+   freezeall:
+     description: Freeze all players on the server.
 
 permissions:
    adminessentials.*:
@@ -95,3 +99,5 @@ permissions:
        adminessentials.kickall: true
        adminessentials.killall: true
        adminessentials.killmobs: true
+       adminessentials.freezeall: true
+       adminessentials.muteall: true

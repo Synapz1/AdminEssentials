@@ -2,6 +2,8 @@ package me.synapz.adminessentials;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -73,8 +75,27 @@ public class CommandFreeze
                     player.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
                 }
             }
+            else if(cmd.getName().equalsIgnoreCase("freezeall")){
+                if(player.hasPermission("adminessentials.freezeall")) {
+                    if (args.length == 0) {
+                        for (Player players : Bukkit.getOnlinePlayers()) {
+                            UUID uuid = players.getUniqueId();
+                            frozenPlayers.add(uuid);
+                            players.sendMessage(ChatColor.RED + "You" + ChatColor.GOLD + " have been frozen.");
+                        }
+                        player.sendMessage(ChatColor.GOLD + "You froze everyone.");
+                    }
+                    else if (args.length >= 1){
+                        player.sendMessage(ChatColor.RED + "To many arguments!");
+                        player.sendMessage(ChatColor.RED + "Usage: /freezeall");
+                    }
+                }else {
+                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
+                }
+            }
 
         }
+
 
         return false;
     }

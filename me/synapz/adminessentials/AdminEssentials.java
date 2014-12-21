@@ -40,6 +40,8 @@ public class AdminEssentials extends JavaPlugin
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("tpall").setExecutor(new CommandTpall());
+        getCommand("muteall").setExecutor(commandMute);
+        getCommand("freezeall").setExecutor(commandFreeze);
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
