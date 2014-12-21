@@ -1,0 +1,97 @@
+name: AdminEssentials
+version: 1.4
+description: This plugin is so 31337. You can set yourself on fire.
+author: Synapz_
+website: http://dev.bukkit.org/bukkit-plugins/adminess/
+main: me.synapz.adminessentials.AdminEssentials
+database: false
+
+commands:
+   ban:
+      description: Ban the player.
+   unban:
+      description: Unban the player.
+   god:
+      description: Become a god. Never die.
+   freeze:
+      description: Freeze the player so they can't move.
+   kill:
+      description: Kill the player.
+   mute:
+      description: Mute the player so they can't talk.
+   heal:
+      description: Give the player full health.
+   feed:
+      description: Feed the player.
+   tp:
+      description: Tp to the player.
+   tphere:
+      description: Tp the player to you.
+   burn:
+      description: Put the player on fire.
+   ext:
+      description: Remove fire ticks from the player.
+   gms:
+     description: Put the player in survival mode.
+   gmc:
+     description: Put the player in creative mode.
+   gma:
+     description: Put the player in adventure mode.
+   fly:
+     description: Put the player in fly mode.
+   marco:
+     description: Test the server connection.
+   ci:
+     description: Clear the player's inventory
+   announce:
+     description: Broadcast a message throughout the server.
+   kick:
+     description: Kick a player
+   kickall:
+     description: Kick all player's from the server.
+   killall:
+     description: Kill all players on the server.
+   killmobs:
+     description: Kill all mobs on the server.
+   tpall:
+     description: Teleport all players to you.
+
+permissions:
+   adminessentials.*:
+     description: Gives access to all AdminEssential commands
+     children:
+       adminessentials.tp: true
+       adminessentials.tp.others: true
+       adminessentials.tphere: true
+       adminessentials.heal: true
+       adminessentials.heal.others: true
+       adminessentials.feed: true
+       adminessentials.feed.others: true
+       adminessentials.kill: true
+       adminessentials.killall: true
+       adminessentials.marco: true
+       adminessentials.ext: true
+       adminessentials.ext.others: true
+       adminessentials.burn: true
+       adminessentials.burn.others: true
+       adminessentials.creative: true
+       adminessentials.creative.others: true
+       adminessentials.survival: true
+       adminessentials.survival.others: true
+       adminessentials.adventure: true
+       adminessentials.adventure.others: true
+       adminessentials.mute: true
+       adminessentials.freeze: true
+       adminessentials.fly: true
+       adminessentials.fly.others: true
+       adminessentials.god: true
+       adminessentials.god.others: true
+       adminessentials.ci: true
+       adminessentials.ci.others: true
+       adminessentials.kick: true
+       adminessentials.ban: true
+       adminessentials.announce: true
+       adminessentials.tpall: true
+       adminessentials.kickall: true
+       adminessentials.killall: true
+       adminessentials.killmobs: true
