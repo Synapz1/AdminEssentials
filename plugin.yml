@@ -1,6 +1,6 @@
 name: AdminEssentials
-version: 1.4
-description: This plugin is so 31337. You can set yourself on fire.
+version: 1.4.2
+description: Essential commands to help admins run a essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
 main: me.synapz.adminessentials.AdminEssentials
