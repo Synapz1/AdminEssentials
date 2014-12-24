@@ -26,7 +26,7 @@ public class CommandAdventure
                     targetPlayer.setGameMode(GameMode.ADVENTURE);
                     targetPlayer.sendMessage(ChatColor.RED +
                             sender.getName() + ChatColor.GOLD +
-                            " set you to creative mode!");
+                            " set you to adventure mode!");
                     sender.sendMessage(ChatColor.GOLD + "You set " +
                             ChatColor.RED + targetPlayer.getName() +
                             ChatColor.GOLD + " gamemode to adventure!");
@@ -69,7 +69,7 @@ public class CommandAdventure
                     targetPlayer.setGameMode(GameMode.ADVENTURE);
                     targetPlayer.sendMessage(ChatColor.RED +
                             player.getName() + ChatColor.GOLD +
-                            " set you to creative mode!");
+                            " set you to adventure mode!");
                     player.sendMessage(ChatColor.GOLD + "You set " +
                             ChatColor.RED + targetPlayer.getName() +
                             ChatColor.GOLD + " gamemode to adventure!");
