@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,10 +14,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class CommandFreeze
-        implements CommandExecutor, Listener
+public class CommandFreeze implements Listener, CommandExecutor
+
 {
-    ArrayList<UUID> frozenPlayers = new ArrayList();
+
+    ArrayList<UUID> frozenPlayers = new ArrayList<UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
@@ -30,14 +31,16 @@ public class CommandFreeze
                 if (targetPlayer == null) {
                     sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
                 }
-                else if (this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
+
+                else if(this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
                     this.frozenPlayers.remove(targetPlayer.getUniqueId());
                     targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been unfrozen!");
                     sender.sendMessage(ChatColor.DARK_AQUA + "You unfroze " + ChatColor.RED + targetPlayer.getName());
-                } else {
+                }else{
+                    this.frozenPlayers.add(targetPlayer.getUniqueId());
                     targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been frozen!");
                     sender.sendMessage(ChatColor.DARK_AQUA + "You froze " + ChatColor.RED + targetPlayer.getName());
-                    this.frozenPlayers.add(targetPlayer.getUniqueId());
+
                 }
             }
             else if (args.length >= 2) {
@@ -60,28 +63,32 @@ public class CommandFreeze
                     if (targetPlayer == null) {
                         player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
                     }
-                    else if (this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
+                    if(this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
                         this.frozenPlayers.remove(targetPlayer.getUniqueId());
                         targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been unfrozen!");
-                        player.sendMessage(ChatColor.DARK_AQUA + "You unfroze " + ChatColor.RED + targetPlayer.getName());
-                    } else {
-                        targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been frozen!");
-                        player.sendMessage(ChatColor.DARK_AQUA + "You froze " + ChatColor.RED + targetPlayer.getName());
+                        sender.sendMessage(ChatColor.DARK_AQUA + "You unfroze " + ChatColor.RED + targetPlayer.getName());
+                    }else{
                         this.frozenPlayers.add(targetPlayer.getUniqueId());
+                        targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been frozen!");
+                        sender.sendMessage(ChatColor.DARK_AQUA + "You froze " + ChatColor.RED + targetPlayer.getName());
+
                     }
-                }
-                else if (args.length >= 2) {
+                } else if (args.length >= 2) {
                     player.sendMessage(ChatColor.RED + "To many arguments!");
                     player.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
                 }
+
             }
+
+
+
+            //TODO: make a unfreeze for all players
             else if(cmd.getName().equalsIgnoreCase("freezeall")){
                 if(player.hasPermission("adminessentials.freezeall")) {
                     if (args.length == 0) {
                         for (Player players : Bukkit.getOnlinePlayers()) {
-                            UUID uuid = players.getUniqueId();
-                            frozenPlayers.add(uuid);
                             players.sendMessage(ChatColor.RED + "You" + ChatColor.GOLD + " have been frozen.");
+                            this.frozenPlayers.add(players.getUniqueId());
                         }
                         player.sendMessage(ChatColor.GOLD + "You froze everyone.");
                     }
@@ -99,11 +106,15 @@ public class CommandFreeze
 
         return false;
     }
+
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (this.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
-            event.getPlayer().teleport(event.getPlayer());
-            event.getPlayer().sendMessage(ChatColor.DARK_RED + "You were frozen!");
+        Player player = event.getPlayer();
+        if (this.frozenPlayers.contains(player.getUniqueId())){
+            Location back = new Location(event.getFrom().getWorld(), event.getFrom().getX(), event.getFrom().getY(), event.getFrom().getZ());
+            player.teleport(back);
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package me.synapz.adminessentials;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -11,6 +12,20 @@ import org.bukkit.entity.Player;
 public class CommandTp
         implements CommandExecutor
 {
+    private void teleport(String x, String y, String z, Player player){
+        try {
+            //Convert arguments to integers.
+            int xloc = Integer.parseInt(x);
+            int yloc = Integer.parseInt(y);
+            int zloc = Integer.parseInt(z);
+            Location cords = new Location(player.getWorld(), xloc, yloc, zloc);
+            player.teleport(cords);
+        }catch (NumberFormatException e){
+            player.sendMessage(ChatColor.RED + "Make sure your coordinance are intergers!");
+            player.sendMessage(ChatColor.RED + "Usage: /tppos <x> <y> <z>");
+        }
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
         if (!(sender instanceof Player)) {
@@ -45,8 +60,12 @@ public class CommandTp
                 }
             } else if ((cmd.getName().equalsIgnoreCase("tphere")) &&
                     (args.length >= 0)) {
-                sender.sendMessage(ChatColor.RED + "Console canno't teleport players to them!");
+                sender.sendMessage(ChatColor.RED + "Console cannot teleport players to them!");
                 sender.sendMessage(ChatColor.RED + "Use: /tp <player> <player>");
+            } else if (cmd.getName().equalsIgnoreCase("tppos")){
+                if(args.length >= 0) {
+                    sender.sendMessage(ChatColor.RED + "Console does not have access to this command!");
+                }
             }
 
         }
@@ -131,6 +150,25 @@ public class CommandTp
                 }
                 else player.sendMessage(ChatColor.DARK_RED +
                         "You don't have access to that command!");
+            }
+
+            else if (cmd.getName().equalsIgnoreCase("tppos")){
+                if(player.hasPermission("adminessentials.tppos")){
+                    if(args.length == 0){
+                        player.sendMessage(ChatColor.RED + "You need to specify coordinance.");
+                        player.sendMessage(ChatColor.RED + "Usage: /tppos <x> <y> <z>");
+                    } else if(args.length == 1 || args.length == 2){
+                        player.sendMessage(ChatColor.RED + "Make sure you include the x, y and z!");
+                        player.sendMessage(ChatColor.RED + "Usage: /tppos <x> <y> <z>");
+                    } else if(args.length == 3){
+                        teleport(args[0], args[1], args[2], player);
+                    } else if(args.length >= 4){
+                        player.sendMessage(ChatColor.RED + "To many arguments!");
+                        player.sendMessage(ChatColor.RED + "Usage: /tppos <x> <y> <z>");
+                    }
+                }else{
+                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
+                }
             }
         }
 

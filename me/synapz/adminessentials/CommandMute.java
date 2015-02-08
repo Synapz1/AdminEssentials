@@ -1,6 +1,7 @@
 package me.synapz.adminessentials;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -17,7 +18,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class CommandMute
         implements CommandExecutor, Listener
 {
-    ArrayList<UUID> mute = new ArrayList();
+    ArrayList<UUID> mute = new ArrayList<UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if ((!(sender instanceof Player)) &&
@@ -30,7 +31,7 @@ public class CommandMute
                 if (targetPlayer == null) {
                     sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
                 }
-                else if (this.mute.contains(targetPlayer.getUniqueId())) {
+                else if (mute.contains(targetPlayer.getUniqueId())) {
                     this.mute.remove(targetPlayer.getUniqueId());
                     sender.sendMessage(ChatColor.DARK_AQUA + "You umuted " + ChatColor.RED + targetPlayer.getName());
                     targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You were unmuted!");

@@ -1,5 +1,5 @@
 name: AdminEssentials
-version: 1.4.2
+version: 1.4.5
 description: Essential commands to help admins run a essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
@@ -55,6 +55,8 @@ commands:
      description: Kill all mobs on the server.
    tpall:
      description: Teleport all players to you.
+   tppos:
+     description: Teleport to a coordinance.
    muteall:
      description: Mute all players on the server.
    freezeall:
@@ -64,6 +66,7 @@ permissions:
    adminessentials.*:
      description: Gives access to all AdminEssential commands
      children:
+       adminessentials.tppos: true
        adminessentials.tp: true
        adminessentials.tp.others: true
        adminessentials.tphere: true
