@@ -13,20 +13,27 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CommandKillMobs
-        implements CommandExecutor
-{
+        implements CommandExecutor{
+    private int mobsKilled;
+
+    private void killMobs(){
+        LivingEntity mobs;
+        mobsKilled = 0;
+        for (World world : (World[])Bukkit.getServer().getWorlds().toArray(new World[0])) {
+            for (Iterator localIterator1 = world.getLivingEntities().iterator(); localIterator1.hasNext(); ) { mobs = (LivingEntity)localIterator1.next();
+                if (!(mobs instanceof Player))
+                    mobs.remove();
+                    mobsKilled++;
+            }
+        }
+    }
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        LivingEntity mobs;
+
         if ((cmd.getName().equalsIgnoreCase("killmobs")) && (!(sender instanceof Player))) {
             if (args.length == 0) {
-                sender.sendMessage(ChatColor.GOLD + "All mobs killed!");
-                for (World world : (World[])Bukkit.getServer().getWorlds().toArray(new World[0])) {
-                    for (Iterator localIterator1 = world.getLivingEntities().iterator(); localIterator1.hasNext(); ) { mobs = (LivingEntity)localIterator1.next();
-                        if (!(mobs instanceof Player))
-                            mobs.remove();
-                    }
-                }
+                killMobs();
+                sender.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
             }
             else if (args.length >= 1) {
                 sender.sendMessage(ChatColor.RED + "To many arguments!");
@@ -39,13 +46,8 @@ public class CommandKillMobs
                 player.sendMessage(ChatColor.DARK_RED + "You don't have permission to that command!");
             }
             else if (args.length == 0) {
-                player.sendMessage(ChatColor.GOLD + "All mobs killed!");
-                for (World world : (World[])Bukkit.getServer().getWorlds().toArray(new World[0])) {
-                    for (LivingEntity mob : world.getLivingEntities()) {
-                        if (!(mob instanceof Player))
-                            mob.remove();
-                    }
-                }
+                killMobs();
+                player.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
             }
             else if (args.length >= 1) {
                 sender.sendMessage(ChatColor.RED + "To many arguments!");

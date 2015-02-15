@@ -61,7 +61,7 @@ public class CommandFly
                         if (targetPlayer == null) {
                             player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
                         }
-                        else if (player.getAllowFlight()) {
+                        else if (targetPlayer.getAllowFlight()) {
                             targetPlayer.setAllowFlight(false);
                             targetPlayer.sendMessage(ChatColor.GOLD + "Fly mode was disabled!");
                             player.sendMessage(ChatColor.GOLD + "Fly mode was disabled for " + ChatColor.RED + targetPlayer.getName());
