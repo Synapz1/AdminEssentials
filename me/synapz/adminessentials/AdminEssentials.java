@@ -1,7 +1,6 @@
 package me.synapz.adminessentials;
 
 import java.io.IOException;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminEssentials extends JavaPlugin {
@@ -12,17 +11,22 @@ public class AdminEssentials extends JavaPlugin {
     CommandGod commandGod = new CommandGod();
 
     //added tppos
+    //added spectator mode
     @Override
-    public void onEnable() {
-        //Load config + copy defaults
+    public void onEnable()
+    {
         this.getServer().getPluginManager().registerEvents(this.commandMute, this);
+        getCommand("mute").setExecutor(commandMute);
+        getCommand("muteall").setExecutor(commandMute);
         this.getServer().getPluginManager().registerEvents(this.commandGod, this);
+        getCommand("god").setExecutor(commandGod);
         this.getServer().getPluginManager().registerEvents(this.commandFreeze, this);
+        getCommand("freeze").setExecutor(commandFreeze);
+        getCommand("freezeall").setExecutor(commandFreeze);
+
         getCommand("ban").setExecutor(new CommandBan());
         getCommand("unban").setExecutor(new CommandBan());
-        getCommand("god").setExecutor(commandGod);
         getCommand("kill").setExecutor(new CommandKill());
-        getCommand("mute").setExecutor(commandMute);
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());
         getCommand("tp").setExecutor(new CommandTp());
@@ -33,6 +37,7 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("gmc").setExecutor(new CommandCreative());
         getCommand("gms").setExecutor(new CommandSurvival());
         getCommand("gma").setExecutor(new CommandAdventure());
+        getCommand("gmss").setExecutor(new CommandSpectator());
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("marco").setExecutor(new CommandMarco());
         getCommand("ci").setExecutor(new CommandCi());
@@ -42,9 +47,6 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("tpall").setExecutor(new CommandTpall());
-        getCommand("muteall").setExecutor(commandMute);
-        getCommand("freeze").setExecutor(commandFreeze);
-        getCommand("freezeall").setExecutor(commandFreeze);
 
         try {
             Metrics metrics = new Metrics(this);
@@ -54,7 +56,8 @@ public class AdminEssentials extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
 
 
     }

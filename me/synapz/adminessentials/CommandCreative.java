@@ -18,10 +18,11 @@ public class CommandCreative
         Reference reference = new Reference();
         CommandUtil commands = new CommandUtil();
 
-        if ((!(sender instanceof Player)) && (cmd.getName().equalsIgnoreCase("gmc"))) {
+        if ((!(sender instanceof Player)) && (cmd.getName().equalsIgnoreCase("gmc")))
+        {
             if (args.length == 0)
             {
-                reference.wrongUsage(sender, args.length, "/gmc <player>");
+                reference.wrongUsage(sender, 0, "/gmc <player>");
             }
             else if (args.length == 1)
             {
@@ -30,7 +31,7 @@ public class CommandCreative
             }
             else if (args.length >= 2)
             {
-                reference.wrongUsage(sender, args.length, "/gmc <player>");
+                reference.wrongUsage(sender, 1, "/gmc <player>");
             }
 
         }
@@ -41,16 +42,16 @@ public class CommandCreative
 
             if (args.length == 0)
             {
-                reference.wrongUsage(player, args.length, "/gmc <player>");
+                commands.setGamemode(player, player, GameMode.CREATIVE, "adminessentials.creative");
             }
             else if (args.length == 1)
             {
                 Player targetPlayer = player.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, player, GameMode.CREATIVE, "console");
+                commands.setGamemode(targetPlayer, player, GameMode.CREATIVE, "adminessentials.creative.others");
             }
             else if (args.length >= 2)
             {
-                reference.wrongUsage(player, args.length, "/gmc <player>");
+                reference.wrongUsage(player, 1, "/gmc <player>");
             }
 
         }

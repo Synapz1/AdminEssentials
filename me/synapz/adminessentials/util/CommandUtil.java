@@ -5,6 +5,8 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.Ref;
+
 public class CommandUtil {
 
     public void setGamemode(Player target, CommandSender p, GameMode gamemode, String permission)

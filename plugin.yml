@@ -1,5 +1,5 @@
 name: AdminEssentials
-version: 1.4.5
+version: 1.4.6
 description: Essential commands to help admins run a essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
@@ -7,6 +7,8 @@ main: me.synapz.adminessentials.AdminEssentials
 database: false
 
 commands:
+   gmss:
+      description: Put the player into spectator mode.
    ban:
       description: Ban the player.
    unban:
@@ -32,39 +34,39 @@ commands:
    ext:
       description: Remove fire ticks from the player.
    gms:
-     description: Put the player in survival mode.
+      description: Put the player in survival mode.
    gmc:
-     description: Put the player in creative mode.
+      description: Put the player in creative mode.
    gma:
-     description: Put the player in adventure mode.
+      description: Put the player in adventure mode.
    fly:
-     description: Put the player in fly mode.
+      description: Put the player in fly mode.
    marco:
-     description: Test the server connection.
+      description: Test the server connection.
    ci:
-     description: Clear the player's inventory
+      description: Clear the player's inventory
    announce:
-     description: Broadcast a message throughout the server.
+      description: Broadcast a message throughout the server.
    kick:
-     description: Kick a player
+      description: Kick a player
    kickall:
-     description: Kick all player's from the server.
+      description: Kick all player's from the server.
    killall:
-     description: Kill all players on the server.
+      description: Kill all players on the server.
    killmobs:
-     description: Kill all mobs on the server.
+      description: Kill all mobs on the server.
    tpall:
-     description: Teleport all players to you.
+      description: Teleport all players to you.
    tppos:
-     description: Teleport to a coordinance.
+      description: Teleport to a coordinance.
    muteall:
-     description: Mute all players on the server.
+      description: Mute all players on the server.
    freezeall:
-     description: Freeze all players on the server.
+      description: Freeze all players on the server.
 
 permissions:
    adminessentials.*:
-     description: Gives access to all AdminEssential commands
+     description: Gives access to all AdminEssentials commands
      children:
        adminessentials.tppos: true
        adminessentials.tp: true
@@ -104,3 +106,5 @@ permissions:
        adminessentials.killmobs: true
        adminessentials.freezeall: true
        adminessentials.muteall: true
+       adminessentials.spectator: true
+       adminessentials.spectator.others: true

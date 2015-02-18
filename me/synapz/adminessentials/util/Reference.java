@@ -17,6 +17,9 @@ public class Reference {
 
     protected static void changeGamemodeMessage(Player target, Player sender, GameMode gm)
     {
+        // if we don't have a target player to switch but instead we want to switch their own game mode
+        // set the target = to the sender and their own game mode will change
+
         if(target.equals(sender))
         {
             sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + target.getName() + ChatColor.GOLD + " to " + gm + " mode!");
@@ -31,19 +34,21 @@ public class Reference {
     }
 
 
-    public void wrongUsage(CommandSender p, int args, String commandUsage)
+    public void wrongUsage(CommandSender p, int i, String commandUsage)
     {
+        // 0 means to little arguments, 1 means to many arguments
         Player sender = (Player) p;
 
-        if(args == 0)
+        if(i == 0)
         {
             sender.sendMessage(ChatColor.RED + "Not enough arguments!");
             sender.sendMessage(ChatColor.RED + "Usage: " + commandUsage);
         }
-        else if(args >= 2)
+        else if(i == 1)
         {
             sender.sendMessage(ChatColor.RED + "To many arguments!");
             sender.sendMessage(ChatColor.RED + "Usage: " + commandUsage);
         }
     }
+
 }
