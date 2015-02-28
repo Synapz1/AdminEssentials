@@ -108,4 +108,15 @@ public class CommandUtil {
         }
 
     }
+
+    public void vanish(CommandSender sender, Player target, String targetString, String permission)
+    {
+        if (permissionCheck(sender, permission))
+        {
+            if (isPlayerOnline(sender, target, targetString))
+            {
+                CommandMessenger.vanishMessenger(sender, target);
+            }
+        }
+    }
 }

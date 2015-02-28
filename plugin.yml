@@ -7,6 +7,8 @@ main: me.synapz.adminessentials.AdminEssentials
 database: false
 
 commands:
+   v:
+      description: Become invisible.
    gmss:
       description: Put the player into spectator mode.
    ban:
@@ -108,3 +110,5 @@ permissions:
        adminessentials.muteall: true
        adminessentials.spectator: true
        adminessentials.spectator.others: true
+       adminessentials.vanish: true
+       adminessentials.vanish.others: true

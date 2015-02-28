@@ -1,19 +1,48 @@
 package me.synapz.adminessentials.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class CommandMessenger  {
 
+    private static ArrayList<String> invisiblePlayers = new ArrayList<String>();
     public static final String NO_PERMS = ChatColor.DARK_RED + "You don't have access to that command!";
     public static final String NO_CONSOLE_PERMS = ChatColor.DARK_RED + "Console does not have access to that command!";
 
     public static String nullPlayerException(String arg)
     {
         return ChatColor.GOLD + "Player " + ChatColor.RED + "'" + arg.toString() + "'" + ChatColor.GOLD + " wasn't found.";
+    }
+
+    private static void vanish(Player player)
+    {
+
+        if(invisiblePlayers.contains(player.getName())){
+            for(Player p : Bukkit.getOnlinePlayers())
+            {
+                p.showPlayer(player);
+            }
+            invisiblePlayers.remove(player.getName());
+            player.sendMessage(ChatColor.GOLD + "Vanish: " + ChatColor.RED + "OFF");
+
+        }
+        else
+        {
+            for (Player p : Bukkit.getOnlinePlayers())
+            {
+                p.hidePlayer(player);
+
+            }
+            invisiblePlayers.add(player.getName());
+            player.sendMessage(ChatColor.GOLD + "Vanish: " + ChatColor.RED + "ON");
+
+        }
     }
 
 
@@ -48,6 +77,21 @@ public class CommandMessenger  {
         {
             target.teleport(target1.getLocation());
             target.sendMessage(ChatColor.GOLD + "Teleporting...");
+        }
+    }
+
+    protected static void vanishMessenger(CommandSender sender, Player target)
+    {
+        vanish(target);
+
+        // tell the sender if the vanish for the target is ON of OFF. If there even is a target
+        if(!sender.equals(target) && invisiblePlayers.contains(target.getName()))
+        {
+            sender.sendMessage(ChatColor.GOLD + "Vanish (" + target.getName() + "): " + ChatColor.RED + "ON");
+        }
+        else if(!sender.equals(target) && !invisiblePlayers.contains(target.getName()))
+        {
+            sender.sendMessage(ChatColor.GOLD + "Vanish (" + target.getName() + "): " + ChatColor.RED + "OFF");
         }
     }
 

@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AdminEssentials extends JavaPlugin {
 
     //added tppos
+    // added vanish
     //added spectator mode
     // dramatically fixed code structure
     @Override
@@ -63,6 +64,7 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("kickall").setExecutor(new CommandKick());
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
+        getCommand("v").setExecutor(new CommandVanish());
     }
 
 }
