@@ -6,11 +6,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Config {
 
     AdminEssentials am;
+    List<String> mutedPlayers;
+    List<String> frozenPlayers;
 
     /*
      * Initialize am during onEnable proccess
@@ -19,6 +23,11 @@ public class Config {
     {
         // initialize the am var to access config methods
         am = a;
+
+        // add all the muted players to the mutedPLayers list
+        // todo: check if null
+        mutedPlayers = am.getConfig().getStringList("Players.Muted");
+        frozenPlayers = am.getConfig().getStringList("Players.Frozen");
     }
 
     /*
@@ -27,13 +36,19 @@ public class Config {
      */
     public void setMute(CommandSender sender, Player player, boolean toMute)
     {
-        // set config values
-        am.getConfig().set("Players." + player.getUniqueId() + ".Name", player.getName());
-        am.getConfig().set("Players." + player.getUniqueId() + ".Muted", toMute);
+        if(toMute)
+        {
+            mutedPlayers.add(player.getUniqueId().toString());
+            am.getConfig().set("Players.Muted", mutedPlayers);
+        }
+        else
+        {
+            mutedPlayers.remove(player.getUniqueId().toString());
+            am.getConfig().set("Players.Muted", mutedPlayers);
+        }
 
         // print output to player and console
         CommandMessenger.onMute(sender, player, toMute);
-
         am.saveConfig();
     }
 
@@ -43,13 +58,19 @@ public class Config {
      */
     public void setFreeze(CommandSender sender, Player player, boolean toFreeze)
     {
-        // set config values
-        am.getConfig().set("Players." + player.getUniqueId() + ".Name", player.getName());
-        am.getConfig().set("Players." + player.getUniqueId() + ".Frozen", toFreeze);
+        if (toFreeze)
+        {
+            frozenPlayers.add(player.getUniqueId().toString());
+            am.getConfig().set("Players.Frozen", frozenPlayers);
+        }
+        else
+        {
+            frozenPlayers.remove(player.getUniqueId().toString());
+            am.getConfig().set("Players.Frozen", frozenPlayers);
+        }
 
-        // print output to player and console
+
         CommandMessenger.onFreeze(sender, player, toFreeze);
-
         am.saveConfig();
     }
 
@@ -58,10 +79,12 @@ public class Config {
      */
     public boolean isMuted(Player player)
     {
-        try {
-            return am.getConfig().getBoolean("Players." + player.getUniqueId() + ".Muted");
-        }catch(NullPointerException e) {
-            // player was never added to file, therefore it's null so we return false
+        if (mutedPlayers.contains(player.getUniqueId().toString()))
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
@@ -71,11 +94,14 @@ public class Config {
      */
     public boolean isFrozen(Player player)
     {
-        try {
-            return am.getConfig().getBoolean("Players." + player.getUniqueId() + ".Frozen");
-        }catch(NullPointerException e) {
-            // player was never added to file, therefore it's null so we return false
+        if (frozenPlayers.contains(player.getUniqueId().toString()))
+        {
+            return true;
+        }
+        else
+        {
             return false;
-        }    }
+        }
+    }
 
 }

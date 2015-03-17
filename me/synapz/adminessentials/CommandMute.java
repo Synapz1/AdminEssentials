@@ -77,9 +77,8 @@ public class CommandMute implements CommandExecutor, Listener
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        boolean muted = config.isMuted(player);
 
-        if(muted)
+        if(config.isMuted(player))
         {
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently muted!");
             event.setCancelled(true);
