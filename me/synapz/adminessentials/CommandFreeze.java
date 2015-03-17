@@ -3,6 +3,9 @@ package me.synapz.adminessentials;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.CommandUtil;
+import me.synapz.adminessentials.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,108 +15,78 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class CommandFreeze implements Listener, CommandExecutor
 
 {
 
-    ArrayList<UUID> frozenPlayers = new ArrayList<UUID>();
+    CommandMessenger messenger = new CommandMessenger();
+    CommandUtil util = new CommandUtil();
+    AdminEssentials am;
+    Config config;
+
+    // placed in the onEnable
+    public CommandFreeze(AdminEssentials e)
+    {
+        // these will be initialized during onEnable and be set to am and config
+        am = e;
+        config = new Config(am);
+        ;    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
+
+        if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("freeze")))
+        {
+            // quick check to see if the sender is a player
+            // if they are a player, check their permissions
+            if (sender instanceof Player)
+            {
+                if(!util.permissionCheck(sender, "adminessentials.freeze"))
+                {
+                    return true;
+                }
             }
-            else if (args.length == 1) {
+
+            if (args.length == 0)
+            {
+                messenger.wrongUsage(sender, 0, "/freeze <player>");
+            }
+            else if (args.length == 1)
+            {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                if (targetPlayer == null) {
-                    sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                }
-
-                else if(this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
-                    this.frozenPlayers.remove(targetPlayer.getUniqueId());
-                    targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been unfrozen!");
-                    sender.sendMessage(ChatColor.DARK_AQUA + "You unfroze " + ChatColor.RED + targetPlayer.getName());
-                }else{
-                    this.frozenPlayers.add(targetPlayer.getUniqueId());
-                    targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been frozen!");
-                    sender.sendMessage(ChatColor.DARK_AQUA + "You froze " + ChatColor.RED + targetPlayer.getName());
-
+                if (util.isPlayerOnline(sender, targetPlayer, args[0]))
+                {
+                    if(config.isFrozen(targetPlayer))
+                    {
+                        config.setFreeze(sender, targetPlayer, false);
+                    }
+                    else // player isn't in config, so we add them to it
+                    {
+                        config.setFreeze(sender, targetPlayer, true);
+                    }
                 }
             }
-            else if (args.length >= 2) {
-                sender.sendMessage(ChatColor.RED + "To many arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
-            }
-        }
-
-        if ((sender instanceof Player)) {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("freeze")) {
-                if (!player.hasPermission("adminessentials.freeze")) {
-                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to this command!");
-                }
-                else if (args.length == 0) {
-                    player.sendMessage(ChatColor.RED + "Not enough arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
-                } else if (args.length == 1) {
-                    Player targetPlayer = player.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    }
-                    if(this.frozenPlayers.contains(targetPlayer.getUniqueId())) {
-                        this.frozenPlayers.remove(targetPlayer.getUniqueId());
-                        targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been unfrozen!");
-                        sender.sendMessage(ChatColor.DARK_AQUA + "You unfroze " + ChatColor.RED + targetPlayer.getName());
-                    }else{
-                        this.frozenPlayers.add(targetPlayer.getUniqueId());
-                        targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You have been frozen!");
-                        sender.sendMessage(ChatColor.DARK_AQUA + "You froze " + ChatColor.RED + targetPlayer.getName());
-
-                    }
-                } else if (args.length >= 2) {
-                    player.sendMessage(ChatColor.RED + "To many arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
-                }
-
-            }
-
-
-
-            //TODO: make a unfreeze for all players
-            else if(cmd.getName().equalsIgnoreCase("freezeall")){
-                if(player.hasPermission("adminessentials.freezeall")) {
-                    if (args.length == 0) {
-                        for (Player players : Bukkit.getOnlinePlayers()) {
-                            players.sendMessage(ChatColor.RED + "You" + ChatColor.GOLD + " have been frozen.");
-                            this.frozenPlayers.add(players.getUniqueId());
-                        }
-                        player.sendMessage(ChatColor.GOLD + "You froze everyone.");
-                    }
-                    else if (args.length >= 1){
-                        player.sendMessage(ChatColor.RED + "To many arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /freezeall");
-                    }
-                }else {
-                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
-                }
+            else if (args.length >= 2)
+            {
+                messenger.wrongUsage(sender, 1, "/freeze <player>");
             }
 
         }
-
 
         return false;
     }
 
-
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
+    public void onPlayerChat(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (this.frozenPlayers.contains(player.getUniqueId())){
-            player.teleport(player.getLocation());
-        }
+        boolean frozen = config.isFrozen(player);
 
+        if(frozen)
+        {
+            event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently frozen!");
+            player.teleport(player);
+        }
     }
 }

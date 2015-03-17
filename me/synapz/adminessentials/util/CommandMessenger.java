@@ -111,9 +111,9 @@ public class CommandMessenger  {
         }
     }
 
-    protected static void onMute(CommandSender sender, Player target, boolean muted)
+    protected static void onMute(CommandSender sender, Player target, boolean toMute)
     {
-        if(muted)
+        if(toMute)
         {
             sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was muted.");
             target.sendMessage(ChatColor.GOLD + "You have been muted!");
@@ -125,9 +125,18 @@ public class CommandMessenger  {
         }
     }
 
-    protected void onFreeze()
+    protected static void onFreeze(CommandSender sender, Player target, boolean toFreeze)
     {
-
+        if(toFreeze)
+        {
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was frozen.");
+            target.sendMessage(ChatColor.GOLD + "You have been frozen!");
+        }
+        else
+        {
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was unfrozen.");
+            target.sendMessage(ChatColor.GOLD + "You have been unfrozen!");
+        }
     }
 
 

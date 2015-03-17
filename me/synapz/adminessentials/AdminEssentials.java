@@ -13,14 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AdminEssentials extends JavaPlugin {
 
     CommandMute mute = new CommandMute(this);
-    CommandFreeze freeze = new CommandFreeze();
+    CommandFreeze freeze = new CommandFreeze(this);
     CommandGod god = new CommandGod();
     CommandTeleportation tp = new CommandTeleportation();
 
-    //added tppos
-    // added vanish
-    //added spectator mode
-    // dramatically fixed code structure
     @Override
     public void onEnable()
     {
@@ -30,6 +26,7 @@ public class AdminEssentials extends JavaPlugin {
 
         Config c = new Config(this);
         CommandMute m = new CommandMute(this);
+        CommandFreeze f = new CommandFreeze(this);
 
         try {
             Metrics metrics = new Metrics(this);

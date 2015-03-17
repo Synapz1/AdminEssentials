@@ -12,28 +12,53 @@ public class Config {
 
     AdminEssentials am;
 
+    /*
+     * Initialize am during onEnable proccess
+     */
     public Config(AdminEssentials a)
     {
+        // initialize the am var to access config methods
         am = a;
     }
 
-    public void setMute(CommandSender sender, Player player, boolean muted)
+    /*
+     * Store a player into config and print information
+     * to the sender & player to access later
+     */
+    public void setMute(CommandSender sender, Player player, boolean toMute)
     {
+        // set config values
         am.getConfig().set("Players." + player.getUniqueId() + ".Name", player.getName());
-        am.getConfig().set("Players." + player.getUniqueId() + ".Muted", muted);
-        CommandMessenger.onMute(sender, player, muted);
+        am.getConfig().set("Players." + player.getUniqueId() + ".Muted", toMute);
+
+        // print output to player and console
+        CommandMessenger.onMute(sender, player, toMute);
+
         am.saveConfig();
     }
 
-    public void setFreeze(Player player, boolean freeze)
+    /*
+     * Store a player into config and print information
+     * to the sender & player to access later
+     */
+    public void setFreeze(CommandSender sender, Player player, boolean toFreeze)
     {
+        // set config values
         am.getConfig().set("Players." + player.getUniqueId() + ".Name", player.getName());
-        am.getConfig().set("Players." + player.getUniqueId() + ".Frozen", freeze);
+        am.getConfig().set("Players." + player.getUniqueId() + ".Frozen", toFreeze);
+
+        // print output to player and console
+        CommandMessenger.onFreeze(sender, player, toFreeze);
+
+        am.saveConfig();
     }
 
-    public boolean getMute(Player player)
+    /*
+     * @return is the player muted or not
+     */
+    public boolean isMuted(Player player)
     {
-        try{
+        try {
             return am.getConfig().getBoolean("Players." + player.getUniqueId() + ".Muted");
         }catch(NullPointerException e) {
             // player was never added to file, therefore it's null so we return false
@@ -41,23 +66,16 @@ public class Config {
         }
     }
 
-    public boolean getFreeze(Player player)
+    /*
+     * @return is the player frozen or not
+     */
+    public boolean isFrozen(Player player)
     {
-        return am.getConfig().getBoolean("Players." + player.getUniqueId() + ".Frozen");
-    }
-
-    public boolean playersMuted()
-    {
-        for (Player p : Bukkit.getOnlinePlayers())
-        {
-            UUID uuid = p.getUniqueId();
-            if(am.getConfig().contains("Players." + uuid))
-            {
-                if(getMute(p))
-                return true;
-            }
-        }
-        return false;
-    }
+        try {
+            return am.getConfig().getBoolean("Players." + player.getUniqueId() + ".Frozen");
+        }catch(NullPointerException e) {
+            // player was never added to file, therefore it's null so we return false
+            return false;
+        }    }
 
 }

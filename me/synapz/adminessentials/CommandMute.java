@@ -16,24 +16,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class CommandMute
-        implements CommandExecutor, Listener
+public class CommandMute implements CommandExecutor, Listener
 {
-    ArrayList<UUID> mute = new ArrayList<UUID>();
     CommandMessenger messenger = new CommandMessenger();
     CommandUtil util = new CommandUtil();
     AdminEssentials am;
     Config config;
 
+    // placed in the onEnable
     public CommandMute(AdminEssentials e)
     {
+        // these will be initialized during onEnable and be set to am and config
         am = e;
         config = new Config(am);
 ;    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        CommandUtil util = new CommandUtil();
-        config = new Config(am);
 
         if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("mute")))
         {
@@ -56,7 +54,7 @@ public class CommandMute
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
                 if (util.isPlayerOnline(sender, targetPlayer, args[0]))
                 {
-                    if(config.getMute(targetPlayer))
+                    if(config.isMuted(targetPlayer))
                     {
                         config.setMute(sender, targetPlayer, false);
                     }
@@ -78,7 +76,10 @@ public class CommandMute
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if(config.playersMuted())
+        Player player = event.getPlayer();
+        boolean muted = config.isMuted(player);
+
+        if(muted)
         {
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently muted!");
             event.setCancelled(true);
