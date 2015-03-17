@@ -111,4 +111,24 @@ public class CommandMessenger  {
         }
     }
 
+    protected static void onMute(CommandSender sender, Player target, boolean muted)
+    {
+        if(muted)
+        {
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was muted.");
+            target.sendMessage(ChatColor.GOLD + "You have been muted!");
+        }
+        else
+        {
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was unmuted.");
+            target.sendMessage(ChatColor.GOLD + "You have been unmuted!");
+        }
+    }
+
+    protected void onFreeze()
+    {
+
+    }
+
+
 }

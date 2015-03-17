@@ -2,10 +2,20 @@ package me.synapz.adminessentials;
 
 import java.io.IOException;
 
+import me.synapz.adminessentials.util.Config;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminEssentials extends JavaPlugin {
+
+    CommandMute mute = new CommandMute(this);
+    CommandFreeze freeze = new CommandFreeze();
+    CommandGod god = new CommandGod();
+    CommandTeleportation tp = new CommandTeleportation();
 
     //added tppos
     // added vanish
@@ -14,9 +24,12 @@ public class AdminEssentials extends JavaPlugin {
     @Override
     public void onEnable()
     {
-
+        saveConfig();
         registerEvents();
         registerCommands();
+
+        Config c = new Config(this);
+        CommandMute m = new CommandMute(this);
 
         try {
             Metrics metrics = new Metrics(this);
@@ -29,27 +42,27 @@ public class AdminEssentials extends JavaPlugin {
     {
         PluginManager pm = getServer().getPluginManager();
 
-        pm.registerEvents(new CommandMute(), this);
-        pm.registerEvents(new CommandGod(), this);
-        pm.registerEvents(new CommandFreeze(), this);
+        pm.registerEvents(mute, this);
+        pm.registerEvents(god, this);
+        pm.registerEvents(freeze, this);
     }
 
     private void registerCommands()
     {
-        getCommand("mute").setExecutor(new CommandMute());
-        getCommand("muteall").setExecutor(new CommandMute());
-        getCommand("god").setExecutor(new CommandGod());
-        getCommand("freeze").setExecutor(new CommandFreeze());
-        getCommand("freezeall").setExecutor(new CommandFreeze());
+        getCommand("mute").setExecutor(mute);
+        getCommand("muteall").setExecutor(mute);
+        getCommand("god").setExecutor(god);
+        getCommand("freeze").setExecutor(freeze);
+        getCommand("freezeall").setExecutor(freeze);
         getCommand("ban").setExecutor(new CommandBan());
         getCommand("unban").setExecutor(new CommandBan());
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());
-        getCommand("tp").setExecutor(new CommandTeleportation());
-        getCommand("tphere").setExecutor(new CommandTeleportation());
-        getCommand("tppos").setExecutor(new CommandTeleportation());
-        getCommand("tpall").setExecutor(new CommandTeleportation());
+        getCommand("tp").setExecutor(tp);
+        getCommand("tphere").setExecutor(tp);
+        getCommand("tppos").setExecutor(tp);
+        getCommand("tpall").setExecutor(tp);
         getCommand("burn").setExecutor(new CommandBurn());
         getCommand("ext").setExecutor(new CommandBurn());
         getCommand("gmc").setExecutor(new CommandCreative());
@@ -67,5 +80,5 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("v").setExecutor(new CommandVanish());
     }
 
-}
 
+}

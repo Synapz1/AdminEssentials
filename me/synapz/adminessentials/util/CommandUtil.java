@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CommandUtil {
 
     // advanced permission check
-    private boolean permissionCheck(CommandSender sender, String permission)
+    public boolean permissionCheck(CommandSender sender, String permission)
     {
         // check if the sender has permissions
         boolean hasPermissions = (sender.hasPermission(permission) || permission.equals("console")) ? true : false;
@@ -28,7 +28,7 @@ public class CommandUtil {
     }
 
     // advanced null player check
-    private boolean isPlayerOnline(CommandSender sender, Player playerToCheck, String playerToCheckName)
+    public boolean isPlayerOnline(CommandSender sender, Player playerToCheck, String playerToCheckName)
     {
         if(playerToCheck == null)
         {

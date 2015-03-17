@@ -112,7 +112,6 @@ public class CommandFreeze implements Listener, CommandExecutor
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (this.frozenPlayers.contains(player.getUniqueId())){
-
             player.teleport(player.getLocation());
         }
 

@@ -1,12 +1,13 @@
 package me.synapz.adminessentials;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
+import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.CommandUtil;
+import me.synapz.adminessentials.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,84 +20,55 @@ public class CommandMute
         implements CommandExecutor, Listener
 {
     ArrayList<UUID> mute = new ArrayList<UUID>();
+    CommandMessenger messenger = new CommandMessenger();
+    CommandUtil util = new CommandUtil();
+    AdminEssentials am;
+    Config config;
+
+    public CommandMute(AdminEssentials e)
+    {
+        am = e;
+        config = new Config(am);
+;    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if ((!(sender instanceof Player)) &&
-                (cmd.getName().equalsIgnoreCase("mute"))) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /mute <player>");
-            } else if (args.length == 1) {
+        CommandUtil util = new CommandUtil();
+        config = new Config(am);
+
+        if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("mute")))
+        {
+            // quick check to see if the sender is a player
+            // if they are a player, check their permissions
+            if (sender instanceof Player)
+            {
+                if(!util.permissionCheck(sender, "adminessentials.mute"))
+                {
+                    return true;
+                }
+            }
+
+            if (args.length == 0)
+            {
+                messenger.wrongUsage(sender, 0, "/mute <player>");
+            }
+            else if (args.length == 1)
+            {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                if (targetPlayer == null) {
-                    sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                }
-                else if (mute.contains(targetPlayer.getUniqueId())) {
-                    this.mute.remove(targetPlayer.getUniqueId());
-                    sender.sendMessage(ChatColor.DARK_AQUA + "You umuted " + ChatColor.RED + targetPlayer.getName());
-                    targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You were unmuted!");
-                } else {
-                    this.mute.add(targetPlayer.getUniqueId());
-                    sender.sendMessage(ChatColor.DARK_AQUA + "You muted " + ChatColor.RED + targetPlayer.getName());
-                    targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You were muted!");
+                if (util.isPlayerOnline(sender, targetPlayer, args[0]))
+                {
+                    if(config.getMute(targetPlayer))
+                    {
+                        config.setMute(sender, targetPlayer, false);
+                    }
+                    else // player isn't in config, so we add them to it
+                    {
+                        config.setMute(sender, targetPlayer, true);
+                    }
                 }
             }
-            else if (args.length >= 2) {
-                sender.sendMessage(ChatColor.RED + "To many arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /mute <player>");
-            }
-
-        }
-
-        if ((sender instanceof Player)) {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("mute")) {
-                if (player.hasPermission("adminessentials.mute")) {
-                    if (args.length == 1) {
-                        Player targetPlayer = player.getServer().getPlayer(args[0]);
-                        if (targetPlayer == null) {
-                            player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                        }
-                        else if (this.mute.contains(targetPlayer.getUniqueId())) {
-                            this.mute.remove(targetPlayer.getUniqueId());
-                            player.sendMessage(ChatColor.DARK_AQUA + "You umuted " + ChatColor.RED + targetPlayer.getName());
-                            targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You were unmuted!");
-                        } else {
-                            this.mute.add(targetPlayer.getUniqueId());
-                            player.sendMessage(ChatColor.DARK_AQUA + "You muted " + ChatColor.RED + targetPlayer.getName());
-                            targetPlayer.sendMessage(ChatColor.DARK_AQUA + "You were muted!");
-                        }
-                    }
-                    else if (args.length >= 2) {
-                        player.sendMessage(ChatColor.RED + "To many arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /mute <player>");
-                    }
-                    else if (args.length == 0) {
-                        player.sendMessage(ChatColor.RED + "Not enough arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /mute <player>");
-                    }
-                }
-                else {
-                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
-                }
-            }
-            else if(cmd.getName().equalsIgnoreCase("muteall")){
-                if(player.hasPermission("adminessentials.muteall")) {
-                    if (args.length == 0) {
-                        for (Player players : Bukkit.getOnlinePlayers()) {
-                            UUID uuid = players.getUniqueId();
-                            mute.add(uuid);
-                            players.sendMessage(ChatColor.RED + "You" + ChatColor.GOLD + " have been muted.");
-                        }
-                        player.sendMessage(ChatColor.GOLD + "You muted everyone.");
-                    }
-                    else if (args.length >= 1){
-                        player.sendMessage(ChatColor.RED + "To many arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /muteall");
-                    }
-                }else {
-                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
-                }
+            else if (args.length >= 2)
+            {
+                messenger.wrongUsage(sender, 1, "/mute <player>");
             }
 
         }
@@ -106,9 +78,10 @@ public class CommandMute
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (this.mute.contains(event.getPlayer().getUniqueId())) {
+        if(config.playersMuted())
+        {
+            event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently muted!");
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.DARK_RED + "You were muted!");
         }
     }
 }
