@@ -1,7 +1,5 @@
 package me.synapz.adminessentials;
 
-import java.util.ArrayList;
-import java.util.UUID;
 
 import me.synapz.adminessentials.util.CommandMessenger;
 import me.synapz.adminessentials.util.CommandUtil;
@@ -20,16 +18,13 @@ public class CommandMute implements CommandExecutor, Listener
 {
     CommandMessenger messenger = new CommandMessenger();
     CommandUtil util = new CommandUtil();
-    AdminEssentials am;
     Config config;
 
-    // placed in the onEnable
-    public CommandMute(AdminEssentials e)
+    public CommandMute(Config c)
     {
-        // these will be initialized during onEnable and be set to am and config
-        am = e;
-        config = new Config(am);
-;    }
+        config = c;
+    }
+
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
@@ -56,11 +51,11 @@ public class CommandMute implements CommandExecutor, Listener
                 {
                     if(config.isMuted(targetPlayer))
                     {
-                        config.setMute(sender, targetPlayer, false);
+                        config.setMute(sender, targetPlayer, false, false);
                     }
                     else // player isn't in config, so we add them to it
                     {
-                        config.setMute(sender, targetPlayer, true);
+                        config.setMute(sender, targetPlayer, true, false);
                     }
                 }
             }
@@ -70,6 +65,35 @@ public class CommandMute implements CommandExecutor, Listener
             }
 
         }
+        else if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("muteall")))
+        {
+            if (sender instanceof Player)
+            {
+                if(!util.permissionCheck(sender, "adminessentials.muteall"))
+                {
+                    return true;
+                }
+            }
+
+            if (args.length == 0)
+            {
+                for (Player p : Bukkit.getOnlinePlayers())
+                {
+                    if(!config.isMuted(p))
+                    {
+                        config.setMute(sender, p, true, true);
+                        p.sendMessage(ChatColor.GOLD + "You were muted.");
+                    }
+                }
+                sender.sendMessage(ChatColor.GOLD + "Muted all players!");
+            }
+            else if(args.length >= 1)
+            {
+                messenger.wrongUsage(sender, 1, "/muteall");
+            }
+
+        }
+
 
         return false;
     }

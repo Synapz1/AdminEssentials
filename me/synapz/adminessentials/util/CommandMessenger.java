@@ -123,6 +123,7 @@ public class CommandMessenger  {
             sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was unmuted.");
             target.sendMessage(ChatColor.GOLD + "You have been unmuted!");
         }
+
     }
 
     protected static void onFreeze(CommandSender sender, Player target, boolean toFreeze)
