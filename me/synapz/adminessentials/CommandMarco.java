@@ -21,7 +21,6 @@ public class CommandMarco
         {
             if(!utils.permissionCheck(sender, "adminessentials.marco"))
             {
-                sender.sendMessage(CommandMessenger.NO_PERMS);
                 return true;
             }
         }

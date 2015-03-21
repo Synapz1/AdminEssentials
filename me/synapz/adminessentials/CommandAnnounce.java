@@ -1,5 +1,7 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,56 +9,43 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandAnnounce
-        implements CommandExecutor
+public class CommandAnnounce implements CommandExecutor
 {
+    private static final String ANNOUNCE_SUFFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]";
+
+    private String messageBuilder(String[] args)
+    {
+        String msg1 = " ";
+        for (int i = 0; i < args.length; i++)
+        {
+            msg1 = msg1 + args[i] + " ";
+        }
+
+        return msg1;
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        if ((!(sender instanceof Player)) && (cmd.getName().equalsIgnoreCase("announce"))) {
-            if (args.length == 0)
-            {
-                sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /announce <message>");
-            }
-            if (args.length >= 1)
-            {
-                String msg1 = " ";
-                for (int i = 0; i < args.length; i++)
-                {
-                    msg1 = msg1 + args[i] + " ";
-                }
-                Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + msg1);
-            }
-        }
+        CommandUtil utils = new CommandUtil();
+        CommandMessenger messenger = new CommandMessenger();
 
-        if ((sender instanceof Player))
+        if (sender instanceof Player)
         {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("announce"))
+            if (!utils.permissionCheck(sender, "adminessentials.announce"))
             {
-                if (player.hasPermission("adminessentials.announce"))
-                {
-                    if (args.length == 0)
-                    {
-                        player.sendMessage(ChatColor.RED + "Not enough arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /announce <message>");
-                    }
-                    if (args.length >= 1)
-                    {
-                        String msg1 = " ";
-                        for (int i = 0; i < args.length; i++)
-                        {
-                            msg1 = msg1 + args[i] + " ";
-                        }
-                        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + msg1);
-                    }
-                } else
-                {
-                    player.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
-                }
+                return true;
             }
         }
 
+        if (args.length == 0)
+        {
+            messenger.wrongUsage(sender, 0, "/announce <message>");
+        }
+        else if (args.length >= 1)
+        {
+            String message = messageBuilder(args);
+            Bukkit.broadcastMessage(ANNOUNCE_SUFFIX + ChatColor.RESET + message);
+        }
         return false;
     }
 }
