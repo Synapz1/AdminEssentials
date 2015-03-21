@@ -1,5 +1,7 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.CommandUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,34 +13,29 @@ public class CommandMarco
 {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        if ((!(sender instanceof Player)) &&
-                (cmd.getName().equalsIgnoreCase("marco"))) {
-            if (args.length == 0) {
+        CommandUtil utils = new CommandUtil();
+        CommandMessenger messenger = new CommandMessenger();
+
+        // if the sender is a player, check their permissions
+        if (sender instanceof Player)
+        {
+            if(!utils.permissionCheck(sender, "adminessentials.marco"))
+            {
+                sender.sendMessage(CommandMessenger.NO_PERMS);
+                return true;
+            }
+        }
+
+        if (cmd.getName().equalsIgnoreCase("marco")) {
+            if (args.length == 0)
+            {
                 sender.sendMessage("Polo!");
-            } else if (args.length >= 1) {
-                sender.sendMessage(ChatColor.RED + "To many arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /marco");
+            }
+            else if (args.length >= 1)
+            {
+                messenger.wrongUsage(sender, 1, "/marco");
             }
         }
-
-        if ((sender instanceof Player)) {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("marco")) {
-                if (player.hasPermission("adminessentials.marco")) {
-                    if (args.length == 0) {
-                        player.sendMessage("Polo!");
-                    } else if (args.length >= 1) {
-                        player.sendMessage(ChatColor.RED + "To many arguments!");
-                        player.sendMessage(ChatColor.RED + "Usage: /marco");
-                    }
-                }
-                else {
-                    player.sendMessage(ChatColor.RED +
-                            "You don't have access to that command!");
-                }
-            }
-        }
-
         return false;
     }
 }
