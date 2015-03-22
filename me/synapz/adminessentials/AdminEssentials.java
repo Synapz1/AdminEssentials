@@ -7,15 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AdminEssentials extends JavaPlugin
-{
+public class AdminEssentials extends JavaPlugin {
     CommandMute m;
     CommandFreeze f;
     Config c;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         c = new Config(this);
         m = new CommandMute(c);
         f = new CommandFreeze(c);
@@ -26,15 +24,11 @@ public class AdminEssentials extends JavaPlugin
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
-        } catch (IOException localIOException) {
-        }
-
-
+        } catch (IOException localIOException) {}
 
     }
 
-    private void registerEvents()
-    {
+    private void registerEvents() {
         PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(m, this);
@@ -42,8 +36,7 @@ public class AdminEssentials extends JavaPlugin
         pm.registerEvents(f, this);
     }
 
-    private void registerCommands()
-    {
+    private void registerCommands() {
         getCommand("mute").setExecutor(m);
         getCommand("muteall").setExecutor(m);
         getCommand("god").setExecutor(new CommandGod());

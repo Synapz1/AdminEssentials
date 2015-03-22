@@ -12,8 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class CommandKillMobs
-        implements CommandExecutor{
+public class CommandKillMobs implements CommandExecutor{
+
     private int mobsKilled;
 
     private void killMobs(){
@@ -21,12 +21,14 @@ public class CommandKillMobs
         mobsKilled = 0;
         for (World world : (World[])Bukkit.getServer().getWorlds().toArray(new World[0])) {
             for (Iterator localIterator1 = world.getLivingEntities().iterator(); localIterator1.hasNext(); ) { mobs = (LivingEntity)localIterator1.next();
-                if (!(mobs instanceof Player))
+                if (!(mobs instanceof Player)) {
                     mobs.remove();
                     mobsKilled++;
+                }
             }
         }
     }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
 

@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Config
-{
+public class Config {
 
 
     private List<String> mutedPlayers;
@@ -17,8 +16,7 @@ public class Config
     private AdminEssentials ae;
     private FileConfiguration config;
 
-    public Config(AdminEssentials a)
-    {
+    public Config(AdminEssentials a) {
         ae = a;
         ae.saveConfig();
         config = ae.getConfig();
@@ -28,26 +26,21 @@ public class Config
     }
 
 
-
     /*
      * Store a player into config and print information
      * to the sender & player to access later
      */
-    public void setMute(CommandSender sender, Player player, boolean toMute, boolean muteAll)
-    {
-        if(toMute)
-        {
+    public void setMute(CommandSender sender, Player player, boolean toMute, boolean muteAll) {
+        if (toMute) {
             mutedPlayers.add(player.getUniqueId().toString());
-        }
-        else
-        {
+        } else {
             mutedPlayers.remove(player.getUniqueId().toString());
         }
+
         config.set("Players.Muted", mutedPlayers);
 
-        // used to prevent spam to player during a muteall
-        if (!muteAll)
-        {
+        // used to prevent spam to player during a muteall, says "Muted all" instead of Muted <player> a lot
+        if (!muteAll) {
             CommandMessenger.onMute(sender, player, toMute);
         }
         ae.saveConfig();
@@ -57,20 +50,16 @@ public class Config
      * Store a player into config and print information
      * to the sender & player to access later
      */
-    public void setFreeze(CommandSender sender, Player player, boolean toFreeze, boolean freezeAll)
-    {
-        if (toFreeze)
-        {
+    public void setFreeze(CommandSender sender, Player player, boolean toFreeze, boolean freezeAll) {
+        if (toFreeze) {
             frozenPlayers.add(player.getUniqueId().toString());
-        }
-        else
-        {
+        } else {
             frozenPlayers.remove(player.getUniqueId().toString());
         }
+
         config.set("Players.Frozen", frozenPlayers);
 
-        if (!freezeAll)
-        {
+        if (!freezeAll) {
             CommandMessenger.onFreeze(sender, player, toFreeze);
         }
         ae.saveConfig();
@@ -79,14 +68,10 @@ public class Config
     /*
      * @return is the player muted or not
      */
-    public boolean isMuted(Player player)
-    {
-        if (mutedPlayers.contains(player.getUniqueId().toString()))
-        {
+    public boolean isMuted(Player player) {
+        if (mutedPlayers.contains(player.getUniqueId().toString())) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -94,14 +79,10 @@ public class Config
     /*
      * @return is the player frozen or not
      */
-    public boolean isFrozen(Player player)
-    {
-        if (frozenPlayers.contains(player.getUniqueId().toString()))
-        {
+    public boolean isFrozen(Player player) {
+        if (frozenPlayers.contains(player.getUniqueId().toString())) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

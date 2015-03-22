@@ -11,41 +11,31 @@ import org.bukkit.entity.Player;
 public class CommandUtil {
 
     // advanced permission check
-    public boolean permissionCheck(CommandSender sender, String permission)
-    {
-        // check if the sender has permissions
+    public boolean permissionCheck(CommandSender sender, String permission) {
+        // check if the sender has permissions or if they are console
         boolean hasPermissions = (sender.hasPermission(permission) || permission.equals("console")) ? true : false;
 
-        if(hasPermissions)
-        {
+        if (hasPermissions) {
             return true;
-        }
-        else
-        {
+        } else {
             sender.sendMessage(CommandMessenger.NO_PERMS);
             return false;
         }
     }
 
     // advanced null player check
-    public boolean isPlayerOnline(CommandSender sender, Player playerToCheck, String playerToCheckName)
-    {
-        if(playerToCheck == null)
-        {
+    public boolean isPlayerOnline(CommandSender sender, Player playerToCheck, String playerToCheckName) {
+        if (playerToCheck == null) {
             sender.sendMessage(CommandMessenger.nullPlayerException(playerToCheckName));
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
-    public void setGamemode(Player target, String targetString, CommandSender sender, GameMode gamemode, String permission)
-    {
-        if (permissionCheck(sender, permission))
-        {
-            if (isPlayerOnline(sender, target, targetString))
-            {
+
+    public void setGamemode(Player target, String targetString, CommandSender sender, GameMode gamemode, String permission) {
+        if (permissionCheck(sender, permission)) {
+            if (isPlayerOnline(sender, target, targetString)) {
                 CommandMessenger.gamemodeChangeMessenger(target, sender, gamemode);
             }
         }
@@ -56,12 +46,9 @@ public class CommandUtil {
 
         Player player = (Player) sender;
 
-        if (permissionCheck(sender, permission))
-        {
-            if (isPlayerOnline(sender, target, targetString))
-            {
-                if(isPlayerOnline(sender, target2, target2String))
-                {
+        if (permissionCheck(sender, permission)) {
+            if (isPlayerOnline(sender, target, targetString)) {
+                if (isPlayerOnline(sender, target2, target2String)) {
 
                     CommandMessenger.tpMessenger(player, target, target2);
                 }
@@ -71,9 +58,8 @@ public class CommandUtil {
 
     }
 
-    public void tppos(String x, String y, String z, Player player, String permission){
-        if(player.hasPermission(permission))
-        {
+    public void tppos(String x, String y, String z, Player player, String permission) {
+        if (player.hasPermission(permission)) {
             try {
                 //Convert arguments to integers.
                 int xloc = Integer.parseInt(x);
@@ -85,21 +71,16 @@ public class CommandUtil {
                 player.sendMessage(ChatColor.RED + "Make sure your coordinance are intergers!");
                 player.sendMessage(ChatColor.RED + "Usage: /tppos <x> <y> <z>");
             }
-        }
-        else
-        {
+        } else {
             player.sendMessage(CommandMessenger.NO_PERMS);
         }
     }
 
-    public void tpall(Player player, String permission)
-    {
-        if (permissionCheck(player, permission))
-        {
-            for(Player p : Bukkit.getOnlinePlayers()){
+    public void tpall(Player player, String permission) {
+        if (permissionCheck(player, permission)) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
                 // check to make sure the player won't be teleported to themselves
-                if(!p.equals(player))
-                {
+                if (!p.equals(player)) {
                     p.teleport(player.getLocation());
                     CommandMessenger.tpMessenger(player, p, player);
                 }
@@ -109,12 +90,9 @@ public class CommandUtil {
 
     }
 
-    public void vanish(CommandSender sender, Player target, String targetString, String permission)
-    {
-        if (permissionCheck(sender, permission))
-        {
-            if (isPlayerOnline(sender, target, targetString))
-            {
+    public void vanish(CommandSender sender, Player target, String targetString, String permission) {
+        if (permissionCheck(sender, permission)) {
+            if (isPlayerOnline(sender, target, targetString)) {
                 CommandMessenger.vanishMessenger(sender, target);
             }
         }
