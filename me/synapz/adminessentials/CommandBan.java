@@ -46,9 +46,19 @@ public class CommandBan implements Listener, CommandExecutor
         return true;
     }
 
+    private String calculateReason(String[] args) {
+        String banReason;
+
+        if (args.length == 1) {
+            banReason = DEFAULT_REASON;
+        } else {
+            banReason = messagerBuilder(args);
+        }
+        return banReason;
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        String banReason;
         if (cmd.getName().equalsIgnoreCase("ban")) {
 
             // quick permission check
@@ -62,21 +72,18 @@ public class CommandBan implements Listener, CommandExecutor
 
             } else if (args.length >= 1) {
 
-                // calculate ban reason
-                if (args.length == 1) {
-                    banReason = DEFAULT_REASON;
-                } else {
-                    banReason = messagerBuilder(args);
-                }
-
+                OfflinePlayer offlineTarget;
                 Player target = sender.getServer().getPlayer(args[0]);
-                if (isPlayerOnline(target)) {
-                    config.setBanned(sender, target.getUniqueId().toString(), banReason, true);
+                String banReason = calculateReason(args);
 
+                if (isPlayerOnline(target)) { // player is online, kick + ban them as PLAYER
+                    config.setBanned(sender, target.getUniqueId().toString(), args[0], banReason, true);
+                    target.kickPlayer(banReason);
                 } else {
-                    OfflinePlayer offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
-                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), banReason, true);
+                    offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
+                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], banReason, true);
                 }
+
             }
         } else if (cmd.getName().equalsIgnoreCase("unban")) {
 
@@ -91,12 +98,10 @@ public class CommandBan implements Listener, CommandExecutor
                 Player target = sender.getServer().getPlayer(args[0]);
 
                 if (isPlayerOnline(target)) {
-
-                    config.setBanned(sender, target.getUniqueId().toString(), "", false);
+                    config.setBanned(sender, target.getUniqueId().toString(), args[0], "", false);
                 } else {
                     OfflinePlayer offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
-                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), "", false);
-
+                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], "", false);
                 }
 
             } else if (args.length >= 2) {

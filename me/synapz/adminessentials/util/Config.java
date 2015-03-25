@@ -26,15 +26,17 @@ public class Config {
         frozenPlayers = config.getStringList("Players.Frozen");
     }
 
-    public void setBanned(CommandSender sender, String uuid, String reason, boolean toBan) {
+    public void setBanned(CommandSender sender, String uuid, String name, String reason, boolean toBan) {
 
         if (toBan) {
             config.set("Players.Banned." + uuid, "");
             config.set("Players.Banned." + uuid + ".Reason", reason);
-            //TODO: add output & kick on ban
         } else {
             config.set("Players.Banned." + uuid, null);
         }
+
+        // print output
+        CommandMessenger.onBan(sender, name, reason, toBan);
 
         ae.saveConfig();
     }

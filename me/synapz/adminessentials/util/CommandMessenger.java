@@ -111,5 +111,18 @@ public class CommandMessenger {
         }
     }
 
+    protected static void onBan(CommandSender sender, String target, String reason, boolean toBan) {
+        ChatColor r = ChatColor.RED;
+        ChatColor g = ChatColor.GOLD;
+        if (toBan) {
+            // banning...
+            Bukkit.broadcastMessage(g + "Player " + r + sender.getName() + g + " banned " + r + target + g + " for " + reason);
+        } else {
+            // unbanning...
+            Bukkit.broadcastMessage(g + "Player " + r + sender.getName() + g + " unbanned " + r + target + g + "!");
+        }
+
+    }
+
 
 }
