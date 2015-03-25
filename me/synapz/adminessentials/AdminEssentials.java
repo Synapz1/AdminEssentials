@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AdminEssentials extends JavaPlugin {
     CommandMute m;
     CommandFreeze f;
+    CommandBan b;
     Config c;
 
     @Override
@@ -17,6 +18,7 @@ public class AdminEssentials extends JavaPlugin {
         c = new Config(this);
         m = new CommandMute(c);
         f = new CommandFreeze(c);
+        b = new CommandBan(c);
 
         registerEvents();
         registerCommands();
@@ -32,6 +34,7 @@ public class AdminEssentials extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(m, this);
+        pm.registerEvents(b, this);
         pm.registerEvents(new CommandGod(), this);
         pm.registerEvents(f, this);
     }
@@ -42,8 +45,8 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("god").setExecutor(new CommandGod());
         getCommand("freeze").setExecutor(f);
         getCommand("freezeall").setExecutor(f);
-        getCommand("ban").setExecutor(new CommandBan());
-        getCommand("unban").setExecutor(new CommandBan());
+        getCommand("ban").setExecutor(b);
+        getCommand("unban").setExecutor(b);
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());

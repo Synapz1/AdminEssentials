@@ -15,9 +15,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class CommandMute implements CommandExecutor, Listener {
-    CommandMessenger messenger = new CommandMessenger();
-    CommandUtil util = new CommandUtil();
-    Config config;
+
+    private CommandMessenger messenger = new CommandMessenger();
+    private CommandUtil util = new CommandUtil();
+    private Config config;
 
     public CommandMute(Config c) {
         config = c;

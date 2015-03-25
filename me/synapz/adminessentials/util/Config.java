@@ -2,6 +2,7 @@ package me.synapz.adminessentials.util;
 
 
 import me.synapz.adminessentials.AdminEssentials;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,6 +26,33 @@ public class Config {
         frozenPlayers = config.getStringList("Players.Frozen");
     }
 
+    public void setBanned(CommandSender sender, String uuid, String reason, boolean toBan) {
+
+        if (toBan) {
+            config.set("Players.Banned." + uuid, "");
+            config.set("Players.Banned." + uuid + ".Reason", reason);
+            //TODO: add output & kick on ban
+        } else {
+            config.set("Players.Banned." + uuid, null);
+        }
+
+        ae.saveConfig();
+    }
+
+
+    public boolean isBanned(Player player) {
+        try {
+            config.get("Players.Banned." + player.getUniqueId().toString()).equals(player.getUniqueId().toString());
+            return true;
+        }catch (NullPointerException e) {
+            // the player wasn't in the config therefore it throws a NPE, so we return false
+            return false;
+        }
+    }
+
+    public String getBanReason(Player player) {
+        return config.getString("Players.Banned." + player.getUniqueId().toString() + ".Reason");
+    }
 
     /*
      * Store a player into config and print information
@@ -37,6 +65,7 @@ public class Config {
             mutedPlayers.remove(player.getUniqueId().toString());
         }
 
+        // sync the config with the list
         config.set("Players.Muted", mutedPlayers);
 
         // used to prevent spam to player during a muteall, says "Muted all" instead of Muted <player> a lot

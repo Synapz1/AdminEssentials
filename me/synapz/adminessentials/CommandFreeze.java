@@ -18,9 +18,9 @@ public class CommandFreeze implements Listener, CommandExecutor
 
 {
 
-    CommandMessenger messenger = new CommandMessenger();
-    CommandUtil util = new CommandUtil();
-    Config config = null;
+    private CommandMessenger messenger = new CommandMessenger();
+    private CommandUtil util = new CommandUtil();
+    private Config config;
 
     public CommandFreeze(Config c) {
         config = c;
