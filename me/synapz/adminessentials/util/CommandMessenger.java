@@ -14,6 +14,7 @@ public class CommandMessenger {
     private static ArrayList<String> invisiblePlayers = new ArrayList<String>();
     public static final String NO_PERMS = ChatColor.DARK_RED + "You don't have access to that command!";
     public static final String NO_CONSOLE_PERMS = ChatColor.DARK_RED + "Console does not have access to that command!";
+    public static final String PLAYER_NOT_BANNED = ChatColor.RED + "Player is not banned!";
 
     public static String nullPlayerException(String arg) {
         return ChatColor.GOLD + "Player " + ChatColor.RED + "'" + arg.toString() + "'" + ChatColor.GOLD + " wasn't found.";
