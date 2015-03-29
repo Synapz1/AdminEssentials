@@ -96,6 +96,7 @@ public class CommandUtil {
                 CommandMessenger.vanishMessenger(sender, target);
             }
         }
+
     }
 
 }

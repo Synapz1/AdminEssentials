@@ -21,18 +21,15 @@ public class CommandMessenger {
     }
 
     private static void vanish(Player player) {
-
         if (invisiblePlayers.contains(player.getName())) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.showPlayer(player);
             }
             invisiblePlayers.remove(player.getName());
             player.sendMessage(ChatColor.GOLD + "Vanish: " + ChatColor.RED + "OFF");
-
         } else {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(player);
-
             }
             invisiblePlayers.add(player.getName());
             player.sendMessage(ChatColor.GOLD + "Vanish: " + ChatColor.RED + "ON");
@@ -69,13 +66,11 @@ public class CommandMessenger {
     }
 
     protected static void vanishMessenger(CommandSender sender, Player target) {
+        String type = !invisiblePlayers.contains(target.getName()) ? "ON" : "OFF";
         vanish(target);
 
-        // tell the sender if the vanish for the target is ON of OFF. If there even is a target
-        if (!sender.equals(target) && invisiblePlayers.contains(target.getName())) {
-            sender.sendMessage(ChatColor.GOLD + "Vanish (" + target.getName() + "): " + ChatColor.RED + "ON");
-        } else if (!sender.equals(target) && !invisiblePlayers.contains(target.getName())) {
-            sender.sendMessage(ChatColor.GOLD + "Vanish (" + target.getName() + "): " + ChatColor.RED + "OFF");
+        if (!target.equals(sender)) {
+            sender.sendMessage(ChatColor.GOLD + "Vanish (" + target.getName() + "): " + ChatColor.RED + type);
         }
     }
 
@@ -92,24 +87,17 @@ public class CommandMessenger {
     }
 
     protected static void onMute(CommandSender sender, Player target, boolean toMute) {
-        if (toMute) {
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was muted.");
-            target.sendMessage(ChatColor.GOLD + "You have been muted!");
-        } else {
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was unmuted.");
-            target.sendMessage(ChatColor.GOLD + "You have been unmuted!");
-        }
+        String type = toMute ? "muted!" : "unmuted!";
 
+        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was " + type);
+        target.sendMessage(ChatColor.GOLD + "You have been " + type);
     }
 
     protected static void onFreeze(CommandSender sender, Player target, boolean toFreeze) {
-        if (toFreeze) {
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was frozen.");
-            target.sendMessage(ChatColor.GOLD + "You have been frozen!");
-        } else {
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was unfrozen.");
-            target.sendMessage(ChatColor.GOLD + "You have been unfrozen!");
-        }
+        String type = toFreeze ? "frozen!" : "unfrozen!";
+
+        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was " + type);
+        target.sendMessage(ChatColor.GOLD + "You have been " + type);
     }
 
     protected static void onBan(CommandSender sender, String target, String reason, boolean toBan) {
@@ -122,8 +110,5 @@ public class CommandMessenger {
             // unbanning...
             Bukkit.broadcastMessage(g + "Player " + r + sender.getName() + g + " unbanned " + r + target + g + "!");
         }
-
     }
-
-
 }
