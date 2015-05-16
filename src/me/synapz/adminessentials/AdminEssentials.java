@@ -12,7 +12,7 @@ public class AdminEssentials extends JavaPlugin {
     CommandFreeze f;
     CommandBan b;
     Config c;
-
+    // todo: edit whole plugin
     @Override
     public void onEnable() {
         c = new Config(this);
