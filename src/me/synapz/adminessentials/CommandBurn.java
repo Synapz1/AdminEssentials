@@ -1,142 +1,82 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.CommandUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 public class CommandBurn
         implements CommandExecutor
 {
+    CommandMessenger msg = new CommandMessenger();
+    CommandUtil utils = new CommandUtil();
+
+    public void burn(CommandSender sender, Player player, int ticks) {
+        player.setFireTicks(ticks);
+        player.sendMessage(ChatColor.GOLD + "You were set on fire for " + ChatColor.RED + (ticks / 20) + ChatColor.GOLD + " seconds!");
+        sender.sendMessage(ChatColor.GOLD + "Set " + sender + " on fire for " + ChatColor.RED + (ticks / 20) + ChatColor.GOLD + " seconds!");
+    }
+
+    public void ext(CommandSender sender, Player player) {
+        player.setFireTicks(0);
+        player.sendMessage(ChatColor.GOLD + "You were extinguished!");
+
+        if (!sender.getName().equals(player.getName())) {
+            sender.sendMessage(ChatColor.GOLD + "You extinguished " + player.getName());
+        }
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            if (cmd.getName().equalsIgnoreCase("ext")) {
-                if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "Not enoguh arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /ext <player>");
-                } else if (args.length == 1) {
-                    Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.setFireTicks(0);
-                        targetPlayer.sendMessage(ChatColor.RED +
-                                sender.getName() + ChatColor.GOLD +
-                                " extinguished fire from you!");
-                        sender.sendMessage(ChatColor.GOLD +
-                                "Extinguished fire from " + ChatColor.RED +
-                                targetPlayer.getName());
-                    }
-                } else if (args.length >= 2) {
-                    sender.sendMessage(ChatColor.RED + "To many arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /ext <player>");
-                }
-            } else if (cmd.getName().equalsIgnoreCase("burn")) {
-                if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "Not enoguh arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /burn <player>");
-                } else if (args.length == 1) {
-                    Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.setFireTicks(1000);
-                        targetPlayer.sendMessage(ChatColor.RED +
-                                sender.getName() + ChatColor.GOLD +
-                                " set you on fire!");
-                        sender.sendMessage(ChatColor.GOLD + "You set " +
-                                ChatColor.RED + targetPlayer.getName() +
-                                ChatColor.GOLD + " on fire!");
-                    }
-                } else if (args.length >= 2) {
-                    sender.sendMessage(ChatColor.RED + "To many arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /burn <player>");
-                }
 
+        if (cmd.getName().equalsIgnoreCase("ext")) {
+
+            if (!(sender instanceof Player) && args.length == 0) {
+                msg.wrongUsage(sender, 0, "/ext [player]");
+                return true;
             }
 
-        }
-
-        if ((sender instanceof Player)) {
-            Player player = (Player) sender;
-            if (cmd.getName().equalsIgnoreCase("ext")) {
-                if (!player.hasPermission("adminessentials.ext")) {
-                    if (args.length == 0) {
-                        player.sendMessage(ChatColor.DARK_RED +
-                                "You don't have access to that command!");
-                    }
-                } else if (args.length == 0) {
-                    player.setFireTicks(0);
-                    player.sendMessage(ChatColor.GOLD +
-                            "You extinguished fire from " + ChatColor.RED +
-                            player.getName());
+            if (args.length == 0) {
+                ext(sender, (Player) sender);
+            } else if (args.length == 1) {
+                Player targetPlayer = sender.getServer().getPlayer(args[0]);
+                if (utils.isPlayerOnline(sender, args[0])) {
+                    ext(sender, targetPlayer);
                 }
-
-                if (!player.hasPermission("adminessentials.ext.others")) {
-                    if (args.length >= 1) {
-                        player.sendMessage(ChatColor.DARK_RED +
-                                "You don't have access to that command!");
-                    }
-
-                } else if (args.length == 1) {
-                    Player targetPlayer = player.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.setFireTicks(0);
-                        targetPlayer.sendMessage(ChatColor.RED +
-                                player.getName() + ChatColor.GOLD +
-                                " extinguished fire from you!");
-                        player.sendMessage(ChatColor.GOLD +
-                                "Extinguished fire from " + ChatColor.RED +
-                                targetPlayer.getName());
-                    }
-                } else if (args.length >= 2) {
-                    player.sendMessage(ChatColor.RED + "To many arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /ext <player>");
-                }
-
-            } else if (cmd.getName().equalsIgnoreCase("burn")) {
-                if (!player.hasPermission("adminessentials.burn")) {
-                    if (args.length == 0) {
-                        player.sendMessage(ChatColor.DARK_RED +
-                                "You don't have access to that command!");
-                    }
-                } else if (args.length == 0) {
-                    player.setFireTicks(1000);
-                    player.sendMessage(ChatColor.GOLD + "You set " +
-                            ChatColor.RED + player.getName() +
-                            ChatColor.GOLD + " on fire!");
-                }
-
-                if (!player.hasPermission("adminessentials.burn.others")) {
-                    if (args.length >= 1) {
-                        player.sendMessage(ChatColor.DARK_RED +
-                                "You don't have access to that command!");
-                    }
-
-                } else if (args.length == 1) {
-                    Player targetPlayer = player.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.setFireTicks(1000);
-                        targetPlayer.sendMessage(ChatColor.RED +
-                                player.getName() + ChatColor.GOLD +
-                                " set you on fire!");
-                        player.sendMessage(ChatColor.GOLD + "You set " +
-                                ChatColor.RED + targetPlayer.getName() +
-                                ChatColor.GOLD + " on fire!");
-                    }
-                } else if (args.length >= 2) {
-                    player.sendMessage(ChatColor.RED + "To many arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /burn <player>");
-                }
+            } else if (args.length >= 2) {
+                msg.wrongUsage(sender, 1, "/ext [player]");
             }
-
         }
 
+        else if (cmd.getName().equalsIgnoreCase("burn")) {
+            if (args.length == 0) {
+                msg.wrongUsage(sender, 0, "/burn <player> [seconds]");
+            } else if (args.length == 1 || args.length == 2) {
+                if (!utils.isPlayerOnline(sender, args[0])) {
+                    return true;
+                }
+
+                Player targetPlayer = sender.getServer().getPlayer(args[0]);
+                if (args.length == 1) {
+                    burn(sender, targetPlayer, 300);
+                } else if (args.length == 2) {
+                    int dur;
+                    try {
+                        dur = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage(ChatColor.RED + "Enter a valid integer!");
+                        return true;
+                    }
+                    burn(sender, targetPlayer, dur);
+                }
+            } else if (args.length >= 3) {
+                msg.wrongUsage(sender, 1, "/burn <player> [duration]");
+            }
+        }
         return false;
     }
 }
