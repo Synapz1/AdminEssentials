@@ -24,8 +24,9 @@ public class CommandUtil {
     }
 
     // advanced null player check
-    public boolean isPlayerOnline(CommandSender sender, Player playerToCheck, String playerToCheckName) {
-        if (playerToCheck == null) {
+    public boolean isPlayerOnline(CommandSender sender, String playerToCheckName) {
+        Player player = Bukkit.getPlayer(playerToCheckName);
+        if (player == null) {
             sender.sendMessage(CommandMessenger.nullPlayerException(playerToCheckName));
             return false;
         } else {
@@ -35,7 +36,7 @@ public class CommandUtil {
 
     public void setGamemode(Player target, String targetString, CommandSender sender, GameMode gamemode, String permission) {
         if (permissionCheck(sender, permission)) {
-            if (isPlayerOnline(sender, target, targetString)) {
+            if (isPlayerOnline(sender, targetString)) {
                 CommandMessenger.gamemodeChangeMessenger(target, sender, gamemode);
             }
         }
@@ -47,8 +48,8 @@ public class CommandUtil {
         Player player = (Player) sender;
 
         if (permissionCheck(sender, permission)) {
-            if (isPlayerOnline(sender, target, targetString)) {
-                if (isPlayerOnline(sender, target2, target2String)) {
+            if (isPlayerOnline(sender, targetString)) {
+                if (isPlayerOnline(sender, target2String)) {
 
                     CommandMessenger.tpMessenger(player, target, target2);
                 }
@@ -92,7 +93,7 @@ public class CommandUtil {
 
     public void vanish(CommandSender sender, Player target, String targetString, String permission) {
         if (permissionCheck(sender, permission)) {
-            if (isPlayerOnline(sender, target, targetString)) {
+            if (isPlayerOnline(sender, targetString)) {
                 CommandMessenger.vanishMessenger(sender, target);
             }
         }
