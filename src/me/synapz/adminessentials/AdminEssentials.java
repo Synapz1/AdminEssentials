@@ -3,16 +3,18 @@ package me.synapz.adminessentials;
 import java.io.IOException;
 
 import me.synapz.adminessentials.util.Config;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AdminEssentials extends JavaPlugin {
+public class AdminEssentials extends JavaPlugin implements CommandExecutor {
     CommandMute m;
     CommandFreeze f;
     CommandBan b;
     Config c;
-    // todo: edit whole plugin
+
     @Override
     public void onEnable() {
         c = new Config(this);
@@ -23,11 +25,7 @@ public class AdminEssentials extends JavaPlugin {
         registerEvents();
         registerCommands();
 
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException localIOException) {}
-
+        c.setupMetrics();
     }
 
     private void registerEvents() {
@@ -70,7 +68,4 @@ public class AdminEssentials extends JavaPlugin {
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("v").setExecutor(new CommandVanish());
     }
-
-
-
 }

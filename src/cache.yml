@@ -1,0 +1,23 @@
+allow-command-counter: true
+
+command-counter:
+    announce: 0
+    ban: 0
+    gma: 0
+    gms: 0
+    gmss: 0
+    gmc: 0
+    ci: 0
+    feed: 0
+    fly: 0
+    freeze: 0
+    god: 0
+    mute: 0
+    heal: 0
+    kick: 0
+    kill: 0
+    killmobs: 0
+    marco: 0
+    tp: 0
+    tphere: 0
+    vanish: 0

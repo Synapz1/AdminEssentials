@@ -43,7 +43,7 @@ public class CommandFreeze implements Listener, CommandExecutor
                 messenger.wrongUsage(sender, 0, "/freeze <player>");
             } else if (args.length == 1) {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                if (util.isPlayerOnline(sender, targetPlayer, args[0])) {
+                if (util.isPlayerOnline(sender, targetPlayer.getName())) {
 
                     if (config.isFrozen(targetPlayer)) {
                         config.setFreeze(sender, targetPlayer, false, false);

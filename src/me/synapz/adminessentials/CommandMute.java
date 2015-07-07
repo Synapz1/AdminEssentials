@@ -40,7 +40,7 @@ public class CommandMute implements CommandExecutor, Listener {
                 messenger.wrongUsage(sender, 0, "/mute <player>");
             } else if (args.length == 1) {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                if (util.isPlayerOnline(sender, targetPlayer, args[0])) {
+                if (util.isPlayerOnline(sender, targetPlayer.getName())) {
                     if (config.isMuted(targetPlayer)) {
                         config.setMute(sender, targetPlayer, false, false);
                     } else // player isn't in config, so we add them to it
