@@ -4,6 +4,7 @@ package me.synapz.adminessentials.util;
 import me.synapz.adminessentials.AdminEssentials;
 import me.synapz.adminessentials.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class Config {
@@ -212,6 +214,14 @@ public class Config {
         } else {
             return false;
         }
+    }
+
+    public void setLastLocation(Player player, Location loc) {
+        cache.set("Last-locations." + player.getUniqueId(), loc);
+    }
+
+    public Location getLastLocation(Player player) {
+        return (Location) cache.get("Last-locations." + player.getUniqueId());
     }
 
     public void setupMetrics() {

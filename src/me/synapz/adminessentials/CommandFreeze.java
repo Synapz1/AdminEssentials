@@ -20,12 +20,7 @@ public class CommandFreeze implements Listener, CommandExecutor
 
     private CommandMessenger messenger = new CommandMessenger();
     private CommandUtil util = new CommandUtil();
-    private Config config;
-
-    public CommandFreeze(Config c) {
-        config = c;
-    }
-
+    private Config config = Config.getInstance();
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 

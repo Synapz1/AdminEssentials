@@ -10,17 +10,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminEssentials extends JavaPlugin implements CommandExecutor {
-    CommandMute m;
-    CommandFreeze f;
-    CommandBan b;
-    Config c;
 
+    // todo: add teleport cooldown
+    
     @Override
     public void onEnable() {
-        c = new Config(this);
-        m = new CommandMute(c);
-        f = new CommandFreeze(c);
-        b = new CommandBan(c);
+        Config c = new Config(this);
 
         registerEvents();
         registerCommands();
@@ -31,20 +26,21 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
     private void registerEvents() {
         PluginManager pm = getServer().getPluginManager();
 
-        pm.registerEvents(m, this);
-        pm.registerEvents(b, this);
+        pm.registerEvents(new CommandMute(), this);
+        pm.registerEvents(new CommandBan(), this);
         pm.registerEvents(new CommandGod(), this);
-        pm.registerEvents(f, this);
+        pm.registerEvents(new CommandFreeze(), this);
+        pm.registerEvents(new CommandBack(), this);
     }
 
     private void registerCommands() {
-        getCommand("mute").setExecutor(m);
-        getCommand("muteall").setExecutor(m);
+        getCommand("mute").setExecutor(new CommandMute());
+        getCommand("muteall").setExecutor(new CommandMute());
         getCommand("god").setExecutor(new CommandGod());
-        getCommand("freeze").setExecutor(f);
-        getCommand("freezeall").setExecutor(f);
-        getCommand("ban").setExecutor(b);
-        getCommand("unban").setExecutor(b);
+        getCommand("freeze").setExecutor(new CommandFreeze());
+        getCommand("freezeall").setExecutor(new CommandFreeze());
+        getCommand("ban").setExecutor(new CommandBan());
+        getCommand("unban").setExecutor(new CommandBan());
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());
@@ -67,5 +63,6 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("v").setExecutor(new CommandVanish());
+        getCommand("back").setExecutor(new CommandBack());
     }
 }

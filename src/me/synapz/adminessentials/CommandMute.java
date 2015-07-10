@@ -18,12 +18,7 @@ public class CommandMute implements CommandExecutor, Listener {
 
     private CommandMessenger messenger = new CommandMessenger();
     private CommandUtil util = new CommandUtil();
-    private Config config;
-
-    public CommandMute(Config c) {
-        config = c;
-    }
-
+    private Config config = Config.getInstance();
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 

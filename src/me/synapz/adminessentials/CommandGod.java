@@ -12,8 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class CommandGod
-        implements CommandExecutor, Listener
+public class CommandGod implements CommandExecutor, Listener
 {
     ArrayList<UUID> godPlayers = new ArrayList();
 

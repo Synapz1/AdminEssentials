@@ -22,11 +22,7 @@ public class CommandBan implements Listener, CommandExecutor
     private static final String DEFAULT_REASON = "You have been banned from the server!";
     private CommandMessenger messenger = new CommandMessenger();
     private CommandUtil utils = new CommandUtil();
-    private Config config;
-
-    public CommandBan(Config c) {
-        config = c;
-    }
+    private Config config = Config.getInstance();
 
     private String messagerBuilder(String[] args) {
         String msg = "";

@@ -65,6 +65,8 @@ commands:
       description: Mute all players on the server.
    freezeall:
       description: Freeze all players on the server.
+   back:
+      descrition: Go to your last location.
 
 permissions:
    adminessentials.*:
@@ -112,3 +114,4 @@ permissions:
        adminessentials.spectator.others: true
        adminessentials.vanish: true
        adminessentials.vanish.others: true
+       adminessentials.back: true
