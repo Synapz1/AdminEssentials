@@ -12,10 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AdminEssentials extends JavaPlugin implements CommandExecutor {
 
     // todo: add teleport cooldown
-    
+
     @Override
     public void onEnable() {
         Config c = new Config(this);
+
+        CommandManager.getManager().init();
 
         registerEvents();
         registerCommands();
@@ -52,7 +54,7 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("ext").setExecutor(new CommandBurn());
         getCommand("gmc").setExecutor(new CommandCreative());
         getCommand("gms").setExecutor(new CommandSurvival());
-        getCommand("gma").setExecutor(new CommandAdventure());
+        getCommand("gma").setExecutor(CommandManager.getManager());
         getCommand("gmss").setExecutor(new CommandSpectator());
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("marco").setExecutor(new CommandMarco());

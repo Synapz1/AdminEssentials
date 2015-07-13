@@ -37,21 +37,6 @@ public class CommandMessenger {
         }
     }
 
-
-    protected static void gamemodeChangeMessenger(Player target, CommandSender sender, GameMode gm) {
-        // if we don't have a target player to switch but instead we want to switch their own game mode
-        // set the target = to the sender and their own game mode will change
-
-        if (target.equals(sender)) {
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + target.getName() + ChatColor.GOLD + " to " + gm + " mode!");
-            target.setGameMode(gm);
-        } else {
-            target.setGameMode(gm);
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + target.getName() + ChatColor.GOLD + " to " + gm + " mode!");
-            target.sendMessage(ChatColor.RED + sender.getName() + ChatColor.GOLD + " set you to " + gm + " mode!");
-        }
-    }
-
     protected static void tpMessenger(Player sender, Player target, Player target1) {
         // sender -> target /tp
         if (target.equals(target1)) {

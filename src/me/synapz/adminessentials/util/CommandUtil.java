@@ -34,15 +34,6 @@ public class CommandUtil {
         }
     }
 
-    public void setGamemode(Player target, String targetString, CommandSender sender, GameMode gamemode, String permission) {
-        if (permissionCheck(sender, permission)) {
-            if (isPlayerOnline(sender, targetString)) {
-                CommandMessenger.gamemodeChangeMessenger(target, sender, gamemode);
-            }
-        }
-
-    }
-
     public void teleport(CommandSender sender, Player target, String targetString, Player target2, String target2String, String permission) {
 
         Player player = (Player) sender;

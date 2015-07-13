@@ -21,7 +21,7 @@ public class CommandCreative implements CommandExecutor {
             } else if (args.length == 1) {
 
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], sender, GameMode.CREATIVE, "console");
+                // commands.setGamemode(targetPlayer, args[0], sender, GameMode.CREATIVE, "console");
 
             } else if (args.length >= 2) {
 
@@ -36,12 +36,12 @@ public class CommandCreative implements CommandExecutor {
 
             if (args.length == 0) {
 
-                commands.setGamemode(player, null, player, GameMode.CREATIVE, "adminessentials.creative");
+                // commands.setGamemode(player, null, player, GameMode.CREATIVE, "adminessentials.creative");
 
             } else if (args.length == 1) {
 
                 Player targetPlayer = player.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], player, GameMode.CREATIVE, "adminessentials.creative.others");
+                // commands.setGamemode(targetPlayer, args[0], player, GameMode.CREATIVE, "adminessentials.creative.others");
 
             } else if (args.length >= 2) {
 

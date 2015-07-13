@@ -18,7 +18,7 @@ public class CommandSurvival implements CommandExecutor {
                 commandMessenger.wrongUsage(sender, 0, "/gms <player>");
             } else if (args.length == 1) {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], sender, GameMode.SURVIVAL, "console");
+                // commands.setGamemode(targetPlayer, args[0], sender, GameMode.SURVIVAL, "console");
             } else if (args.length >= 2) {
                 commandMessenger.wrongUsage(sender, 1, "/gms <player>");
             }
@@ -29,10 +29,10 @@ public class CommandSurvival implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 0) {
-                commands.setGamemode(player, null, player, GameMode.SURVIVAL, "adminessentials.survival");
+                // commands.setGamemode(player, null, player, GameMode.SURVIVAL, "adminessentials.survival");
             } else if (args.length == 1) {
                 Player targetPlayer = player.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], player, GameMode.SURVIVAL, "adminessentials.survival.others");
+                // commands.setGamemode(targetPlayer, args[0], player, GameMode.SURVIVAL, "adminessentials.survival.others");
             } else if (args.length >= 2) {
                 commandMessenger.wrongUsage(player, 1, "/gms <player>");
             }

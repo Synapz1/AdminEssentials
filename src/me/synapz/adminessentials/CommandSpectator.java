@@ -20,7 +20,7 @@ public class CommandSpectator implements CommandExecutor {
                 commandMessenger.wrongUsage(sender, 0, "/gmss <player>");
             } else if (args.length == 1) {
                 Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], sender, GameMode.SPECTATOR, "console");
+                // commands.setGamemode(targetPlayer, args[0], sender, GameMode.SPECTATOR, "console");
             } else if (args.length >= 2) {
                 commandMessenger.wrongUsage(sender, 1, "/gmss <player>");
             }
@@ -31,10 +31,10 @@ public class CommandSpectator implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 0) {
-                commands.setGamemode(player, null, sender, GameMode.SPECTATOR, "adminessentials.spectator");
+                // commands.setGamemode(player, null, sender, GameMode.SPECTATOR, "adminessentials.spectator");
             } else if (args.length == 1) {
                 Player targetPlayer = player.getServer().getPlayer(args[0]);
-                commands.setGamemode(targetPlayer, args[0], sender, GameMode.SPECTATOR, "adminessentials.spectator.others");
+                // commands.setGamemode(targetPlayer, args[0], sender, GameMode.SPECTATOR, "adminessentials.spectator.others");
             } else if (args.length >= 2) {
                 commandMessenger.wrongUsage(player, 1, "/gmss <player>");
             }
