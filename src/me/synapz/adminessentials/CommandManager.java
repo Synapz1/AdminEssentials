@@ -39,16 +39,17 @@ public class CommandManager implements CommandExecutor {
         AdminEssentialsCommand command = null;
 
         for (AdminEssentialsCommand aec : commands) {
-            command = aec;
+            if (cmd.getName().equalsIgnoreCase(aec.getName())) {
+                command = aec;
+                isAECommand = true;
 
-            isAECommand = true;
-
-            try {
-                ConsoleCommand consoleCommand = (ConsoleCommand) command;
-                consoleCommand.consoleMaxArguments();
-                hasConsoleSupport = true;
-            }catch (ClassCastException e) {
-                // console does not have support so leave hasConsoleSupport false
+                try {
+                    ConsoleCommand consoleCommand = (ConsoleCommand) command;
+                    consoleCommand.consoleMaxArguments();
+                    hasConsoleSupport = true;
+                }catch (ClassCastException e) {
+                    // console does not have support so leave hasConsoleSupport false
+                }
             }
         }
 
@@ -94,16 +95,16 @@ public class CommandManager implements CommandExecutor {
         } else if (type == DispatchType.PLAYER) {
             Player player = (Player) sender;
             // todo: stop sending so many double messages on hasPerm
-            if (!hasPerm(player, command.getPermission()) && command.minArguments() == argCount || !hasPerm(player, command.getPermission2()) && command.maxArguments() == argCount || !argumentCheck(player, command, type, argCount)) {
+            if (!hasPerm(player, command.getPermission(), command.minArguments(), argCount) || !hasPerm(player, command.getPermission2(), command.maxArguments(), argCount) && command.maxArguments() == argCount || !argumentCheck(player, command, type, argCount)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean hasPerm(CommandSender sender, String perm) {
-        if (!sender.hasPermission(perm) && sender instanceof Player) {
-            sender.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!");
+    private boolean hasPerm(CommandSender sender, String perm, int argToUsePermission, int args) {
+        if (!sender.hasPermission(perm) && argToUsePermission == args && sender instanceof Player) {
+            sender.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!" + perm);
             return false;
         }
         return true;

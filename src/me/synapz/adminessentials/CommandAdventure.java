@@ -2,6 +2,7 @@ package me.synapz.adminessentials;
 
 import me.synapz.adminessentials.util.CommandUtil;
 import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -11,39 +12,23 @@ import org.bukkit.entity.Player;
 
 public class CommandAdventure extends AdminEssentialsCommand implements ConsoleCommand {
 
-    CommandMessenger commandMessenger = new CommandMessenger();
-    CommandUtil commands = new CommandUtil();
-
     public void onCommand(Player player, String[] args) {
-
-        /*
         if (args.length == 0) {
-
-            commands.setGamemode(player, null, player, GameMode.ADVENTURE, "adminessentials.adventure");
-
+            Utils.setGamemode(player, player, GameMode.ADVENTURE);
         } else if (args.length == 1) {
 
             Player targetPlayer = player.getServer().getPlayer(args[0]);
-            commands.setGamemode(targetPlayer, args[0], player, GameMode.ADVENTURE, "adminessentials.adventure.others");
-
-        } else if (args.length >= 2) {
-
-            commandMessenger.wrongUsage(player, 1, "/gma <player>");
-        } */
-
+            if (Utils.isPlayerOnline(player, args[0])) {
+                Utils.setGamemode(player, targetPlayer, GameMode.ADVENTURE);
+            }
+        }
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            commandMessenger.wrongUsage(sender, 0, "/gma <player>");
-        } else if (args.length == 1) {
+        Player targetPlayer = sender.getServer().getPlayer(args[0]);
 
-            Player targetPlayer = sender.getServer().getPlayer(args[0]);
-            // commands.setGamemode(targetPlayer, args[0], sender, GameMode.ADVENTURE, "console");
-
-        } else if (args.length >= 2) {
-
-            commandMessenger.wrongUsage(sender, 1, "/gma <player>");
+        if (Utils.isPlayerOnline(sender, args[0])) {
+            Utils.setGamemode(sender, targetPlayer, GameMode.ADVENTURE);
         }
     }
 
@@ -79,16 +64,5 @@ public class CommandAdventure extends AdminEssentialsCommand implements ConsoleC
         return 1;
     }
 
-    /*
-    private void setGamemode() {
-        if (target.equals(sender)) {
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + target.getName() + ChatColor.GOLD + " to " + gm + " mode!");
-            target.setGameMode(gm);
-        } else {
-            target.setGameMode(gm);
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + target.getName() + ChatColor.GOLD + " to " + gm + " mode!");
-            target.sendMessage(ChatColor.RED + sender.getName() + ChatColor.GOLD + " set you to " + gm + " mode!");
-        }
-    } */
 
 }
