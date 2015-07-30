@@ -1,7 +1,7 @@
 package me.synapz.adminessentials;
 
 
-import net.md_5.bungee.api.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,14 +9,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CommandManager implements CommandExecutor {
-
-    private enum DispatchType {
-        CONSOLE,
-        PLAYER;
-    }
 
     ArrayList<AdminEssentialsCommand> commands = new ArrayList<>();
     private static CommandManager manager = new CommandManager();
@@ -28,7 +22,7 @@ public class CommandManager implements CommandExecutor {
     }
 
     public void init() {
-        addCommands(new CommandAdventure());
+        addCommands(new CommandAdventure(), new CommandAnnounce());
     }
 
 
@@ -43,13 +37,17 @@ public class CommandManager implements CommandExecutor {
                 command = aec;
                 isAECommand = true;
 
-                try {
+                // todo: test to make sure this works
+                if (command instanceof ConsoleCommand) {
+                	hasConsoleSupport = true;
+                }
+                /*try {
                     ConsoleCommand consoleCommand = (ConsoleCommand) command;
                     consoleCommand.consoleMaxArguments();
                     hasConsoleSupport = true;
                 }catch (ClassCastException e) {
                     // console does not have support so leave hasConsoleSupport false
-                }
+                } */
             }
         }
 
@@ -59,11 +57,11 @@ public class CommandManager implements CommandExecutor {
 
         if (sender instanceof Player) {
             try {
-                if (commandChecks(command, sender, DispatchType.PLAYER, args.length)) {
+                if (commandChecks(command, sender, args.length)) {
                     command.onCommand((Player) sender, args);
                 }
             }catch (Exception e) {
-                sender.sendMessage(ChatColor.RED + "An unknown error occurred. Check console for a error log.");
+                sender.sendMessage(RED + "An unknown error occurred. Check console for a error log.");
                 e.printStackTrace();
             }
         }
@@ -71,64 +69,68 @@ public class CommandManager implements CommandExecutor {
         if (sender instanceof ConsoleCommandSender || sender instanceof CommandBlock) {
             if (hasConsoleSupport) {
                 try {
-                    if (commandChecks(command, sender, DispatchType.CONSOLE, args.length)) {
+                    if (commandChecks(command, sender, args.length)) {
                         ConsoleCommand consoleCommand = (ConsoleCommand) command;
                         consoleCommand.onConsoleCommand(sender, args);
                     }
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.RED + "An unknown error occurred. Check console for a error log.");
+                    sender.sendMessage(RED + "An unknown error occurred. Check console for a error log.");
                     e.printStackTrace();
                 }
 
             } else {
-                sender.sendMessage(ChatColor.RED + "Console is not permitted to use that command!");
+                sender.sendMessage(RED + "Console is not permitted to use that command!");
             }
         }
         return true;
     }
 
-    private boolean commandChecks(AdminEssentialsCommand command, CommandSender sender, DispatchType type, int argCount) {
-        if (type == DispatchType.CONSOLE) {
-            if (!argumentCheck(sender, command, type, argCount)) {
-                return false;
-            }
-        } else if (type == DispatchType.PLAYER) {
-            Player player = (Player) sender;
-            // todo: stop sending so many double messages on hasPerm
-            if (!hasPerm(player, command.getPermission(), command.minArguments(), argCount) || !hasPerm(player, command.getPermission2(), command.maxArguments(), argCount) && command.maxArguments() == argCount || !argumentCheck(player, command, type, argCount)) {
-                return false;
-            }
-        }
-        return true;
+    private boolean commandChecks(AdminEssentialsCommand command, CommandSender sender, int argCount) {
+    	if (isCorrectArgs(sender, command, argCount) && !(sender instanceof Player)) {
+    		return true;
+    	}
+    	if (isCorrectArgs(sender, command, argCount) && hasPerm(sender, argCount, command) && sender instanceof Player) {
+    		return true;
+    	}
+    	return false;
+    }
+    
+    private boolean hasPerm(CommandSender sender, int argument, AdminEssentialsCommand command) {
+        // todo, check here to see what happens if the argument is not in the getpermissions, like 65 when there is only 2.
+    	// Edit: Contains key will work for this. TODO: Test this...
+    	if (command.getPermissions().containsKey(argument) && sender.hasPermission(command.getPermissions().get(argument))) {
+    		return true;
+    	} else {
+            sender.sendMessage(DARK_RED + "You don't have access to that command!");
+    		return false;
+    	}
     }
 
-    private boolean hasPerm(CommandSender sender, String perm, int argToUsePermission, int args) {
-        if (!sender.hasPermission(perm) && argToUsePermission == args && sender instanceof Player) {
-            sender.sendMessage(ChatColor.DARK_RED + "You don't have access to that command!" + perm);
-            return false;
+    private boolean isCorrectArgs(CommandSender sender, AdminEssentialsCommand command, int argCount) {
+        boolean correctArgCount = false;
+        
+        if (command instanceof ConsoleCommand && !(sender instanceof Player)) {
+        	ConsoleCommand consoleCommand = (ConsoleCommand) command;
+        	for (int i : consoleCommand.consoleHandledArgs()) {
+        		if (i == argCount) {
+        			correctArgCount = true;
+        			break;
+        		}
+        	}
+        } else {
+        	for (int i : command.handledArgs()) {
+        		if (i == argCount) {
+        			correctArgCount = true;
+        			break;
+        		}
+        	}
         }
-        return true;
-    }
-
-    private boolean argumentCheck(CommandSender sender, AdminEssentialsCommand command, DispatchType type, int argCount) {
-        ConsoleCommand consoleCommand = null;
-
-        if (type == DispatchType.CONSOLE) {
-            consoleCommand = (ConsoleCommand) command;
+        if (!correctArgCount) {
+        	sender.sendMessage(DARK_RED + "Please review your argument count.");
+        	sender.sendMessage(DARK_RED + command.getCorrectUsage());
         }
-
-        if (consoleCommand != null && argCount < consoleCommand.consoleMinArguments() || argCount < command.minArguments()) {
-                sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-                sender.sendMessage(command.getCorrectUsage());
-                return false;
-            } else if (consoleCommand != null && argCount > consoleCommand.consoleMaxArguments() || argCount > command.maxArguments()) {
-                sender.sendMessage(ChatColor.RED + "Too many arguments!");
-                sender.sendMessage(command.getCorrectUsage());
-                return false;
-            }
-            return true;
+        return correctArgCount;
     }
-
 
     private void addCommands(AdminEssentialsCommand...cmds) {
         for (AdminEssentialsCommand cmd : cmds) {

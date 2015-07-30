@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 
 public class Utils {
 
-    private static final Utils util = new Utils();
-
     private Utils() {}
 
     public static boolean isPlayerOnline(CommandSender sender, String name) {

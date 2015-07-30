@@ -59,7 +59,7 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("marco").setExecutor(new CommandMarco());
         getCommand("ci").setExecutor(new CommandCi());
-        getCommand("announce").setExecutor(new CommandAnnounce());
+        getCommand("announce").setExecutor(CommandManager.getManager());
         getCommand("kick").setExecutor(new CommandKick());
         getCommand("kickall").setExecutor(new CommandKick());
         getCommand("killall").setExecutor(new CommandKill());

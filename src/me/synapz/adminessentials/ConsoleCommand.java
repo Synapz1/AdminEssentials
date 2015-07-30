@@ -7,8 +7,6 @@ public interface ConsoleCommand {
 
     public abstract void onConsoleCommand(CommandSender sender, String[] args);
 
-    public abstract int consoleMaxArguments();
-
-    public abstract int consoleMinArguments();
+    public abstract int[] consoleHandledArgs();
 
 }

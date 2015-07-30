@@ -1,47 +1,59 @@
 package me.synapz.adminessentials;
 
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandAnnounce implements CommandExecutor {
-    private static final String ANNOUNCE_SUFFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]";
+import java.util.HashMap;
+
+public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCommand {
 
     private String messageBuilder(String[] args) {
         String msg1 = " ";
         for (int i = 0; i < args.length; i++) {
             msg1 = msg1 + args[i] + " ";
         }
-
         return msg1;
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        CommandUtil utils = new CommandUtil();
-        CommandMessenger messenger = new CommandMessenger();
-
-        // permission checks
-        if (sender instanceof Player) {
-            if (!utils.permissionCheck(sender, "adminessentials.announce")) {
-                return true;
-            }
-        }
-
-        if (args.length == 0) {
-            messenger.wrongUsage(sender, 0, "/announce <message>");
-
-        } else if (args.length >= 1) {
-
-            String message = messageBuilder(args);
-            Bukkit.broadcastMessage(ANNOUNCE_SUFFIX + ChatColor.RESET + message);
-
-        }
-
-        return false;
+    public void onCommand(Player player, String[] args) {
+    	onConsoleCommand(player, args);
     }
+
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', messageBuilder(args)));
+    }
+
+    public String getName() {
+        return "announce";
+    }
+
+    public HashMap<Integer, String> getPermissions() {
+        // todo, find a better way to do this instead of adding 1OO items to hashmap
+        HashMap<Integer, String> permission = new HashMap<>();
+        for (int i = 1; i < 200; i++) {
+        	permission.keySet().add(i);
+        	permission.values().add("adminessentials.announce");
+        }
+        return permission;
+    }
+
+    public String[] getArguments() {
+        return new String[] {"<message>"};
+    }
+
+    // TODO: there has to be a better way to do this other than creating a 200 int array...
+    public int[] handledArgs() {
+    	int[] args = new int[200];
+    	for (int i = 1; i < 200; i++) {
+    		args[i] = i;
+    	}
+    	return args;
+    }
+    
+    public int[] consoleHandledArgs() {
+    	return handledArgs();
+    }
+    
 }

@@ -1,7 +1,9 @@
 package me.synapz.adminessentials;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.command.Command;
+
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 
 public abstract class AdminEssentialsCommand {
@@ -10,13 +12,9 @@ public abstract class AdminEssentialsCommand {
 
     public abstract String getName();
 
-    public abstract String getPermission();
+    public abstract HashMap<Integer, String> getPermissions();
 
-    public abstract String getPermission2();
-
-    public abstract int maxArguments();
-
-    public abstract int minArguments();
+    public abstract int[] handledArgs();
 
     public abstract String[] getArguments();
 
@@ -27,9 +25,4 @@ public abstract class AdminEssentialsCommand {
         }
         return ChatColor.RED + "Usage: /" + this.getName() + " " + arguments;
     }
-
-    public String getSecondPermission() {
-        return getPermission() + ".others";
-    }
-
 }
