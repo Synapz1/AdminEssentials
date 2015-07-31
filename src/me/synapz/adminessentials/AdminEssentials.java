@@ -1,11 +1,7 @@
 package me.synapz.adminessentials;
 
-import java.io.IOException;
-
 import me.synapz.adminessentials.util.Config;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -65,6 +61,6 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("v").setExecutor(new CommandVanish());
-        getCommand("back").setExecutor(new CommandBack());
+        getCommand("back").setExecutor(CommandManager.getManager());
     }
 }

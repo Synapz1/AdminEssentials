@@ -1,55 +1,52 @@
 package me.synapz.adminessentials;
 
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
 import me.synapz.adminessentials.util.Config;
-import org.bukkit.Bukkit;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class CommandBack implements CommandExecutor, Listener {
+public class CommandBack extends AdminEssentialsCommand implements Listener {
 
-    CommandUtil utils = new CommandUtil();
-    CommandMessenger messenger = new CommandMessenger();
     Config config = Config.getInstance();
+    // TODO, if they have fly disabled Tp them to the ground.
+    public void onCommand(Player player, String[] args) {
+    	Location lastLoc = config.getLastLocation(player);
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-
-        // permission checks
-        if (sender instanceof Player || !(sender instanceof Player)) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(messenger.NO_CONSOLE_PERMS);
-                return true;
-            }
-            if (!utils.permissionCheck(sender, "adminessentials.back")) {
-                return true;
-            }
+        if (lastLoc != null) {
+            config.setLastLocation(player, player.getLocation());
+            player.teleport(lastLoc);
+            player.sendMessage(ChatColor.GOLD + "Teleporting...");
+        } else {
+            player.sendMessage(ChatColor.RED + "No /back location was found!");
         }
+    }
 
-        Player player = (Player) sender;
-        if (args.length == 0) {
-            Location lastLoc = config.getLastLocation(player);
+    public String getName() {
+    	return "back";
+    }
 
-            if (lastLoc != null) {
-                config.setLastLocation(player, player.getLocation());
-                player.teleport(lastLoc);
-                player.sendMessage(ChatColor.GOLD + "Teleporting...");
-            } else {
-                player.sendMessage(ChatColor.RED + "No /back location was found!");
-            }
-        } else if (args.length >= 1) {
-            messenger.wrongUsage(player, 1, "/back");
-        }
+    public ArrayList<String> getPermissions() {
+    	ArrayList<String> permissions = new ArrayList<>();
+    	permissions.add("adminessentials.back 0");
+    	return permissions;
+    }
 
-        return false;
+    public ArrayList<Integer> handledArgs() {
+        ArrayList<Integer> args = new ArrayList<>();
+        args.add(0);
+    	return args;
+    }
+
+    public String[] getArguments() {
+    	return new String[] {""};
     }
 
     @EventHandler

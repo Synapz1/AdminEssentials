@@ -2,6 +2,8 @@ package me.synapz.adminessentials;
 
 import me.synapz.adminessentials.util.Utils;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.GameMode;
@@ -34,12 +36,10 @@ public class CommandAdventure extends AdminEssentialsCommand implements ConsoleC
         return "gma";
     }
 
-    public HashMap<Integer, String> getPermissions() {
-    	HashMap<Integer, String> permissions = new HashMap<>();
-    	permissions.values().add("adminessentials.adventure");
-    	permissions.values().add("adminessentials.adventure.others");
-    	permissions.keySet().add(0);
-    	permissions.keySet().add(1);
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.adventure 0");
+        permissions.add("adminessentials.adventure.others 1");
         return permissions;
     }
     
@@ -47,11 +47,16 @@ public class CommandAdventure extends AdminEssentialsCommand implements ConsoleC
         return new String[] {"<player>"};
     }
 
-    public int[] handledArgs() {
-    	return new int[] {0, 1};
+    public ArrayList<Integer> handledArgs() {
+        ArrayList<Integer> args = new ArrayList<>();
+        args.add(0);
+        args.add(1);
+    	return args;
     }
-    
-    public int[] consoleHandledArgs() {
-    	return new int[] {0};
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        ArrayList<Integer> args = handledArgs();
+        args.remove(0);
+        return args;
     }
 }

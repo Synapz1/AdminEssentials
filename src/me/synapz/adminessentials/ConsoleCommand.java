@@ -3,10 +3,11 @@ package me.synapz.adminessentials;
 
 import org.bukkit.command.CommandSender;
 
-public interface ConsoleCommand {
+import java.util.ArrayList;
 
-    public abstract void onConsoleCommand(CommandSender sender, String[] args);
+interface ConsoleCommand {
 
-    public abstract int[] consoleHandledArgs();
+    void onConsoleCommand(CommandSender sender, String[] args);
 
+    ArrayList<Integer> consoleHandledArgs();
 }

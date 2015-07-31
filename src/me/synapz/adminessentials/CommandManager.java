@@ -22,7 +22,7 @@ public class CommandManager implements CommandExecutor {
     }
 
     public void init() {
-        addCommands(new CommandAdventure(), new CommandAnnounce());
+        addCommands(new CommandAdventure(), new CommandAnnounce(), new CommandBack());
     }
 
 
@@ -36,18 +36,9 @@ public class CommandManager implements CommandExecutor {
             if (cmd.getName().equalsIgnoreCase(aec.getName())) {
                 command = aec;
                 isAECommand = true;
-
-                // todo: test to make sure this works
                 if (command instanceof ConsoleCommand) {
                 	hasConsoleSupport = true;
                 }
-                /*try {
-                    ConsoleCommand consoleCommand = (ConsoleCommand) command;
-                    consoleCommand.consoleMaxArguments();
-                    hasConsoleSupport = true;
-                }catch (ClassCastException e) {
-                    // console does not have support so leave hasConsoleSupport false
-                } */
             }
         }
 
@@ -86,21 +77,28 @@ public class CommandManager implements CommandExecutor {
     }
 
     private boolean commandChecks(AdminEssentialsCommand command, CommandSender sender, int argCount) {
-    	if (isCorrectArgs(sender, command, argCount) && !(sender instanceof Player)) {
+    	if (!(sender instanceof Player) && isCorrectArgs(sender, command, argCount)) {
     		return true;
     	}
-    	if (isCorrectArgs(sender, command, argCount) && hasPerm(sender, argCount, command) && sender instanceof Player) {
+    	if (sender instanceof Player && isCorrectArgs(sender, command, argCount) && hasPerm(sender, argCount, command)) {
     		return true;
     	}
     	return false;
     }
     
     private boolean hasPerm(CommandSender sender, int argument, AdminEssentialsCommand command) {
-        // todo, check here to see what happens if the argument is not in the getpermissions, like 65 when there is only 2.
-    	// Edit: Contains key will work for this. TODO: Test this...
-    	if (command.getPermissions().containsKey(argument) && sender.hasPermission(command.getPermissions().get(argument))) {
-    		return true;
-    	} else {
+        String permission = "";
+        for (String perm : command.getPermissions()) {
+            // makes a list, so "adminessentials.survival 1" becomes permList[0] = "adminessentials.survival" permList[1] = "1"
+            String[] permList = perm.split(" ");
+            // turn the int part to an Integer from string and check if the argument is = to argument param, if it is set permList[0] to the permission
+            if (Integer.parseInt(permList[1]) == argument) {
+                permission = permList[0];
+            }
+        }
+        if (sender.hasPermission(permission)) {
+            return true;
+        } else {
             sender.sendMessage(DARK_RED + "You don't have access to that command!");
     		return false;
     	}
@@ -108,26 +106,21 @@ public class CommandManager implements CommandExecutor {
 
     private boolean isCorrectArgs(CommandSender sender, AdminEssentialsCommand command, int argCount) {
         boolean correctArgCount = false;
-        
+
         if (command instanceof ConsoleCommand && !(sender instanceof Player)) {
-        	ConsoleCommand consoleCommand = (ConsoleCommand) command;
-        	for (int i : consoleCommand.consoleHandledArgs()) {
-        		if (i == argCount) {
-        			correctArgCount = true;
-        			break;
-        		}
-        	}
+            ConsoleCommand consoleCommand = (ConsoleCommand) command;
+            if (consoleCommand.consoleHandledArgs().contains(argCount)) {
+                correctArgCount = true;
+            }
         } else {
-        	for (int i : command.handledArgs()) {
-        		if (i == argCount) {
-        			correctArgCount = true;
-        			break;
-        		}
-        	}
+            if (command.handledArgs().contains(argCount)) {
+                correctArgCount = true;
+            }
         }
+
         if (!correctArgCount) {
-        	sender.sendMessage(DARK_RED + "Please review your argument count.");
-        	sender.sendMessage(DARK_RED + command.getCorrectUsage());
+        	sender.sendMessage(RED + "Please review your argument count.");
+        	sender.sendMessage(RED + command.getCorrectUsage());
         }
         return correctArgCount;
     }

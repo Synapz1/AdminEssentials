@@ -1,10 +1,13 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.util.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCommand {
@@ -18,7 +21,7 @@ public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCo
     }
 
     public void onCommand(Player player, String[] args) {
-    	onConsoleCommand(player, args);
+        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Announcement" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', messageBuilder(args)));
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
@@ -29,14 +32,8 @@ public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCo
         return "announce";
     }
 
-    public HashMap<Integer, String> getPermissions() {
-        // todo, find a better way to do this instead of adding 1OO items to hashmap
-        HashMap<Integer, String> permission = new HashMap<>();
-        for (int i = 1; i < 200; i++) {
-        	permission.keySet().add(i);
-        	permission.values().add("adminessentials.announce");
-        }
-        return permission;
+    public ArrayList<String> getPermissions() {
+        return Utils.allPermArguments("adminessentials.announce");
     }
 
     public String[] getArguments() {
@@ -44,16 +41,11 @@ public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCo
     }
 
     // TODO: there has to be a better way to do this other than creating a 200 int array...
-    public int[] handledArgs() {
-    	int[] args = new int[200];
-    	for (int i = 1; i < 200; i++) {
-    		args[i] = i;
-    	}
-    	return args;
+    public ArrayList<Integer> handledArgs() {
+    	return Utils.allArguments();
     }
     
-    public int[] consoleHandledArgs() {
-    	return handledArgs();
+    public ArrayList<Integer> consoleHandledArgs() {
+    	return Utils.allArguments();
     }
-    
 }
