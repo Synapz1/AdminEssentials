@@ -103,6 +103,7 @@ permissions:
        adminessentials.ci.others: true
        adminessentials.kick: true
        adminessentials.ban: true
+       adminessentials.unban: true
        adminessentials.announce: true
        adminessentials.tpall: true
        adminessentials.kickall: true

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import me.synapz.adminessentials.util.CommandMessenger;
 import me.synapz.adminessentials.util.CommandUtil;
 import me.synapz.adminessentials.util.Config;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,11 +18,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class CommandBan implements Listener, CommandExecutor
-{
+public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand, Listener {
     private static final String DEFAULT_REASON = "You have been banned from the server!";
-    private CommandMessenger messenger = new CommandMessenger();
-    private CommandUtil utils = new CommandUtil();
     private Config config = Config.getInstance();
 
     private String messagerBuilder(String[] args) {
@@ -53,59 +51,42 @@ public class CommandBan implements Listener, CommandExecutor
         return banReason;
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-    {
-        if (cmd.getName().equalsIgnoreCase("ban")) {
+    public void onCommand(Player player, String[] args) {
+        onConsoleCommand(player, args);
+    }
 
-            // quick permission check
-            if (sender instanceof Player && !utils.permissionCheck(sender, "adminessentials.ban")) {
-                return true;
-            }
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        OfflinePlayer offlineTarget;
+        Player target = sender.getServer().getPlayer(args[0]);
+        String banReason = calculateReason(args);
 
-            if (args.length == 0) {
-
-                messenger.wrongUsage(sender, 0, "/ban <player> [message]");
-
-            } else if (args.length >= 1) {
-
-                OfflinePlayer offlineTarget;
-                Player target = sender.getServer().getPlayer(args[0]);
-                String banReason = calculateReason(args);
-
-                if (isPlayerOnline(target)) { // player is online, kick + ban them as PLAYER
-                    config.setBanned(sender, target.getUniqueId().toString(), args[0], banReason, true);
-                    target.kickPlayer(banReason);
-                } else {
-                    offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
-                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], banReason, true);
-                }
-
-            }
-        } else if (cmd.getName().equalsIgnoreCase("unban")) {
-
-            if (sender instanceof Player && !utils.permissionCheck(sender, "adminessentials.unban")) {
-                return true;
-            }
-
-            if (args.length == 0) {
-                messenger.wrongUsage(sender, 0, "/unban <player>");
-            } else if (args.length == 1) {
-
-                Player target = sender.getServer().getPlayer(args[0]);
-
-                if (isPlayerOnline(target)) {
-                    config.setBanned(sender, target.getUniqueId().toString(), args[0], "", false);
-                } else {
-                    OfflinePlayer offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
-                    config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], "", false);
-                }
-
-            } else if (args.length >= 2) {
-                messenger.wrongUsage(sender, 1, "/unban <player>");
-            }
+        if (isPlayerOnline(target)) { // player is online, kick + ban them as PLAYER
+            config.setBanned(sender, target.getUniqueId().toString(), args[0], banReason, true);
+            target.kickPlayer(banReason);
+        } else {
+            offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
+            config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], banReason, true);
         }
+    }
 
-        return false;
+    public String getName() {
+        return "ban";
+    }
+
+    public ArrayList<String> getPermissions() {
+        return Utils.allPermArguments("adminessentials.ban");
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.allArguments();
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.allArguments();
+    }
+
+    public String[] getArguments() {
+        return new String[] {"<player> [message]"};
     }
 
     @EventHandler

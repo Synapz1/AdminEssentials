@@ -32,13 +32,16 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
     }
 
     private void registerCommands() {
+        for (AdminEssentialsCommand cmd : CommandManager.getManager().getAllCommands()) {
+            getCommand(cmd.getName()).setExecutor(CommandManager.getManager());
+        }
         getCommand("mute").setExecutor(new CommandMute());
         getCommand("muteall").setExecutor(new CommandMute());
         getCommand("god").setExecutor(new CommandGod());
         getCommand("freeze").setExecutor(new CommandFreeze());
         getCommand("freezeall").setExecutor(new CommandFreeze());
-        getCommand("ban").setExecutor(new CommandBan());
-        getCommand("unban").setExecutor(new CommandBan());
+        getCommand("ban").setExecutor(CommandManager.getManager());
+        getCommand("unban").setExecutor(CommandManager.getManager());
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());

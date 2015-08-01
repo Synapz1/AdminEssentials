@@ -22,7 +22,7 @@ public class CommandManager implements CommandExecutor {
     }
 
     public void init() {
-        addCommands(new CommandAdventure(), new CommandAnnounce(), new CommandBack());
+        addCommands(new CommandAdventure(), new CommandAnnounce(), new CommandBack(), new CommandBan(), new CommandUnban());
     }
 
 
@@ -129,5 +129,9 @@ public class CommandManager implements CommandExecutor {
         for (AdminEssentialsCommand cmd : cmds) {
             commands.add(cmd);
         }
+    }
+
+    public ArrayList<AdminEssentialsCommand> getAllCommands() {
+        return commands;
     }
 }
