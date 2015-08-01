@@ -40,7 +40,6 @@ public class CommandAnnounce extends AdminEssentialsCommand implements ConsoleCo
         return new String[] {"<message>"};
     }
 
-    // TODO: there has to be a better way to do this other than creating a 200 int array...
     public ArrayList<Integer> handledArgs() {
     	return Utils.allArguments();
     }

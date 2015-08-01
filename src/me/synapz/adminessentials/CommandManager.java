@@ -22,9 +22,9 @@ public class CommandManager implements CommandExecutor {
     }
 
     public void init() {
-        addCommands(new CommandAdventure(), new CommandAnnounce(), new CommandBack(), new CommandBan(), new CommandUnban());
+        addCommands(new CommandAdventure(), new CommandAnnounce(), new CommandBack(), new CommandBan(), new CommandUnban(),
+                new CommandBurn(), new CommandExtingush());
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {

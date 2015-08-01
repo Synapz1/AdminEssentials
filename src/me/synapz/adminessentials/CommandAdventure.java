@@ -48,15 +48,10 @@ public class CommandAdventure extends AdminEssentialsCommand implements ConsoleC
     }
 
     public ArrayList<Integer> handledArgs() {
-        ArrayList<Integer> args = new ArrayList<>();
-        args.add(0);
-        args.add(1);
-    	return args;
+    	return Utils.makeArgs(0, 1);
     }
 
     public ArrayList<Integer> consoleHandledArgs() {
-        ArrayList<Integer> args = handledArgs();
-        args.remove(0);
-        return args;
+        return Utils.makeArgs(1);
     }
 }

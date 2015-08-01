@@ -9,14 +9,9 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 public class Utils {
 
-=======
->>>>>>> origin/master
-=======
->>>>>>> 6597925aa39d00d3ab28cb0d33b4189fb2012e07
     private Utils() {}
 
     public static ArrayList<String> allPermArguments(String permission) {
@@ -53,6 +48,14 @@ public class Utils {
             player.sendMessage(ChatColor.RED + sender.getName() + ChatColor.GOLD + " set you to " + gamemode + " mode!");
         }
         player.setGameMode(gamemode);
+    }
+
+    public static ArrayList<Integer> makeArgs(int...args) {
+        ArrayList<Integer> arguments = new ArrayList<Integer>();
+        for (Integer arg : args) {
+            arguments.add(arg);
+        }
+        return arguments;
     }
 
 }

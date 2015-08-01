@@ -33,7 +33,6 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
 
 
     private boolean isPlayerOnline(Player target) {
-
         if (target == null) {
             return false; // not online
         }

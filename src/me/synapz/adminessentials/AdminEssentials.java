@@ -40,8 +40,8 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("god").setExecutor(new CommandGod());
         getCommand("freeze").setExecutor(new CommandFreeze());
         getCommand("freezeall").setExecutor(new CommandFreeze());
-        getCommand("ban").setExecutor(CommandManager.getManager());
-        getCommand("unban").setExecutor(CommandManager.getManager());
+        // getCommand("ban").setExecutor(CommandManager.getManager());
+        // getCommand("unban").setExecutor(CommandManager.getManager());
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
         getCommand("feed").setExecutor(new CommandFeed());
@@ -49,21 +49,21 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         getCommand("tphere").setExecutor(new CommandTeleportation());
         getCommand("tppos").setExecutor(new CommandTeleportation());
         getCommand("tpall").setExecutor(new CommandTeleportation());
-        getCommand("burn").setExecutor(new CommandBurn());
-        getCommand("ext").setExecutor(new CommandBurn());
+        // getCommand("burn").setExecutor(new CommandBurn());
+        // getCommand("ext").setExecutor(new CommandBurn());
         getCommand("gmc").setExecutor(new CommandCreative());
         getCommand("gms").setExecutor(new CommandSurvival());
-        getCommand("gma").setExecutor(CommandManager.getManager());
+        // getCommand("gma").setExecutor(CommandManager.getManager());
         getCommand("gmss").setExecutor(new CommandSpectator());
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("marco").setExecutor(new CommandMarco());
         getCommand("ci").setExecutor(new CommandCi());
-        getCommand("announce").setExecutor(CommandManager.getManager());
+        // getCommand("announce").setExecutor(CommandManager.getManager());
         getCommand("kick").setExecutor(new CommandKick());
         getCommand("kickall").setExecutor(new CommandKick());
         getCommand("killall").setExecutor(new CommandKill());
         getCommand("killmobs").setExecutor(new CommandKillMobs());
         getCommand("v").setExecutor(new CommandVanish());
-        getCommand("back").setExecutor(CommandManager.getManager());
+        // getCommand("back").setExecutor(CommandManager.getManager());
     }
 }
