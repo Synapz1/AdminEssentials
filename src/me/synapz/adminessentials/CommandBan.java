@@ -22,16 +22,6 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
     private static final String DEFAULT_REASON = "You have been banned from the server!";
     private Config config = Config.getInstance();
 
-    private String messagerBuilder(String[] args) {
-        String msg = "";
-        for (int i = 1; i < args.length; i++) {
-            // if i-1 == args, its the last run so we need to remove the " " at the end
-            msg = i+1 == args.length ? msg + args[i] : msg + args[i] + " ";
-        }
-        return msg;
-    }
-
-
     private boolean isPlayerOnline(Player target) {
         if (target == null) {
             return false; // not online
@@ -45,7 +35,7 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
         if (args.length == 1) {
             banReason = DEFAULT_REASON;
         } else {
-            banReason = messagerBuilder(args);
+            banReason = Utils.messagerBuilder(args);
         }
         return banReason;
     }

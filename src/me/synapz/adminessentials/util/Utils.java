@@ -30,7 +30,6 @@ public class Utils {
         return args;
     }
 
-
     public static boolean isPlayerOnline(CommandSender sender, String name) {
         Player player = Bukkit.getPlayer(name);
         if (player != null) {
@@ -56,6 +55,15 @@ public class Utils {
             arguments.add(arg);
         }
         return arguments;
+    }
+
+    public static String messagerBuilder(String[] args) {
+        String msg = "";
+        for (int i = 1; i < args.length; i++) {
+            // if i-1 == args, its the last run so we need to remove the " " at the end
+            msg = i+1 == args.length ? msg + args[i] : msg + args[i] + " ";
+        }
+        return msg;
     }
 
 }
