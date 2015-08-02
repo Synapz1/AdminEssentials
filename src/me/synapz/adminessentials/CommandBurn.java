@@ -25,7 +25,7 @@ public class CommandBurn extends AdminEssentialsCommand implements ConsoleComman
         int dur = 300;
         Player target = args.length == 0 ? player : Bukkit.getServer().getPlayer(args[0]);
 
-        if (args.length != 0 && !Utils.isPlayerOnline(player, target.getName())) {
+        if (args.length != 0 && !Utils.isPlayerOnline(player, args[0])) {
             return;
         }
 
@@ -46,7 +46,7 @@ public class CommandBurn extends AdminEssentialsCommand implements ConsoleComman
         int dur = 300;
         Player target = Bukkit.getServer().getPlayer(args[0]);
 
-        if (!Utils.isPlayerOnline(sender, target.getName())) {
+        if (!Utils.isPlayerOnline(sender, args[0])) {
             return;
         }
         // dont need to correctly run args.length == 1 because the default is 300 ticks.

@@ -7,8 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminEssentials extends JavaPlugin implements CommandExecutor {
 
-    // todo: add teleport cooldown
-
     @Override
     public void onEnable() {
         Config c = new Config(this);
@@ -44,20 +42,20 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         // getCommand("unban").setExecutor(CommandManager.getManager());
         getCommand("kill").setExecutor(new CommandKill());
         getCommand("heal").setExecutor(new CommandHeal());
-        getCommand("feed").setExecutor(new CommandFeed());
+        // getCommand("feed").setExecutor(CommandManager.getManager());
         getCommand("tp").setExecutor(new CommandTeleportation());
         getCommand("tphere").setExecutor(new CommandTeleportation());
         getCommand("tppos").setExecutor(new CommandTeleportation());
         getCommand("tpall").setExecutor(new CommandTeleportation());
         // getCommand("burn").setExecutor(new CommandBurn());
         // getCommand("ext").setExecutor(new CommandBurn());
-        getCommand("gmc").setExecutor(new CommandCreative());
+        // getCommand("gmc").setExecutor(CommandManager.getManager());
         getCommand("gms").setExecutor(new CommandSurvival());
         // getCommand("gma").setExecutor(CommandManager.getManager());
         getCommand("gmss").setExecutor(new CommandSpectator());
-        getCommand("fly").setExecutor(new CommandFly());
+        // getCommand("fly").setExecutor(CommandManager.getManager());
         getCommand("marco").setExecutor(new CommandMarco());
-        getCommand("ci").setExecutor(new CommandCi());
+        // getCommand("ci").setExecutor(CommandManager.getManager());
         // getCommand("announce").setExecutor(CommandManager.getManager());
         getCommand("kick").setExecutor(new CommandKick());
         getCommand("kickall").setExecutor(new CommandKick());
