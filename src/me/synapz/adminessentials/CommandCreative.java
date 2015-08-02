@@ -1,5 +1,7 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

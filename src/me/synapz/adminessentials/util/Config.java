@@ -4,6 +4,7 @@ package me.synapz.adminessentials.util;
 import me.synapz.adminessentials.AdminEssentials;
 import me.synapz.adminessentials.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -92,14 +93,10 @@ public class Config {
             if (isBanned(sender.getServer().getOfflinePlayer(name)) || isBanned(sender.getServer().getPlayer(name))) {
                 cache.set("Players.Banned." + uuid, null);
             } else {
-                sender.sendMessage(CommandMessenger.PLAYER_NOT_BANNED);
+                sender.sendMessage(ChatColor.RED + name + ChatColor.GOLD + " is not banned!");
                 return;
             }
         }
-
-        // print output
-        CommandMessenger.onBan(sender, name, reason, toBan);
-
         saveCache();
     }
 
@@ -159,9 +156,13 @@ public class Config {
         }
 
         cache.set("Players.Muted", mutedPlayers);
+        String type = toMute ? "muted!" : "unmuted!";
 
         if (!muteAll) {
-            CommandMessenger.onMute(sender, player, toMute);
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + player.getName() + ChatColor.GOLD + " was " + type);
+            player.sendMessage(ChatColor.GOLD + "You have been " + type);
+        } else {
+            player.sendMessage(ChatColor.GOLD + "You have been " + type);
         }
         saveCache();
     }
@@ -171,21 +172,24 @@ public class Config {
      * 1) Add/Remove them to the config.
      * 2) Send the output to players & server
      * @param sender - sender of the command
-     * @param player - player to be frozen
+     * @param target - player to be frozen
      * @param toFreeze - freeze or to un freeze (true/false)
      * @param freezeAll - a freeze all check to block spam
      */
-    public void setFreeze(CommandSender sender, Player player, boolean toFreeze, boolean freezeAll) {
+    public void setFreeze(CommandSender sender, Player target, boolean toFreeze, boolean freezeAll) {
         if (toFreeze) {
-            frozenPlayers.add(player.getUniqueId().toString());
+            frozenPlayers.add(target.getUniqueId().toString());
         } else {
-            frozenPlayers.remove(player.getUniqueId().toString());
+            frozenPlayers.remove(target.getUniqueId().toString());
         }
 
         cache.set("Players.Frozen", frozenPlayers);
 
         if (!freezeAll) {
-            CommandMessenger.onFreeze(sender, player, toFreeze);
+            String type = toFreeze ? "frozen!" : "unfrozen!";
+
+            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was " + type);
+            target.sendMessage(ChatColor.GOLD + "You have been " + type);
         }
         saveCache();
     }

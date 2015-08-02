@@ -1,9 +1,9 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.util.Config;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.ChatColor;

@@ -1,44 +1,53 @@
 package me.synapz.adminessentials;
 
-import me.synapz.adminessentials.util.CommandUtil;
-import me.synapz.adminessentials.util.CommandMessenger;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandSurvival implements CommandExecutor {
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        CommandMessenger commandMessenger = new CommandMessenger();
-        CommandUtil commands = new CommandUtil();
+import java.util.ArrayList;
 
-        if ((!(sender instanceof Player)) && (cmd.getName().equalsIgnoreCase("gms"))) {
-            if (args.length == 0) {
-                commandMessenger.wrongUsage(sender, 0, "/gms <player>");
-            } else if (args.length == 1) {
-                Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                // commands.setGamemode(targetPlayer, args[0], sender, GameMode.SURVIVAL, "console");
-            } else if (args.length >= 2) {
-                commandMessenger.wrongUsage(sender, 1, "/gms <player>");
-            }
+public class CommandSurvival extends AdminEssentialsCommand implements ConsoleCommand {
 
+    public void onCommand(Player player, String[] args) {
+        Player target = args.length == 0 ? player : Bukkit.getServer().getPlayer(args[0]);
+        if (args.length == 1 && !Utils.isPlayerOnline(player, args[0])) {
+            return;
         }
+        Utils.setGamemode(player, target, GameMode.SURVIVAL);
+    }
 
-        if (((sender instanceof Player)) && (cmd.getName().equalsIgnoreCase("gms"))) {
-            Player player = (Player) sender;
-
-            if (args.length == 0) {
-                // commands.setGamemode(player, null, player, GameMode.SURVIVAL, "adminessentials.survival");
-            } else if (args.length == 1) {
-                Player targetPlayer = player.getServer().getPlayer(args[0]);
-                // commands.setGamemode(targetPlayer, args[0], player, GameMode.SURVIVAL, "adminessentials.survival.others");
-            } else if (args.length >= 2) {
-                commandMessenger.wrongUsage(player, 1, "/gms <player>");
-            }
-
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (!Utils.isPlayerOnline(sender, args[0])) {
+            return;
         }
+        Utils.setGamemode(sender, target, GameMode.SURVIVAL);
+    }
 
-        return false;
+    public String getName() {
+        return "gms";
+    }
+
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.survival 0");
+        permissions.add("adminessentials.survival.others 1");
+        return permissions;
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(0, 1);
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(1);
+    }
+
+    public String[] getArguments() {
+        return new String[] {"<player>"};
     }
 }

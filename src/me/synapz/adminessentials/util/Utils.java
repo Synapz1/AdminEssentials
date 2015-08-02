@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
+import static org.bukkit.ChatColor.GOLD;
+
 
 public class Utils {
 
@@ -49,6 +51,18 @@ public class Utils {
         player.setGameMode(gamemode);
     }
 
+    public static void mute(CommandSender sender, Player target, boolean isPlayerOnline, boolean muteAll) {
+        Config config = Config.getInstance();
+        if (!isPlayerOnline) {
+            return;
+        }
+        if (config.isMuted(target)) {
+            config.setMute(sender, target, false, muteAll);
+        } else {
+            config.setMute(sender, target, true, muteAll);
+        }
+    }
+
     public static ArrayList<Integer> makeArgs(int...args) {
         ArrayList<Integer> arguments = new ArrayList<Integer>();
         for (Integer arg : args) {
@@ -64,6 +78,11 @@ public class Utils {
             msg = i+1 == args.length ? msg + args[i] : msg + args[i] + " ";
         }
         return msg;
+    }
+
+    public static void teleport(Player sender, Player target) {
+        sender.sendMessage(GOLD + "Teleporting...");
+        sender.teleport(target.getLocation());
     }
 
 }

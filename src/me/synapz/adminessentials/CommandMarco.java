@@ -1,35 +1,42 @@
 package me.synapz.adminessentials;
 
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
-import me.synapz.adminessentials.util.Config;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandMarco implements CommandExecutor {
+import java.util.ArrayList;
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        CommandUtil utils = new CommandUtil();
-        CommandMessenger messenger = new CommandMessenger();
+public class CommandMarco extends AdminEssentialsCommand implements ConsoleCommand {
 
-        // if the sender is a player, check their permissions
-        if (sender instanceof Player) {
-            if (!utils.permissionCheck(sender, "adminessentials.marco")) {
-                return true;
-            }
-        }
+    public void onCommand(Player player, String[] args) {
+        onConsoleCommand(player, args);
+    }
 
-        if (cmd.getName().equalsIgnoreCase("marco")) {
-            if (args.length == 0) {
-                sender.sendMessage("Polo!");
-            } else if (args.length >= 1) {
-                messenger.wrongUsage(sender, 1, "/marco");
-            }
-            Config.getInstance().increment(Config.AdminCommand.MARCO);
-        }
-        return false;
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        sender.sendMessage("Polo!");
+    }
+
+    public String getName() {
+        return "marco";
+    }
+
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.marco 0");
+        return permissions;
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(0);
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(0);
+    }
+
+    public String[] getArguments() {
+        return new String[] {""};
     }
 }

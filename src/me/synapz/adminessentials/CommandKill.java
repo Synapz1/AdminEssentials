@@ -1,101 +1,62 @@
 package me.synapz.adminessentials;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.util.Utils;
+
+import static org.bukkit.ChatColor.*;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandKill
-        implements CommandExecutor
-{
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-    {
-        if (!(sender instanceof Player)) {
-            if (cmd.getName().equalsIgnoreCase("kill")) {
-                if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /kill <player>");
-                }
-                else if (args.length == 1) {
-                    Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.sendMessage(ChatColor.RED + sender.getName() + ChatColor.GOLD + " killed you!");
-                        sender.sendMessage(ChatColor.GOLD + "You killed " + ChatColor.RED + targetPlayer.getName());
-                        targetPlayer.setHealth(0);
-                    }
-                }
-                else if (args.length >= 2) {
-                    sender.sendMessage(ChatColor.RED + "To many arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /kill <player>");
-                }
-            }
-            else if (cmd.getName().equalsIgnoreCase("killall")) {
-                if (args.length == 0) {
-                    for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
-                        onlinePlayers.setHealth(0);
-                    }
+import java.util.ArrayList;
 
-                    sender.sendMessage(ChatColor.GOLD + "All Players Killed!");
-                }
-                else if (args.length >= 1) {
-                    sender.sendMessage(ChatColor.RED + "To many arguments!");
-                    sender.sendMessage(ChatColor.RED + "Usage: /killall");
-                }
-            }
-        }
-        else if ((sender instanceof Player)) {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("kill")) {
-                if (!player.hasPermission("adminessentials.kill")) {
-                    player.sendMessage(ChatColor.DARK_RED +
-                            "You don't have access to that command!");
-                }
-                else if (args.length == 1) {
-                    Player targetPlayer = player.getServer().getPlayer(args[0]);
-                    if (targetPlayer == null) {
-                        player.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + args[0] + "'" + ChatColor.GOLD + " wasn't found.");
-                    } else {
-                        targetPlayer.sendMessage(ChatColor.RED +
-                                player.getName() + ChatColor.GOLD +
-                                " killed you!");
-                        player.sendMessage(ChatColor.GOLD + "You killed " +
-                                ChatColor.RED + targetPlayer.getName());
-                        targetPlayer.setHealth(0);
-                    }
-                } else if (args.length == 0) {
-                    player.sendMessage(ChatColor.RED + "Not enough arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /kill <player>");
-                } else if (args.length >= 2) {
-                    player.sendMessage(ChatColor.RED + "To many arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /kill <player>");
-                }
+public class CommandKill extends AdminEssentialsCommand implements ConsoleCommand {
 
-            }
-            else if (cmd.getName().equalsIgnoreCase("killall")) {
-                if (!player.hasPermission("adminessentials.killall")) {
-                    player.sendMessage(ChatColor.DARK_RED +
-                            "You don't have access to that command!");
-                }
-                else if (args.length == 0) {
-                    for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
-                        onlinePlayers.setHealth(0);
-                    }
-                    player.sendMessage(ChatColor.GOLD + "All Players Killed!");
-                }
-                else if (args.length >= 1) {
-                    player.sendMessage(ChatColor.RED + "To many arguments!");
-                    player.sendMessage(ChatColor.RED + "Usage: /killall");
-                }
-
-            }
-
+    private void kill(CommandSender sender, Player target, boolean isPlayerOnline) {
+        String message;
+        if (!isPlayerOnline) {
+            return;
         }
 
-        return false;
+        if (sender.getName().equals(target.getName())) {
+            message = GOLD + "You committed suicide.";
+        } else {
+            message = GOLD + "You died!";
+            sender.sendMessage(GOLD + "You killed " + RED + target.getName());
+        }
+        target.sendMessage(message);
+        target.setHealth(0);
+    }
+
+    public void onCommand(Player player, String[] args) {
+        onConsoleCommand(player, args);
+    }
+
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        Player target = sender.getServer().getPlayer(args[0]);
+        kill(sender, target, Utils.isPlayerOnline(sender, args[0]));
+    }
+
+    public String getName() {
+        return "kill";
+    }
+
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.kill 1");
+        return permissions;
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(1);
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(1);
+    }
+
+    public String[] getArguments() {
+        return new String[] {"<player>"};
     }
 }

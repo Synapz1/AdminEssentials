@@ -1,44 +1,78 @@
 package me.synapz.adminessentials;
 
-
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import static org.bukkit.ChatColor.*;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandVanish implements CommandExecutor {
+import java.util.ArrayList;
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        CommandUtil commands = new CommandUtil();
-        CommandMessenger messenger = new CommandMessenger();
+public class CommandVanish extends AdminEssentialsCommand implements ConsoleCommand {
 
+    private static ArrayList<String> invisiblePlayers = new ArrayList<String>();
 
-        if ((sender instanceof CommandSender) && (cmd.getName().equalsIgnoreCase("v"))) {
-            boolean console = (!(sender instanceof Player)) ? true : false;
-
-            if (args.length == 0) {
-                // a separate method for consoles
-                if (console) {
-                    messenger.wrongUsage(sender, 0, "/v <player>");
-                    return true;
-                }
-                Player player = (Player) sender;
-                commands.vanish(sender, player, sender.getName(), "adminessentials.vanish");
-
-            } else if (args.length == 1) {
-
-                Player target = Bukkit.getServer().getPlayer(args[0]);
-                commands.vanish(sender, target, args[0].toString(), "adminessentials.vanish.others");
-
-            } else if (args.length >= 2) {
-
-                messenger.wrongUsage(sender, 1, "/v <player>");
-
+    private void vanish(CommandSender sender, Player target) {
+        String action;
+        if (invisiblePlayers.contains(target.getName())) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.showPlayer(target);
             }
+            target.sendMessage(GOLD + "Vanish disabled.");
+            action = " disabled";
+            invisiblePlayers.remove(target.getName());
+        } else {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.hidePlayer(target);
+            }
+            target.sendMessage(GOLD + "Vanish enabled.");
+            action = " enabled";
+            invisiblePlayers.add(target.getName());
         }
-        return false;
+        if (!sender.getName().equals(target.getName())) {
+            sender.sendMessage(GOLD + "You " + action + " invisibility for " + RED + target.getName());
+        }
+    }
+
+    public void onCommand(Player player, String[] args) {
+        Player target = args.length == 0 ? player : Bukkit.getServer().getPlayer(args[0]);
+        if (args.length == 1 && !Utils.isPlayerOnline(player, args[0])) {
+            return;
+        }
+        vanish(player, target);
+    }
+
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (!Utils.isPlayerOnline(sender, args[0])) {
+            return;
+        }
+        vanish(sender, target);
+    }
+
+    public String getName() {
+        return "v";
+    }
+
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.vanish 0");
+        permissions.add("adminessentials.vanish.others 1");
+        return permissions;
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(0, 1);
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(1);
+    }
+
+    public String[] getArguments() {
+        return new String[] {"<player>"};
     }
 }

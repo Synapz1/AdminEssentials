@@ -2,16 +2,13 @@ package me.synapz.adminessentials;
 
 import java.util.ArrayList;
 
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Config;
 import me.synapz.adminessentials.util.Utils;
-import org.bukkit.BanList;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand, Listener {
+
     private static final String DEFAULT_REASON = "You have been banned from the server!";
     private Config config = Config.getInstance();
 
@@ -56,6 +54,7 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
             offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
             config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], banReason, true);
         }
+        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " banned " + RED + target + GOLD + " for " + banReason);
     }
 
     public String getName() {

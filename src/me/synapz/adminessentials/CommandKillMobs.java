@@ -1,18 +1,19 @@
 package me.synapz.adminessentials;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class CommandKillMobs implements CommandExecutor{
+public class CommandKillMobs extends AdminEssentialsCommand implements ConsoleCommand {
 
     private int mobsKilled;
 
@@ -29,35 +30,34 @@ public class CommandKillMobs implements CommandExecutor{
         }
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-    {
+    public void onCommand(Player player, String[] args) {
+        onConsoleCommand(player, args);
+    }
 
-        if ((cmd.getName().equalsIgnoreCase("killmobs")) && (!(sender instanceof Player))) {
-            if (args.length == 0) {
-                killMobs();
-                sender.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
-            }
-            else if (args.length >= 1) {
-                sender.sendMessage(ChatColor.RED + "To many arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /killmobs");
-            }
-        }
-        if ((cmd.getName().equalsIgnoreCase("killmobs")) && ((sender instanceof Player))) {
-            Player player = (Player)sender;
-            if (!player.hasPermission("adminessentials.killmobs")) {
-                player.sendMessage(ChatColor.DARK_RED + "You don't have permission to that command!");
-            }
-            else if (args.length == 0) {
-                killMobs();
-                player.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
-            }
-            else if (args.length >= 1) {
-                sender.sendMessage(ChatColor.RED + "To many arguments!");
-                sender.sendMessage(ChatColor.RED + "Usage: /killmobs");
-            }
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        killMobs();
+        sender.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
+    }
 
-        }
+    public String getName() {
+        return "killmobs";
+    }
 
-        return false;
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.killmobs 0");
+        return permissions;
+    }
+
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(0);
+    }
+
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(0);
+    }
+
+    public String[] getArguments() {
+        return new String[] {""};
     }
 }

@@ -3,6 +3,8 @@ package me.synapz.adminessentials;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,14 +18,19 @@ public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand
     private ArrayList<UUID> godPlayers = new ArrayList();
 
     private void god(CommandSender sender, Player target) {
+        String action;
         if (this.godPlayers.contains(target.getUniqueId())) {
             this.godPlayers.remove(target.getUniqueId());
             target.sendMessage(ChatColor.GOLD + "God mode disabled!");
-            sender.sendMessage(ChatColor.GOLD + "God mode disabled for " + ChatColor.RED + target.getName());
+            action = "disabled";
         } else {
             this.godPlayers.add(target.getUniqueId());
             target.sendMessage(ChatColor.GOLD + "God mode enabled!");
-            sender.sendMessage(ChatColor.GOLD + "God mode enabled for " + ChatColor.RED + target.getName());
+            action = "enabled";
+        }
+        if (!sender.getName().equals(target.getName())) {
+            sender.sendMessage(ChatColor.GOLD + "God mode " +  action + " for " + ChatColor.RED + target.getName());
+
         }
     }
 

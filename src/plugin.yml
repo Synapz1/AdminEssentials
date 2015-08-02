@@ -107,7 +107,6 @@ permissions:
        adminessentials.announce: true
        adminessentials.tpall: true
        adminessentials.kickall: true
-       adminessentials.killall: true
        adminessentials.killmobs: true
        adminessentials.muteall: true
        adminessentials.spectator: true

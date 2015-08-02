@@ -1,50 +1,39 @@
 package me.synapz.adminessentials;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
-import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import static org.bukkit.ChatColor.*;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class CommandKickall extends AdminEssentialsCommand implements ConsoleCommand {
+public class CommandTpall extends AdminEssentialsCommand {
 
-    private void kickall(CommandSender sender) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+    private void tpAll(Player sender) {
+        for (Player p : sender.getServer().getOnlinePlayers()) {
+            // check to make sure the player won't be teleported to themselves
             if (!p.getName().equals(sender.getName())) {
-                p.kickPlayer("Kicked from the server!");
+                Utils.teleport(p, sender);
             }
         }
-        sender.sendMessage(GOLD + "All players kicked.");
+        sender.sendMessage(GOLD + "All players have been teleported to you!");
     }
 
     public void onCommand(Player player, String[] args) {
-        kickall(player);
-    }
 
-    public void onConsoleCommand(CommandSender sender, String[] args) {
-        kickall(sender);
     }
 
     public String getName() {
-        return "kickall";
+        return "tpall";
     }
 
     public ArrayList<String> getPermissions() {
         ArrayList<String> permissions = new ArrayList<>();
-        permissions.add("adminessentials.kickall 0");
+        permissions.add("adminessentials.tpall 0");
         return permissions;
     }
 
     public ArrayList<Integer> handledArgs() {
-        return Utils.makeArgs(0);
-    }
-
-    public ArrayList<Integer> consoleHandledArgs() {
         return Utils.makeArgs(0);
     }
 

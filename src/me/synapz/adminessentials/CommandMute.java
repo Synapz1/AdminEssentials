@@ -1,82 +1,56 @@
 package me.synapz.adminessentials;
 
-
-import me.synapz.adminessentials.util.CommandMessenger;
-import me.synapz.adminessentials.util.CommandUtil;
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Config;
-import org.bukkit.Bukkit;
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class CommandMute implements CommandExecutor, Listener {
+import java.util.ArrayList;
 
-    private CommandMessenger messenger = new CommandMessenger();
-    private CommandUtil util = new CommandUtil();
-    private Config config = Config.getInstance();
+public class CommandMute extends AdminEssentialsCommand implements ConsoleCommand, Listener {
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public void onCommand(Player player, String[] args) {
+        onConsoleCommand(player, args);
+    }
 
-        if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("mute"))) {
-            // quick check to see if the sender is a player
-            // if they are a player, check their permissions
-            if (sender instanceof Player) {
-                if (!util.permissionCheck(sender, "adminessentials.mute")) {
-                    return true;
-                }
-            }
+    public void onConsoleCommand(CommandSender sender, String[] args) {
+        Player target = sender.getServer().getPlayer(args[0]);
+        Utils.mute(sender, target, Utils.isPlayerOnline(sender, args[0]), false);
+    }
 
-            if (args.length == 0) {
-                messenger.wrongUsage(sender, 0, "/mute <player>");
-            } else if (args.length == 1) {
-                Player targetPlayer = sender.getServer().getPlayer(args[0]);
-                if (util.isPlayerOnline(sender, targetPlayer.getName())) {
-                    if (config.isMuted(targetPlayer)) {
-                        config.setMute(sender, targetPlayer, false, false);
-                    } else // player isn't in config, so we add them to it
-                    {
-                        config.setMute(sender, targetPlayer, true, false);
-                    }
-                }
-            } else if (args.length >= 2) {
-                messenger.wrongUsage(sender, 1, "/mute <player>");
-            }
+    public String getName() {
+        return "mute";
+    }
 
-        } else if (((sender instanceof CommandSender)) && (cmd.getName().equalsIgnoreCase("muteall"))) {
-            if (sender instanceof Player) {
-                if (!util.permissionCheck(sender, "adminessentials.muteall")) {
-                    return true;
-                }
-            }
+    public ArrayList<String> getPermissions() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add("adminessentials.mute 0");
+        return permissions;
+    }
 
-            if (args.length == 0) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!config.isMuted(p)) {
-                        config.setMute(sender, p, true, true);
-                        p.sendMessage(ChatColor.GOLD + "You were muted.");
-                    }
-                }
-                sender.sendMessage(ChatColor.GOLD + "Muted all players!");
-            } else if (args.length >= 1) {
-                messenger.wrongUsage(sender, 1, "/muteall");
-            }
+    public ArrayList<Integer> handledArgs() {
+        return Utils.makeArgs(1);
+    }
 
-        }
+    public ArrayList<Integer> consoleHandledArgs() {
+        return Utils.makeArgs(1);
+    }
 
-
-        return false;
+    public String[] getArguments() {
+        return new String[] {"<player>"};
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (config.isMuted(player)) {
+        if (Config.getInstance().isMuted(player)) {
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently muted!");
             event.setCancelled(true);
         }

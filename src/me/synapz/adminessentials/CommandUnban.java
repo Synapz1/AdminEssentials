@@ -1,12 +1,18 @@
 package me.synapz.adminessentials;
 
+import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Config;
 import me.synapz.adminessentials.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.RED;
 
 public class CommandUnban extends AdminEssentialsCommand implements ConsoleCommand {
 
@@ -33,6 +39,7 @@ public class CommandUnban extends AdminEssentialsCommand implements ConsoleComma
             OfflinePlayer offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
             config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], "", false);
         }
+        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " unbanned " + RED + args[0]);
     }
 
     public String getName() {
