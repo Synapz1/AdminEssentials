@@ -109,7 +109,6 @@ permissions:
        adminessentials.kickall: true
        adminessentials.killall: true
        adminessentials.killmobs: true
-       adminessentials.freezeall: true
        adminessentials.muteall: true
        adminessentials.spectator: true
        adminessentials.spectator.others: true

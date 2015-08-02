@@ -5,6 +5,7 @@ import me.synapz.adminessentials.util.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import me.synapz.adminessentials.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -40,9 +41,7 @@ public class CommandBack extends AdminEssentialsCommand implements Listener {
     }
 
     public ArrayList<Integer> handledArgs() {
-        ArrayList<Integer> args = new ArrayList<>();
-        args.add(0);
-    	return args;
+    	return Utils.makeArgs(0);
     }
 
     public String[] getArguments() {
