@@ -3,7 +3,7 @@ package me.synapz.adminessentials;
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,18 +13,16 @@ public class CommandExtingush extends AdminEssentialsCommand implements ConsoleC
 
     public void ext(CommandSender sender, Player player) {
         player.setFireTicks(0);
-        player.sendMessage(ChatColor.GOLD + "You were extinguished!");
-
-        if (!sender.getName().equals(player.getName())) {
-            sender.sendMessage(ChatColor.GOLD + "You extinguished fire from " + ChatColor.RED + player.getName());
-        }
+        player.sendMessage("Extinguished your flames!");
+        Utils.sendSenderMessage(sender, player, GOLD + "Extinguished fire from " + RED + player.getName());
     }
 
     public void onCommand(Player player, String[] args) {
         Player target = args.length == 0 ? player : player.getServer().getPlayer(args[0]);
-        if (args.length == 1 && Utils.isPlayerOnline(player, target.getName())) {
-            ext(player, target);
+        if (args.length == 1 && !Utils.isPlayerOnline(player, target.getName())) {
+            return;
         }
+        ext(player, target);
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {

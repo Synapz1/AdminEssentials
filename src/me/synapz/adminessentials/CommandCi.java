@@ -18,8 +18,8 @@ public class CommandCi extends AdminEssentialsCommand implements ConsoleCommand 
             return;
         }
         target.getInventory().clear();
-        player.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.RED + target.getName() + ChatColor.GOLD + " inventory!");
         target.sendMessage(ChatColor.GOLD + "Inventory cleared!");
+        Utils.sendSenderMessage(player, target, ChatColor.GOLD + "Cleared " + ChatColor.RED + target.getName() + ChatColor.GOLD + "'s inventory!");
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
@@ -28,7 +28,7 @@ public class CommandCi extends AdminEssentialsCommand implements ConsoleCommand 
             return;
         }
         target.getInventory().clear();
-        sender.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.RED + target.getName() + ChatColor.GOLD + " inventory!");
+        sender.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.RED + target.getName() + ChatColor.GOLD + "'s inventory!");
         target.sendMessage(ChatColor.GOLD + "Inventory cleared!");
     }
 

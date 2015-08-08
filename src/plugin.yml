@@ -1,6 +1,6 @@
 name: AdminEssentials
-version: 1.4.7
-description: Essential commands to help admins run a essential server.
+version: 2.0
+description: Essential commands to help admins run an essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
 main: me.synapz.adminessentials.AdminEssentials

@@ -1,4 +1,4 @@
-package me.synapz.adminessentials.base;
+package me.synapz.adminessentials;
 
 import net.md_5.bungee.api.ChatColor;
 

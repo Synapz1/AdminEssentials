@@ -4,7 +4,7 @@ import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,14 +12,14 @@ import java.util.ArrayList;
 
 public class CommandBurn extends AdminEssentialsCommand implements ConsoleCommand {
 
-    public void burn(CommandSender sender, Player player, int ticks) {
-        player.setFireTicks(ticks);
-        player.sendMessage(ChatColor.GOLD + "You were set on fire for " + ChatColor.RED + (ticks / 20) + ChatColor.GOLD + " seconds!");
-        sender.sendMessage(ChatColor.GOLD + "Set " + sender + " on fire for " + ChatColor.RED + (ticks / 20) + ChatColor.GOLD + " seconds!");
+    public void burn(CommandSender sender, Player player, int seconds) {
+        player.setFireTicks(seconds * 20);
+        player.sendMessage(RED + "You " + GOLD + "were set on fire for " + RED + seconds + GOLD + " seconds!");
+        Utils.sendSenderMessage(sender, player, GOLD + "Set " + RED + player.getName() + GOLD + " on fire for " + RED + seconds + GOLD + " seconds!");
     }
 
     public void onCommand(Player player, String[] args) {
-        int dur = 300;
+        int dur = 15;
         Player target = args.length == 0 ? player : Bukkit.getServer().getPlayer(args[0]);
 
         if (args.length != 0 && !Utils.isPlayerOnline(player, args[0])) {
@@ -32,7 +32,8 @@ public class CommandBurn extends AdminEssentialsCommand implements ConsoleComman
             try {
                 dur = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                player.sendMessage(ChatColor.RED + "Enter a valid integer!");
+                player.sendMessage(RED + "Enter a valid integer!");
+                player.sendMessage(RED + this.getCorrectUsage());
                 return;
             }
         }
@@ -40,7 +41,7 @@ public class CommandBurn extends AdminEssentialsCommand implements ConsoleComman
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
-        int dur = 300;
+        int dur = 15;
         Player target = Bukkit.getServer().getPlayer(args[0]);
 
         if (!Utils.isPlayerOnline(sender, args[0])) {
@@ -51,7 +52,7 @@ public class CommandBurn extends AdminEssentialsCommand implements ConsoleComman
             try {
                 dur = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + "Enter a valid integer!");
+                sender.sendMessage(RED + "Enter a valid integer!");
                 return;
             }
         }

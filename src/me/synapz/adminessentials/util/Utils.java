@@ -85,4 +85,11 @@ public class Utils {
         sender.teleport(target.getLocation());
     }
 
+    public static void sendSenderMessage(CommandSender sender, Player target, String message) {
+        if (!sender.getName().equals(target.getName())) {
+            sender.sendMessage(message);
+        }
+    }
+
+
 }

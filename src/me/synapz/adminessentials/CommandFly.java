@@ -4,7 +4,7 @@ import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,12 +15,12 @@ public class CommandFly extends AdminEssentialsCommand implements ConsoleCommand
     private void fly(CommandSender sender, Player target) {
         if (target.getAllowFlight()) {
             target.setAllowFlight(false);
-            target.sendMessage(ChatColor.GOLD + "Fly mode was disabled!");
-            sender.sendMessage(ChatColor.GOLD + "Fly mode was disabled for " + ChatColor.RED + target.getName());
+            target.sendMessage(GOLD + "Fly mode was " + RED + "disabled");
+            Utils.sendSenderMessage(sender, target, GOLD + "Fly mode was" + RED + " disabled" + GOLD + " for " + RED + target.getName());
         } else {
             target.setAllowFlight(true);
-            target.sendMessage(ChatColor.GOLD + "Fly mode was enabled!");
-            sender.sendMessage(ChatColor.GOLD + "Fly mode was enabled for " + ChatColor.RED + target.getName());
+            target.sendMessage(GOLD + "Fly mode was " + RED + "enabled");
+            Utils.sendSenderMessage(sender, target, GOLD + "Fly mode was " + RED + "enabled" + GOLD + " for " + RED + target.getName());
         }
     }
 

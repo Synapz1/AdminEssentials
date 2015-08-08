@@ -4,7 +4,7 @@ package me.synapz.adminessentials.util;
 import me.synapz.adminessentials.AdminEssentials;
 import me.synapz.adminessentials.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -93,7 +93,7 @@ public class Config {
             if (isBanned(sender.getServer().getOfflinePlayer(name)) || isBanned(sender.getServer().getPlayer(name))) {
                 cache.set("Players.Banned." + uuid, null);
             } else {
-                sender.sendMessage(ChatColor.RED + name + ChatColor.GOLD + " is not banned!");
+                sender.sendMessage(RED + name + GOLD + " is not banned!");
                 return;
             }
         }
@@ -159,10 +159,10 @@ public class Config {
         String type = toMute ? "muted!" : "unmuted!";
 
         if (!muteAll) {
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + player.getName() + ChatColor.GOLD + " was " + type);
-            player.sendMessage(ChatColor.GOLD + "You have been " + type);
+            sender.sendMessage(GOLD + "Player " + RED + player.getName() + GOLD + " was " + type);
+            player.sendMessage(GOLD + "You have been " + type);
         } else {
-            player.sendMessage(ChatColor.GOLD + "You have been " + type);
+            player.sendMessage(GOLD + "You have been " + type);
         }
         saveCache();
     }
@@ -186,10 +186,10 @@ public class Config {
         cache.set("Players.Frozen", frozenPlayers);
 
         if (!freezeAll) {
-            String type = toFreeze ? "frozen!" : "unfrozen!";
+            String type = toFreeze ? RED + "frozen!" : RED + "unfrozen!";
 
-            sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + target.getName() + ChatColor.GOLD + " was " + type);
-            target.sendMessage(ChatColor.GOLD + "You have been " + type);
+            Utils.sendSenderMessage(sender, target, GOLD + "Player " + RED + target.getName() + GOLD + " was " + type );
+            target.sendMessage(RED + "You " + GOLD + "have been " + type);
         }
         saveCache();
     }

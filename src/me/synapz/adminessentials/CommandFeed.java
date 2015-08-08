@@ -4,7 +4,7 @@ import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,8 +14,8 @@ public class CommandFeed extends AdminEssentialsCommand implements ConsoleComman
 
     private void feed(CommandSender sender, Player target) {
         target.setFoodLevel(20);
-        target.sendMessage(ChatColor.GOLD + "You were fead!");
-        sender.sendMessage(ChatColor.GOLD + "You fead " + ChatColor.RED + target.getName());
+        target.sendMessage(RED + "You " + GOLD + "were fead!");
+        Utils.sendSenderMessage(sender, target, GOLD + "You fead " + RED + target.getName());
     }
 
     public void onCommand(Player player, String[] args) {
