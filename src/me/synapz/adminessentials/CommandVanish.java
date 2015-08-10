@@ -21,20 +21,17 @@ public class CommandVanish extends AdminEssentialsCommand implements ConsoleComm
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.showPlayer(target);
             }
-            target.sendMessage(GOLD + "Vanish disabled.");
-            action = " disabled";
+            action = RED + " disabled";
             invisiblePlayers.remove(target.getName());
         } else {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(target);
             }
-            target.sendMessage(GOLD + "Vanish enabled.");
-            action = " enabled";
+            action = RED + " enabled";
             invisiblePlayers.add(target.getName());
         }
-        if (!sender.getName().equals(target.getName())) {
-            sender.sendMessage(GOLD + "You " + action + " invisibility for " + RED + target.getName());
-        }
+        target.sendMessage(GOLD + "Vanish" + action);
+        Utils.sendSenderMessage(sender, target, GOLD + "You" + action + GOLD + " invisibility for " + RED + target.getName());
     }
 
     public void onCommand(Player player, String[] args) {

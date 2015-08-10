@@ -11,34 +11,23 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class CommandMuteall extends AdminEssentialsCommand implements ConsoleCommand {
-
-    // todo, make this stoPchat
-
-    private void muteAll(CommandSender sender) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!Config.getInstance().isMuted(p)) {
-                Utils.mute(sender, p, true, true);
-            }
-        }
-        sender.sendMessage(GOLD + "You muted everyone");
-    }
+public class CommandChat extends AdminEssentialsCommand implements ConsoleCommand {
 
     public void onCommand(Player player, String[] args) {
         onConsoleCommand(player, args);
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
-        muteAll(sender);
+        Config.getInstance().setIsChatStopped(sender);
     }
 
     public String getName() {
-        return "muteall";
+        return "chat";
     }
 
     public ArrayList<String> getPermissions() {
         ArrayList<String> permissions = new ArrayList<>();
-        permissions.add("adminessentials.muteall 0");
+        permissions.add("adminessentials.chat 0");
         return permissions;
     }
 

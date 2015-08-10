@@ -25,7 +25,7 @@ public class CommandTppos extends AdminEssentialsCommand {
     }
 
     public void onCommand(Player player, String[] args) {
-        tppos(args[0], args[1], args[3], player);
+        tppos(args[0], args[1], args[2], player);
     }
 
     public String getName() {

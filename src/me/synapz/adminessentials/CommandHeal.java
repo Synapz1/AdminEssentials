@@ -12,11 +12,8 @@ import java.util.ArrayList;
 public class CommandHeal extends AdminEssentialsCommand implements ConsoleCommand {
 
     private void heal(CommandSender sender, Player target) {
-        if (!sender.getName().equals(target.getName())) {
-            sender.sendMessage(GOLD + "You healed " + RED + target.getName());
-        } else {
-            sender.sendMessage(GOLD + "Healed.");
-        }
+        Utils.sendSenderMessage(sender, target, GOLD + "You healed " + RED + target.getName());
+        target.sendMessage(GOLD + "Healed.");
         target.setHealth(20);
     }
 

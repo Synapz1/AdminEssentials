@@ -2,7 +2,6 @@ package me.synapz.adminessentials.util;
 
 
 import me.synapz.adminessentials.AdminEssentials;
-import me.synapz.adminessentials.Metrics;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.Location;
@@ -14,11 +13,11 @@ import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 
 public class Config {
 
+    public static boolean isChatStopped = false;
 
     private List<String> mutedPlayers;
     private List<String> frozenPlayers;
@@ -26,29 +25,6 @@ public class Config {
     private FileConfiguration cache;
     private File cacheFile;
     private static Config instance;
-
-    public enum AdminCommand {
-        ANNOUNCE,
-        BAN,
-        GMA,
-        GMS,
-        GMSS,
-        GMC,
-        CI,
-        FEED,
-        FLY,
-        FREEZE,
-        GOD,
-        MUTE,
-        HEAL,
-        KICK,
-        KILL,
-        KILLMOBS,
-        MARCO,
-        TP,
-        TPHERE,
-        VANISH;
-    }
 
     public static Config getInstance() {
         return instance;
@@ -67,6 +43,13 @@ public class Config {
 
         mutedPlayers = cache.getStringList("Players.Muted");
         frozenPlayers = cache.getStringList("Players.Frozen");
+
+        try {
+            isChatStopped = cache.getBoolean("is-chat-stopped");
+        }catch (Exception e) {
+            cache.set("is-chat-stopped", false);
+        }
+
     }
 
     /**
@@ -93,7 +76,7 @@ public class Config {
                 cache.set("Players.Banned." + uuid, null);
                 Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " unbanned " + RED + name);
             } else {
-                sender.sendMessage(RED + name + GOLD + " is not banned!");
+                sender.sendMessage(GOLD + "Player " + RED + name + GOLD + " is not banned!");
                 return;
             }
         }
@@ -219,6 +202,23 @@ public class Config {
 
     public Location getLastLocation(Player player) {
         return (Location) cache.get("Last-locations." + player.getUniqueId());
+    }
+
+    public void setIsChatStopped(CommandSender sender) {
+        if (isChatStopped) {
+            sender.sendMessage(GOLD + "You have " + RED + "enabled " + GOLD + "chat");
+            isChatStopped = false;
+        } else {
+            sender.sendMessage(GOLD + "You have " + RED + "disabled " + GOLD + "chat");
+            isChatStopped = true;
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!p.getName().equals(sender.getName())) {
+                p.sendMessage(GOLD + "Chat has been " + RED + (isChatStopped ? "disabled" : "enabled"));
+            }
+        }
+        cache.set("is-chat-stopped", isChatStopped);
+        saveCache();
     }
 
     public void saveCache() {

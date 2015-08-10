@@ -15,11 +15,11 @@ public class CommandFly extends AdminEssentialsCommand implements ConsoleCommand
     private void fly(CommandSender sender, Player target) {
         if (target.getAllowFlight()) {
             target.setAllowFlight(false);
-            target.sendMessage(GOLD + "Fly mode was " + RED + "disabled");
+            target.sendMessage(GOLD + "Fly mode " + RED + "disabled");
             Utils.sendSenderMessage(sender, target, GOLD + "Fly mode was" + RED + " disabled" + GOLD + " for " + RED + target.getName());
         } else {
             target.setAllowFlight(true);
-            target.sendMessage(GOLD + "Fly mode was " + RED + "enabled");
+            target.sendMessage(GOLD + "Fly mode " + RED + "enabled");
             Utils.sendSenderMessage(sender, target, GOLD + "Fly mode was " + RED + "enabled" + GOLD + " for " + RED + target.getName());
         }
     }

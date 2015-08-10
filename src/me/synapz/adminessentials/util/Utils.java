@@ -64,7 +64,7 @@ public class Utils {
     }
 
     public static ArrayList<Integer> makeArgs(int...args) {
-        ArrayList<Integer> arguments = new ArrayList<Integer>();
+        ArrayList<Integer> arguments = new ArrayList<>();
         for (Integer arg : args) {
             arguments.add(arg);
         }

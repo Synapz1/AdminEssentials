@@ -27,8 +27,8 @@ public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand
             godPlayers.add(target.getUniqueId().toString());
             action = RED + "enabled";
         }
-        target.sendMessage(GOLD + "God mode was " + action);
-        Utils.sendSenderMessage(sender, target, GOLD + "God mode was " + action + GOLD + " for " + RED + target.getName());
+        target.sendMessage(GOLD + "God mode " + action);
+        Utils.sendSenderMessage(sender, target, GOLD + "God mode " + action + GOLD + " for " + RED + target.getName());
     }
 
     public void onCommand(Player player, String[] args) {

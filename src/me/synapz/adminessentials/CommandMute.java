@@ -50,8 +50,16 @@ public class CommandMute extends AdminEssentialsCommand implements ConsoleComman
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
+        if (Config.isChatStopped) {
+            if (!player.hasPermission("adminessentials.stopchat.bypass")) {
+                player.sendMessage(ChatColor.DARK_RED + "Chat is currently disabled.");
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         if (Config.getInstance().isMuted(player)) {
-            event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are currently muted!");
+            player.sendMessage(ChatColor.DARK_RED + "You are currently muted!");
             event.setCancelled(true);
         }
     }

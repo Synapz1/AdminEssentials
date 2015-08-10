@@ -61,8 +61,8 @@ commands:
       description: Teleport all players to you.
    tppos:
       description: Teleport to a coordinance.
-   muteall:
-      description: Mute all players on the server.
+   chat:
+      description: Disable/enable server chat.
    back:
       description: Go to your last location.
 
@@ -111,3 +111,5 @@ permissions:
        adminessentials.vanish: true
        adminessentials.vanish.others: true
        adminessentials.back: true
+       adminessentials.chat: true
+       adminessentials.chat.bypass: true
