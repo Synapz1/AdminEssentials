@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
 public class AdminEssentials extends JavaPlugin implements CommandExecutor {
 
     @Override
@@ -18,7 +20,10 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
         registerEvents();
         registerCommands();
 
-        c.setupMetrics();
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {}
     }
 
     private void registerEvents() {

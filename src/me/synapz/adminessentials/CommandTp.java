@@ -14,7 +14,7 @@ public class CommandTp extends AdminEssentialsCommand implements ConsoleCommand 
     private void teleport(CommandSender sender, Player target1, Player target2) {
         Utils.teleport(target1, target2);
         target1.sendMessage(GOLD + "Forced teleporting to " + RED + target2.getName());
-        sender.sendMessage(GOLD + "Teleporting " + RED + target1.getName() + GOLD + " to " + target2.getName());
+        sender.sendMessage(GOLD + "Teleporting " + RED + target1.getName() + GOLD + " to " + RED + target2.getName());
     }
 
     public void onCommand(Player player, String[] args) {

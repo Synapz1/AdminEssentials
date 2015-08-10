@@ -13,7 +13,7 @@ public class CommandExtingush extends AdminEssentialsCommand implements ConsoleC
 
     public void ext(CommandSender sender, Player player) {
         player.setFireTicks(0);
-        player.sendMessage("Extinguished your flames!");
+        player.sendMessage(GOLD + "Extinguished your flames!");
         Utils.sendSenderMessage(sender, player, GOLD + "Extinguished fire from " + RED + player.getName());
     }
 

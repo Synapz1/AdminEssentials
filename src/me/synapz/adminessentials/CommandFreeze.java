@@ -25,10 +25,10 @@ public class CommandFreeze extends AdminEssentialsCommand implements ConsoleComm
         Player target = sender.getServer().getPlayer(args[0]);
         if (Utils.isPlayerOnline(sender, args[0])) {
             if (config.isFrozen(target)) {
-                config.setFreeze(sender, target, false, false);
+                config.setFreeze(sender, target, false);
             } else // player isn't in config, so we add them to it
             {
-                config.setFreeze(sender, target, true, false);
+                config.setFreeze(sender, target, true);
             }
         }
     }

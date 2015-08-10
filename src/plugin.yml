@@ -63,10 +63,8 @@ commands:
       description: Teleport to a coordinance.
    muteall:
       description: Mute all players on the server.
-   freezeall:
-      description: Freeze all players on the server.
    back:
-      descrition: Go to your last location.
+      description: Go to your last location.
 
 permissions:
    adminessentials.*:
@@ -108,7 +106,6 @@ permissions:
        adminessentials.tpall: true
        adminessentials.kickall: true
        adminessentials.killmobs: true
-       adminessentials.muteall: true
        adminessentials.spectator: true
        adminessentials.spectator.others: true
        adminessentials.vanish: true

@@ -14,12 +14,14 @@ import java.util.ArrayList;
 public class CommandKickall extends AdminEssentialsCommand implements ConsoleCommand {
 
     private void kickall(CommandSender sender) {
+        int kicked = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getName().equals(sender.getName())) {
                 p.kickPlayer("Kicked from the server!");
+                kicked++;
             }
         }
-        sender.sendMessage(GOLD + "All players kicked.");
+        sender.sendMessage(GOLD + "Kicked " + RED + kicked + GOLD + " players");
     }
 
     public void onCommand(Player player, String[] args) {

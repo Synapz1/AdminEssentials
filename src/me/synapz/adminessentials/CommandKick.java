@@ -15,12 +15,12 @@ import static org.bukkit.ChatColor.RED;
 public class CommandKick extends AdminEssentialsCommand implements ConsoleCommand {
 
     private void kick(CommandSender sender, Player target, String[] args) {
-        String message = args.length == 1 ? "Kicked from server" : Utils.messagerBuilder(args);
+        String message = args.length == 1 ? "Kicked from server." : Utils.messagerBuilder(args);
         if (!Utils.isPlayerOnline(sender, args[0])) {
             return;
         }
         target.kickPlayer(message);
-        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " kicked " + RED + target.getName() + GOLD + " for" + message);
+        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " kicked " + RED + target.getName() + GOLD + " for " + RED + message);
     }
 
     public void onCommand(Player player, String[] args) {

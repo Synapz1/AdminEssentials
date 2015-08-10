@@ -81,7 +81,6 @@ public class Config {
      * @param toBan - true/false (ban/unban)
      */
     public void setBanned(CommandSender sender, String uuid, String name, String reason, boolean toBan) {
-
         if (toBan) {
             cache.set("Players.Banned." + uuid, "");
             cache.set("Players.Banned." + uuid + ".Reason", reason);
@@ -92,6 +91,7 @@ public class Config {
              */
             if (isBanned(sender.getServer().getOfflinePlayer(name)) || isBanned(sender.getServer().getPlayer(name))) {
                 cache.set("Players.Banned." + uuid, null);
+                Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " unbanned " + RED + name);
             } else {
                 sender.sendMessage(RED + name + GOLD + " is not banned!");
                 return;
@@ -146,9 +146,8 @@ public class Config {
      * @param sender - sender of the command
      * @param player - player to be muted
      * @param toMute - mute or to un mute (true/false)
-     * @param muteAll - a mute all check to block spam
      */
-    public void setMute(CommandSender sender, Player player, boolean toMute, boolean muteAll) {
+    public void setMute(CommandSender sender, Player player, boolean toMute) {
         if (toMute) {
             mutedPlayers.add(player.getUniqueId().toString());
         } else {
@@ -158,12 +157,9 @@ public class Config {
         cache.set("Players.Muted", mutedPlayers);
         String type = toMute ? "muted!" : "unmuted!";
 
-        if (!muteAll) {
-            sender.sendMessage(GOLD + "Player " + RED + player.getName() + GOLD + " was " + type);
-            player.sendMessage(GOLD + "You have been " + type);
-        } else {
-            player.sendMessage(GOLD + "You have been " + type);
-        }
+        player.sendMessage(GOLD + "You have been " + RED + type);
+        Utils.sendSenderMessage(sender, player, GOLD + "Player " + RED + player.getName() + GOLD + " was " + RED + type);
+
         saveCache();
     }
 
@@ -174,9 +170,8 @@ public class Config {
      * @param sender - sender of the command
      * @param target - player to be frozen
      * @param toFreeze - freeze or to un freeze (true/false)
-     * @param freezeAll - a freeze all check to block spam
      */
-    public void setFreeze(CommandSender sender, Player target, boolean toFreeze, boolean freezeAll) {
+    public void setFreeze(CommandSender sender, Player target, boolean toFreeze) {
         if (toFreeze) {
             frozenPlayers.add(target.getUniqueId().toString());
         } else {
@@ -185,12 +180,10 @@ public class Config {
 
         cache.set("Players.Frozen", frozenPlayers);
 
-        if (!freezeAll) {
-            String type = toFreeze ? RED + "frozen!" : RED + "unfrozen!";
+        String type = toFreeze ? "frozen!" : "unfrozen!";
 
-            Utils.sendSenderMessage(sender, target, GOLD + "Player " + RED + target.getName() + GOLD + " was " + type );
-            target.sendMessage(RED + "You " + GOLD + "have been " + type);
-        }
+        Utils.sendSenderMessage(sender, target, GOLD + "Player " + RED + target.getName() + GOLD + " was " + RED + type );
+        target.sendMessage(GOLD + "You have been " + RED + type);
         saveCache();
     }
 
@@ -226,97 +219,6 @@ public class Config {
 
     public Location getLastLocation(Player player) {
         return (Location) cache.get("Last-locations." + player.getUniqueId());
-    }
-
-    public void setupMetrics() {
-        try {
-            Metrics metrics = new Metrics(ae);
-
-            Metrics.Graph commandsGraph = metrics.createGraph("Most used commands");
-
-            for (final AdminCommand command: AdminCommand.values()) {
-                commandsGraph.addPlotter(new Metrics.Plotter(getName(command)) {
-                    @Override
-                    public int getValue() {
-                        return cache.getInt("command-counter." + getName(command).toLowerCase());
-                    }
-                });
-            }
-            metrics.start();
-        } catch (IOException e) {}
-    }
-
-    public void increment(AdminCommand command) {
-        String path = getName(command).toLowerCase();
-        cache.set("command-counter." + path, cache.getInt("command-counter." + path) + 1);
-        saveCache();
-    }
-
-    public String getName(AdminCommand command) {
-        String name = "";
-        switch (command) {
-            case ANNOUNCE:
-                name = "Announce";
-                break;
-            case BAN:
-                name = "Ban";
-                break;
-            case GMA:
-                name = "GMA";
-                break;
-            case GMS:
-                name = "GMS";
-                break;
-            case GMSS:
-                name = "GMSS";
-                break;
-            case GMC:
-                name = "GMC";
-                break;
-            case CI:
-                name = "Ci";
-                break;
-            case FEED:
-                name = "Feed";
-                break;
-            case FLY:
-                name = "Fly";
-                break;
-            case FREEZE:
-                name = "Freeze";
-                break;
-            case GOD:
-                name = "God";
-                break;
-            case MUTE:
-                name = "Mute";
-                break;
-            case HEAL:
-                name = "Heal";
-                break;
-            case KICK:
-                name = "Kick";
-                break;
-            case KILL:
-                name = "Kill";
-                break;
-            case KILLMOBS:
-                name = "Killmobs";
-                break;
-            case MARCO:
-                name = "Marco";
-                break;
-            case TP:
-                name = "Tp";
-                break;
-            case TPHERE:
-                name = "Tphere";
-                break;
-            case VANISH:
-                name = "Vanish";
-                break;
-        }
-        return name;
     }
 
     public void saveCache() {

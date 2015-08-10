@@ -13,11 +13,15 @@ import java.util.ArrayList;
 public class CommandKillall extends AdminEssentialsCommand implements ConsoleCommand {
 
     private void killall(CommandSender sender) {
+        int killed = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.sendMessage(GOLD + "You died.");
-            p.setHealth(0);
+            if (!p.getName().equals(sender.getName())) {
+                p.sendMessage(GOLD + "You died.");
+                p.setHealth(0);
+                killed++;
+            }
         }
-        sender.sendMessage(GOLD + "All Players Killed!");
+        sender.sendMessage(GOLD + "Killed " + RED + killed + GOLD + " players");
     }
 
     public void onCommand(Player player, String[] args) {

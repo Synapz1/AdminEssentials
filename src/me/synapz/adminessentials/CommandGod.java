@@ -8,7 +8,6 @@ import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import static org.bukkit.ChatColor.*;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,19 +16,18 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand, Listener {
 
-    private ArrayList<UUID> godPlayers = new ArrayList<>();
+    private ArrayList<String> godPlayers = new ArrayList<>();
 
     private void god(CommandSender sender, Player target) {
         String action;
-        if (this.godPlayers.contains(target.getUniqueId())) {
-            this.godPlayers.remove(target.getUniqueId());
-            target.sendMessage(GOLD + "God mode was " + RED + "disabled");
+        if (godPlayers.contains(target.getUniqueId().toString())) {
+            godPlayers.remove(target.getUniqueId().toString());
             action = RED + "disabled";
         } else {
-            this.godPlayers.add(target.getUniqueId());
-            target.sendMessage(GOLD + "God mode was " + RED + "enabled");
+            godPlayers.add(target.getUniqueId().toString());
             action = RED + "enabled";
         }
+        target.sendMessage(GOLD + "God mode was " + action);
         Utils.sendSenderMessage(sender, target, GOLD + "God mode was " + action + GOLD + " for " + RED + target.getName());
     }
 
@@ -73,11 +71,8 @@ public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand
 
     @EventHandler
     public void onPlayerMove(EntityDamageEvent event) {
-        if ((event.getEntity() instanceof Player)) {
-            Player player = (Player)event.getEntity();
-            if (godPlayers.contains(player.getUniqueId())) {
-                event.setCancelled(true);
-            }
+        if ((event.getEntity() instanceof Player) && godPlayers.contains(event.getEntity().getUniqueId().toString())) {
+            event.setCancelled(true);
         }
     }
 }

@@ -54,7 +54,7 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
             offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
             config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], banReason, true);
         }
-        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " banned " + RED + target + GOLD + " for " + banReason);
+        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " banned " + RED + args[0] + GOLD + " for " + RED + banReason);
     }
 
     public String getName() {

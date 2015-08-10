@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class CommandMuteall extends AdminEssentialsCommand implements ConsoleCommand {
 
+    // todo, make this stoPchat
+
     private void muteAll(CommandSender sender) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!Config.getInstance().isMuted(p)) {

@@ -39,7 +39,6 @@ public class CommandUnban extends AdminEssentialsCommand implements ConsoleComma
             OfflinePlayer offlineTarget = sender.getServer().getOfflinePlayer(args[0]);
             config.setBanned(sender, offlineTarget.getUniqueId().toString(), args[0], "", false);
         }
-        Bukkit.broadcastMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " unbanned " + RED + args[0]);
     }
 
     public String getName() {

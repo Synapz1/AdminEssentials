@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.*;
 
 
 public class Utils {
@@ -37,16 +37,16 @@ public class Utils {
         if (player != null) {
             return true;
         }
-        sender.sendMessage(ChatColor.GOLD + "Player " + ChatColor.RED + "'" + name + "'" + ChatColor.GOLD + " wasn't found.");
+        sender.sendMessage(GOLD + "Player " + RED + "'" + name + "'" + GOLD + " wasn't found.");
         return false;
     }
 
     public static void setGamemode(CommandSender sender, Player player, GameMode gamemode) {
+        Utils.sendSenderMessage(sender, player, GOLD + "You set " + RED + player.getName() + GOLD + " to " + RED + gamemode + GOLD + " mode!");
         if (sender.getName().equals(player.getName())) {
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + "yourself" + ChatColor.GOLD + " to " + gamemode + " mode!");
+            sender.sendMessage(GOLD + "You set " + RED + "yourself" + GOLD + " to " + RED + gamemode + GOLD + " mode!");
         } else {
-            sender.sendMessage(ChatColor.GOLD + "You set " + ChatColor.RED + player.getName() + ChatColor.GOLD + " to " + gamemode + " mode!");
-            player.sendMessage(ChatColor.RED + sender.getName() + ChatColor.GOLD + " set you to " + gamemode + " mode!");
+            player.sendMessage(GOLD + "Player " + RED + sender.getName() + GOLD + " set you to " + RED + gamemode + GOLD + " mode!");
         }
         player.setGameMode(gamemode);
     }
@@ -57,9 +57,9 @@ public class Utils {
             return;
         }
         if (config.isMuted(target)) {
-            config.setMute(sender, target, false, muteAll);
+            config.setMute(sender, target, false);
         } else {
-            config.setMute(sender, target, true, muteAll);
+            config.setMute(sender, target, true);
         }
     }
 

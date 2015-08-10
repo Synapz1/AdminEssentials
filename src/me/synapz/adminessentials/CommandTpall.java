@@ -20,7 +20,7 @@ public class CommandTpall extends AdminEssentialsCommand {
     }
 
     public void onCommand(Player player, String[] args) {
-
+        tpAll(player);
     }
 
     public String getName() {

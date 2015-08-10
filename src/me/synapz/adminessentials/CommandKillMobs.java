@@ -7,7 +7,7 @@ import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
 import me.synapz.adminessentials.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -36,7 +36,7 @@ public class CommandKillMobs extends AdminEssentialsCommand implements ConsoleCo
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
         killMobs();
-        sender.sendMessage(ChatColor.GOLD + "Killed " + ChatColor.RED + mobsKilled + " mobs!");
+        sender.sendMessage(GOLD + "Killed " + RED + mobsKilled + GOLD + " mobs!");
     }
 
     public String getName() {
