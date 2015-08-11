@@ -16,15 +16,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand, Listener {
 
-    private ArrayList<String> godPlayers = new ArrayList<>();
+    private static ArrayList<UUID> godPlayers = new ArrayList<>();
 
     private void god(CommandSender sender, Player target) {
         String action;
-        if (godPlayers.contains(target.getUniqueId().toString())) {
-            godPlayers.remove(target.getUniqueId().toString());
+        if (godPlayers.contains(target.getUniqueId())) {
+            godPlayers.remove(target.getUniqueId());
             action = RED + "disabled";
         } else {
-            godPlayers.add(target.getUniqueId().toString());
+            godPlayers.add(target.getUniqueId());
             action = RED + "enabled";
         }
         target.sendMessage(GOLD + "God mode " + action);
@@ -71,8 +71,11 @@ public class CommandGod extends AdminEssentialsCommand implements ConsoleCommand
 
     @EventHandler
     public void onPlayerMove(EntityDamageEvent event) {
-        if ((event.getEntity() instanceof Player) && godPlayers.contains(event.getEntity().getUniqueId().toString())) {
-            event.setCancelled(true);
+        if ((event.getEntity() instanceof Player)) {
+            Player player = (Player)event.getEntity();
+            if (godPlayers.contains(player.getUniqueId())) {
+                event.setCancelled(true);
+            }
         }
     }
 }
