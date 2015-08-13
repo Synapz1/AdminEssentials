@@ -31,7 +31,8 @@ public class CommandManager implements CommandExecutor {
                 new CommandFly(), new CommandFreeze(), new CommandGod(), new CommandHeal(), new CommandKick(),
                 new CommandKickall(), new CommandKill(), new CommandKillall(), new CommandKillMobs(), new CommandMarco(),
                 new CommandMute(), new CommandChat(), new CommandSpectator(), new CommandSurvival(), new CommandTp(),
-                new CommandTphere(), new CommandTppos(), new CommandVanish(), new CommandTpall());
+                new CommandTphere(), new CommandTppos(), new CommandVanish(), new CommandTpall(), new CommandJail(),
+                new CommandSetJail(), new CommandDelJail());
     }
 
     @Override

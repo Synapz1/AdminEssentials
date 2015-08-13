@@ -65,6 +65,12 @@ commands:
       description: Disable/enable server chat.
    back:
       description: Go to your last location.
+   jail:
+      description: Jail a player.
+   setjail:
+      description: Create a jail at your location.
+   deljail:
+      description: Remove a jail.
 
 permissions:
    adminessentials.*:
@@ -113,3 +119,6 @@ permissions:
        adminessentials.back: true
        adminessentials.chat: true
        adminessentials.chat.bypass: true
+       adminessentials.jail: true
+       adminessentials.setjail: true
+       adminessentials.deljail: true
