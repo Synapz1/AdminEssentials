@@ -12,6 +12,12 @@ import static org.bukkit.ChatColor.*;
 
 public class Jail {
 
+    public enum TimeType {
+        SECONDS,
+        MINUTES,
+        DAYS;
+    }
+
     private static List<Jail> jails = new ArrayList<>();
     Location location;
     String name;
@@ -44,10 +50,6 @@ public class Jail {
         // delete the instances and remove it from config
     }
 
-    public void setTime(Player player, String time, String type) {
-
-    }
-
     public String getName() {
         return name;
     }
@@ -59,6 +61,12 @@ public class Jail {
     public void jail(Player p) {
         p.teleport(this.getLocation());
         p.sendMessage(GOLD + "You have been " + RED + "jailed");
+    }
+
+    public void jail(Player p, int time, TimeType type) {
+        p.teleport(this.getLocation());
+        p.sendMessage(GOLD + "You have been " + RED + "jailed" + GOLD + " for " + RED + time + " " + GOLD + type.toString());
+        // todo: implement a bukkit runnable
     }
 
     public void unjail(Player p) {

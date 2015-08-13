@@ -17,6 +17,10 @@ public class CommandDelJail extends AdminEssentialsCommand implements ConsoleCom
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
+        if (Jail.isJailNull(sender, args[0])) {
+            return;
+        }
+
         Jail.getJail(args[0]).delete();
         sender.sendMessage(GOLD + "Jail " + RED + args[0] + GOLD + " removed");
     }
