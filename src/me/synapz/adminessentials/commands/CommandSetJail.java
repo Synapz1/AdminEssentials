@@ -1,17 +1,18 @@
 package me.synapz.adminessentials.commands;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
-import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.objects.Jail;
 import me.synapz.adminessentials.util.Utils;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import static org.bukkit.ChatColor.*;
 
 import java.util.ArrayList;
 
 public class CommandSetJail extends AdminEssentialsCommand {
 
     public void onCommand(Player player, String[] args) {
-        // set jail
+        Jail jail = new Jail(args[0], player.getLocation());
+        player.sendMessage(GOLD + "Created jail " + RED + jail.getName());
     }
 
     public String getName() {

@@ -2,8 +2,9 @@ package me.synapz.adminessentials.commands;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.objects.Jail;
 import me.synapz.adminessentials.util.Utils;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 public class CommandDelJail extends AdminEssentialsCommand implements ConsoleCommand {
 
     public void onCommand(Player player, String[] args) {
-        // remove jail
+        onConsoleCommand(player, args);
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
-
+        Jail.getJail(args[0]).delete();
+        sender.sendMessage(GOLD + "Jail " + RED + args[0] + GOLD + " removed");
     }
 
     public String getName() {
