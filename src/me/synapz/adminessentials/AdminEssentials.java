@@ -1,6 +1,7 @@
 package me.synapz.adminessentials;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.commands.*;
 import me.synapz.adminessentials.manager.CommandManager;
 import me.synapz.adminessentials.util.Config;
 import org.bukkit.command.CommandExecutor;

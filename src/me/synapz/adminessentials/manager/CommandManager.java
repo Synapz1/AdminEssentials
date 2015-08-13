@@ -3,9 +3,9 @@ package me.synapz.adminessentials.manager;
 
 import static org.bukkit.ChatColor.*;
 
-import me.synapz.adminessentials.*;
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.commands.*;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
