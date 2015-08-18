@@ -25,6 +25,7 @@ public class Config {
     private FileConfiguration cache;
     private File cacheFile;
     private static Config instance;
+    private boolean canUpdate = true;
 
     public static Config getInstance() {
         return instance;
@@ -40,6 +41,7 @@ public class Config {
 
         saveDefaultConfig();
         reloadCache();
+        a.saveResource("config.yml", false);
 
         mutedPlayers = cache.getStringList("Players.Muted");
         frozenPlayers = cache.getStringList("Players.Frozen");
@@ -49,7 +51,16 @@ public class Config {
         }catch (Exception e) {
             cache.set("is-chat-stopped", false);
         }
+        loadValues(a.getConfig());
+        a.saveConfig();
+    }
 
+    public boolean canUpdate() {
+        if (canUpdate) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -261,5 +272,13 @@ public class Config {
             cache.setDefaults(defConfig);
         }catch (UnsupportedEncodingException e) {}
     }
+
+    private void loadValues(FileConfiguration config) {
+        if (!config.contains("auto-update")) {
+            config.set("auto-update", true);
+        }
+        canUpdate = config.getBoolean("auto-update");
+    }
+
 
 }

@@ -16,14 +16,14 @@ public class CommandJail extends AdminEssentialsCommand implements ConsoleComman
     // todo: set output and better checks
 
     public void onCommand(Player player, String[] args) {
-        // jail player
+        onConsoleCommand(player, args);
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = Bukkit.getServer().getPlayer(args[0]);
         Jail jail = Jail.getJail(args[1]);
 
-        if (!Utils.isPlayerOnline(sender, args[0])) {
+        if (!Utils.isPlayerOnline(sender, args[0]) || Jail.isJailNull(sender, args[1])) {
             return;
         }
 
@@ -35,20 +35,20 @@ public class CommandJail extends AdminEssentialsCommand implements ConsoleComman
             try {
                 time = Integer.parseInt(args[2]);
             }catch (NumberFormatException ex) {
-                // input valid interger
+                sender.sendMessage(ChatColor.RED + "Please input a valid integer for the time argument.");
                 return;
             }
-            if (args[4].equalsIgnoreCase("sec")) type = Jail.TimeType.SECONDS;
-            if (args[4].equalsIgnoreCase("min")) type = Jail.TimeType.MINUTES;
-            if (args[4].equalsIgnoreCase("day")) type = Jail.TimeType.DAYS;
+            if (args[3].equalsIgnoreCase("sec")) type = Jail.TimeType.SECONDS;
+            if (args[3].equalsIgnoreCase("min")) type = Jail.TimeType.MINUTES;
+            if (args[3].equalsIgnoreCase("day")) type = Jail.TimeType.DAYS;
 
             if (type != null) {
                 jail.jail(target, time, type);
             } else {
-                // send message
+                sender.sendMessage(ChatColor.RED + "Time type cannot be identified. Please use only use sec/min/day.");
             }
         }
-        // send message
+        Utils.sendSenderMessage(sender, target, ChatColor.GOLD + "You jailed " + ChatColor.RED + target.getName() + ChatColor.GOLD + " at jail " + ChatColor.RED + jail.getName());
     }
 
     public String getName() {

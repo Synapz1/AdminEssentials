@@ -2,8 +2,9 @@ package me.synapz.adminessentials.commands;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.objects.Jail;
 import me.synapz.adminessentials.util.Utils;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,11 +13,23 @@ import java.util.ArrayList;
 public class CommandListJails extends AdminEssentialsCommand implements ConsoleCommand {
 
     public void onCommand(Player player, String[] args) {
-
+        onConsoleCommand(player, args);
     }
 
     public void onConsoleCommand(CommandSender sender, String[] args) {
+        String jailList = "";
 
+        for (Jail jail : Jail.getJails()) {
+            jailList += RED + jail.getName() + GOLD + ", ";
+        }
+
+        if (jailList.equals("")) {
+            jailList = RED + "There are currently no jails.";
+        } else {
+            // remove last ,
+            jailList = jailList.substring(0, jailList.length()-2);
+        }
+        sender.sendMessage(GOLD + "Jails: " + jailList);
     }
 
     public String getName() {

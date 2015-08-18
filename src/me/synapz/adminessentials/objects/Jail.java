@@ -33,7 +33,7 @@ public class Jail {
 
     public static boolean isJailNull(CommandSender sender, String name) {
         if (getJail(name) == null) {
-            sender.sendMessage(GOLD + "Jail " + RED + name + GOLD + " cannot be found.");
+            sender.sendMessage(GOLD + "Jail " + RED + "'" + name + "'" + GOLD + " wasn't found.");
             return true;
         } else {
             return false;
@@ -44,9 +44,12 @@ public class Jail {
     public Jail(String name, Location loc) {
         this.name = name;
         this.location = loc;
+
+        jails.add(this);
     }
 
     public void delete() {
+        jails.remove(this);
         // delete the instances and remove it from config
     }
 
@@ -60,12 +63,12 @@ public class Jail {
 
     public void jail(Player p) {
         p.teleport(this.getLocation());
-        p.sendMessage(GOLD + "You have been " + RED + "jailed");
+        p.sendMessage(GOLD + "You have been " + RED + "jailed" + GOLD + "!");
     }
 
     public void jail(Player p, int time, TimeType type) {
         p.teleport(this.getLocation());
-        p.sendMessage(GOLD + "You have been " + RED + "jailed" + GOLD + " for " + RED + time + " " + GOLD + type.toString());
+        p.sendMessage(GOLD + "You have been " + RED + "jailed" + GOLD + " for " + RED + time + " " + GOLD + type.toString().toLowerCase());
         // todo: implement a bukkit runnable
     }
 
@@ -73,7 +76,7 @@ public class Jail {
         p.teleport(Config.getInstance().getLastLocation(p));
     }
 
-    public List<Jail> getJails() {
+    public static List<Jail> getJails() {
         return jails;
     }
 

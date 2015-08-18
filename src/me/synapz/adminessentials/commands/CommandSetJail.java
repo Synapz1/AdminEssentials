@@ -12,7 +12,7 @@ public class CommandSetJail extends AdminEssentialsCommand {
 
     public void onCommand(Player player, String[] args) {
         Jail jail = new Jail(args[0], player.getLocation());
-        player.sendMessage(GOLD + "Created jail " + RED + jail.getName());
+        player.sendMessage(GOLD + "Created jail " + RED + jail.getName() + GOLD + " at your current location." );
     }
 
     public String getName() {
