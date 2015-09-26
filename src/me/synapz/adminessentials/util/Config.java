@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class Config {
@@ -53,7 +54,6 @@ public class Config {
             cache.set("is-chat-stopped", false);
         }
         loadValues(a.getConfig());
-        Jail.loadJails();
         a.saveConfig();
     }
 
@@ -217,6 +217,15 @@ public class Config {
         return (Location) cache.get("Last-locations." + player.getUniqueId());
     }
 
+    public Location getLastLocation(Player player, Jail jail) {
+        Object rawLoc = cache.get(jail.getPath("Players." + player.getUniqueId() + ".Last-Loc"));
+        Location loc = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+        if (loc instanceof Location) {
+            loc = (Location) rawLoc;
+        }
+        return loc;
+    }
+
     public void setIsChatStopped(CommandSender sender) {
         if (isChatStopped) {
             sender.sendMessage(GOLD + "You have " + RED + "enabled " + GOLD + "chat");
@@ -231,6 +240,50 @@ public class Config {
             }
         }
         cache.set("is-chat-stopped", isChatStopped);
+        saveCache();
+    }
+
+    public void loadJails() {
+        // In case there are no Jails, make the list empty
+        if (!cache.isConfigurationSection("Jails")) {
+            cache.createSection("Jails");
+            saveCache();
+        }
+
+        Set<String> rawJailList = cache.getConfigurationSection("Jails").getKeys(false);
+        for (String jail : rawJailList) {
+            Object rawLoc = cache.get("Jails." + jail + ".Loc");
+            Location loc = rawLoc == null || !(rawLoc instanceof Location) ? new Location(Bukkit.getWorlds().get(0), 0,0,0) : (Location) rawLoc;
+            new Jail(jail, loc);
+        }
+    }
+
+    public void createJail(String name, Location loc) {
+        if (cache.get("Jails." + name) == null) {
+            cache.set("Jails." + name + ".Loc", loc);
+            saveCache();
+        }
+    }
+
+    public void removeJail(Jail jail) {
+        cache.set(jail.getPath(""), null);
+        saveCache();
+    }
+
+    public void addPlayerToJail(Jail jail, Player p) {
+        cache.set(jail.getPath("Players." + p.getUniqueId().toString() + ".Last-Loc"), p.getLocation());
+        saveCache();
+    }
+
+    public void addPlayerToJail(Jail jail, Player p, Jail.TimeType type, int time) {
+        cache.set(jail.getPath("Players." + p.getUniqueId().toString() + ".Last-Loc"), p.getLocation());
+        cache.set(jail.getPath("Players." + p.getUniqueId().toString() + ".Time-Type"), type.toString());
+        cache.set(jail.getPath("Players." + p.getUniqueId().toString() + ".Duration-Left"), time);
+        saveCache();
+    }
+
+    public void unjailPlayer(Jail jail, Player p) {
+        cache.set(jail.getPath("Players." + p.getUniqueId().toString()), null);
         saveCache();
     }
 

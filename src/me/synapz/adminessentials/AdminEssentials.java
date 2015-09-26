@@ -16,7 +16,7 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
-        Config c = new Config(this);
+        new Config(this);
 
         CommandManager.getManager().init();
 
@@ -28,6 +28,8 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
             metrics.start();
         } catch (IOException e) {}
 
+        Config.getInstance().loadJails();
+        // todo: fix
         // Updater updater = new Updater(this, 76238, this.getFile(), Updater.UpdateType.DEFAULT, true);
     }
 
