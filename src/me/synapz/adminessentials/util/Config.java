@@ -2,6 +2,7 @@ package me.synapz.adminessentials.util;
 
 
 import me.synapz.adminessentials.AdminEssentials;
+import me.synapz.adminessentials.objects.Jail;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.Location;
@@ -52,6 +53,7 @@ public class Config {
             cache.set("is-chat-stopped", false);
         }
         loadValues(a.getConfig());
+        Jail.loadJails();
         a.saveConfig();
     }
 

@@ -45,7 +45,7 @@ public class CommandJail extends AdminEssentialsCommand implements ConsoleComman
             if (type != null) {
                 jail.jail(target, time, type);
             } else {
-                sender.sendMessage(ChatColor.RED + "Time type cannot be identified. Please use only use sec/min/day.");
+                sender.sendMessage(ChatColor.RED + "Time cannot be identified. Please use only use sec/min/day.");
             }
         }
         Utils.sendSenderMessage(sender, target, ChatColor.GOLD + "You jailed " + ChatColor.RED + target.getName() + ChatColor.GOLD + " at jail " + ChatColor.RED + jail.getName());
@@ -56,7 +56,7 @@ public class CommandJail extends AdminEssentialsCommand implements ConsoleComman
     }
 
     public ArrayList<String> getPermissions() {
-        ArrayList<String> permissions = new ArrayList<>();
+        ArrayList<String> permissions = new ArrayList<String>();
         permissions.add("adminessentials.jail 2");
         permissions.add("adminessentials.jail 4");
         return permissions;

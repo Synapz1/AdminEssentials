@@ -19,8 +19,8 @@ public class CommandListJails extends AdminEssentialsCommand implements ConsoleC
     public void onConsoleCommand(CommandSender sender, String[] args) {
         String jailList = "";
 
-        for (Jail jail : Jail.getJails()) {
-            jailList += RED + jail.getName() + GOLD + ", ";
+        for (String jail : Jail.getJails().keySet()) {
+            jailList += RED + jail + GOLD + ", ";
         }
 
         if (jailList.equals("")) {
