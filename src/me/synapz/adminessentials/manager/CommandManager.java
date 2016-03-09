@@ -3,9 +3,9 @@ package me.synapz.adminessentials.manager;
 
 import static org.bukkit.ChatColor.*;
 
-import me.synapz.adminessentials.*;
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
 import me.synapz.adminessentials.base.ConsoleCommand;
+import me.synapz.adminessentials.commands.*;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +31,8 @@ public class CommandManager implements CommandExecutor {
                 new CommandFly(), new CommandFreeze(), new CommandGod(), new CommandHeal(), new CommandKick(),
                 new CommandKickall(), new CommandKill(), new CommandKillall(), new CommandKillMobs(), new CommandMarco(),
                 new CommandMute(), new CommandChat(), new CommandSpectator(), new CommandSurvival(), new CommandTp(),
-                new CommandTphere(), new CommandTppos(), new CommandVanish(), new CommandTpall());
+                new CommandTphere(), new CommandTppos(), new CommandVanish(), new CommandTpall(), new CommandJail(),
+                new CommandSetJail(), new CommandDelJail(), new CommandListJails());
     }
 
     @Override

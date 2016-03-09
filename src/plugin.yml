@@ -1,5 +1,5 @@
 name: AdminEssentials
-version: 2.0
+version: 2.0.2
 description: Essential commands to help admins run an essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
@@ -65,6 +65,14 @@ commands:
       description: Disable/enable server chat.
    back:
       description: Go to your last location.
+   jail:
+      description: Jail a player.
+   setjail:
+      description: Create a jail at your location.
+   deljail:
+      description: Remove a jail.
+   jails:
+      description: List all jails.
 
 permissions:
    adminessentials.*:
@@ -113,3 +121,6 @@ permissions:
        adminessentials.back: true
        adminessentials.chat: true
        adminessentials.chat.bypass: true
+       adminessentials.jail: true
+       adminessentials.setjail: true
+       adminessentials.deljail: true

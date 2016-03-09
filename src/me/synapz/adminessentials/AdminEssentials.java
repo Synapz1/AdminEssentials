@@ -1,8 +1,11 @@
 package me.synapz.adminessentials;
 
 import me.synapz.adminessentials.base.AdminEssentialsCommand;
+import me.synapz.adminessentials.commands.*;
 import me.synapz.adminessentials.manager.CommandManager;
 import me.synapz.adminessentials.util.Config;
+import me.synapz.adminessentials.util.Metrics;
+import me.synapz.adminessentials.util.Updater;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,7 +16,7 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
-        Config c = new Config(this);
+        new Config(this);
 
         CommandManager.getManager().init();
 
@@ -24,6 +27,10 @@ public class AdminEssentials extends JavaPlugin implements CommandExecutor {
             Metrics metrics = new Metrics(this);
             metrics.start();
         } catch (IOException e) {}
+
+        Config.getInstance().loadJails();
+        // todo: fix
+        // Updater updater = new Updater(this, 76238, this.getFile(), Updater.UpdateType.DEFAULT, true);
     }
 
     private void registerEvents() {

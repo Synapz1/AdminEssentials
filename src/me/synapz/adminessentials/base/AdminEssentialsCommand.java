@@ -1,10 +1,9 @@
 package me.synapz.adminessentials.base;
 
-import net.md_5.bungee.api.ChatColor;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public abstract class AdminEssentialsCommand {
