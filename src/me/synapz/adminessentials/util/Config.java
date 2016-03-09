@@ -97,33 +97,13 @@ public class Config {
     }
 
     /**
-     * Check config to see if a player is banned.
-     * @param player - Player to checked if baned
-     * @return - true or false (currently banned or unbanned)
-     */
-    public boolean isBanned(Player player) {
-        try {
-            cache.get("Players.Banned." + player.getUniqueId().toString()).equals(player.getUniqueId().toString());
-            return true;
-        }catch (NullPointerException e) {
-            // the player wasn't in the config therefore it throws a NPE, so we return false
-            return false;
-        }
-    }
-
-    /**
      * Check config to see if a OfflinePlayer is banned
      * @param player - OfflinePlayer to be checked
      * @return - true or false (currently banned or unbanned)
      */
     public boolean isBanned(OfflinePlayer player) {
-        try {
-            cache.get("Players.Banned." + player.getUniqueId().toString()).equals(player.getUniqueId().toString());
-            return true;
-        }catch (NullPointerException e) {
-            // the player wasn't in the config therefore it throws a NPE, so we return false
-            return false;
-        }
+        String path = "Players.Banned." + player.getUniqueId().toString();
+        return cache.get(path) == null ? false : true;
     }
 
     /**
@@ -131,7 +111,7 @@ public class Config {
      * @param player - player to get reason of
      * @return - reason
      */
-    public String getBanReason(Player player) {
+    public String getBanReason(OfflinePlayer player) {
         return cache.getString("Players.Banned." + player.getUniqueId().toString() + ".Reason");
     }
 

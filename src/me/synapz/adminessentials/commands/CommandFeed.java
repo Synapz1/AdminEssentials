@@ -14,8 +14,8 @@ public class CommandFeed extends AdminEssentialsCommand implements ConsoleComman
 
     private void feed(CommandSender sender, Player target) {
         target.setFoodLevel(20);
-        target.sendMessage(RED + "You " + GOLD + "were fead!");
-        Utils.sendSenderMessage(sender, target, GOLD + "You fead " + RED + target.getName());
+        target.sendMessage(RED + "You " + GOLD + "were fed!");
+        Utils.sendSenderMessage(sender, target, GOLD + "You fed " + RED + target.getName());
     }
 
     public void onCommand(Player player, String[] args) {

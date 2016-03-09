@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand, Listener {
@@ -78,13 +79,12 @@ public class CommandBan extends AdminEssentialsCommand implements ConsoleCommand
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        String kickMessage;
+    public void onJoin(AsyncPlayerPreLoginEvent event) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(event.getUniqueId());
 
         if (config.isBanned(player)) {
-            kickMessage = config.getBanReason(player);
-            player.kickPlayer(kickMessage);
+            event.setKickMessage(config.getBanReason(player));
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
         }
     }
 }
