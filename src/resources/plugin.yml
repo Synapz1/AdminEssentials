@@ -1,10 +1,9 @@
 name: AdminEssentials
-version: 2.0.2
+version: ${project.version}
 description: Essential commands to help admins run an essential server.
 author: Synapz_
 website: http://dev.bukkit.org/bukkit-plugins/adminess/
 main: me.synapz.adminessentials.AdminEssentials
-database: false
 
 commands:
    v:
