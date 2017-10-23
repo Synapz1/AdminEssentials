@@ -5,7 +5,7 @@
 -------
 What is AdminEssentials?
 AdminEssentials has many commands for admins packed into one compact plugin. 
-It has highly customizable permission nodes and many commands so you can successfully run a strong and essential server. Its acts as a lightweight Essentials. In doing this it provides your server with less errors and a faster setup times, ultimately enhancing your players experience. If you are looking for a smaller version of Essentials with faster updates, you need a less resource consuming plugin to support your players, or because you don't want errors thrown at your console constantly, this plugin is for you.
+It has highly customizable permission nodes and many commands so you can successfully run a strong and essential server. It acts as a lightweight Essentials. In doing this it provides your server with less errors and a faster setup times, ultimately enhancing your players experience. If you are looking for a smaller version of Essentials with faster updates, you need a less resource consuming plugin to support your players, or because you don't want errors thrown at your console constantly, this plugin is for you.
 
 More information and download links are available [**here**](http://dev.bukkit.org/bukkit-plugins/adminess/).
 
